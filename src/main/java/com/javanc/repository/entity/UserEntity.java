@@ -1,0 +1,65 @@
+package com.javanc.repository.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@Table(name="user")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    @Column(name="name")
+    String name;
+    @Column(name = "email")
+    String email;
+    @Column(name = "password")
+    String password;
+    @Column(name = "status")
+    Boolean status;
+    @Column(name = "avatar")
+    String avatar;
+    @Column(name = "phone")
+    String phone;
+    @Column(name = "created")
+    Date created;
+    @Column(name= "deleted")
+    Boolean deleted;
+    // role
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name = "user_role",
+        joinColumns = @JoinColumn(name = "user_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
+    List<RoleEntity> roles = new ArrayList<>();
+
+    // orders
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    List<OrderEntity> orders = new ArrayList<>();
+
+    // address
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<UserAddressEntity> addresses = new ArrayList<>();
+
+    // feedback
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<FeedbackEntity> feedbacks = new ArrayList<>();
+
+    // shopping cart
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    ShoppingCartEntity shoppingCart;
+
+    // payment
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<PaymentEntity> payments = new ArrayList<>();
+}
