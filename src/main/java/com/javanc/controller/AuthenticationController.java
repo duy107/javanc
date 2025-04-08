@@ -9,8 +9,11 @@ import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,7 @@ import java.text.ParseException;
 @RequestMapping("/auth")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationController {
 
     AuthenService authenService;
@@ -29,6 +33,8 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody AuthenRequest authenRequest){
         AuthenResponse response = authenService.login(authenRequest);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        log.info("ROLE: " + auth.getAuthorities().toString());
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<AuthenResponse>builder()
                         .result(response)
@@ -45,11 +51,12 @@ public class AuthenticationController {
                         .build()
         );
     }
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthenRequest authenRequest){
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<?> refreshToken(@RequestBody AuthenRequest authenRequest) throws ParseException, JOSEException {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<AuthenResponse>builder()
-                        .result(authenService.register(authenRequest))
+                        .result(authenService.refreshToken(authenRequest))
                         .build()
         );
     }

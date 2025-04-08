@@ -10,4 +10,5 @@ public interface AuthenService {
     AuthenResponse login(AuthenRequest authenRequest);
     AuthenResponse register(AuthenRequest authenRequest);
     AuthenResponse introspect(AuthenRequest authenRequest) throws JOSEException, ParseException;
+    AuthenResponse refreshToken(AuthenRequest authenRequest) throws ParseException, JOSEException;
 }
