@@ -23,7 +23,7 @@ public class RoleEntity {
     String name;
     @Column(name = "code")
     String code;
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     List<UserEntity> users = new ArrayList<>();

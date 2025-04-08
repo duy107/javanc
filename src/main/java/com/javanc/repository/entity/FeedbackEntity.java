@@ -28,7 +28,7 @@ public class FeedbackEntity {
     @Column(name = "feedback_time")
     Date time;
 
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
 
     // user

@@ -4,12 +4,14 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-#      ddl-auto: update
-      ddl-auto: create
+      ddl-auto: update
+#      ddl-auto: create
     properties:
       hibernate:
-      dialect: org.hibernate.dialect.MySQL8Dialect
+      dialect: org.hibernate.dialect.MySQL55Dialect
       enable_lazy_load_no_trans: true
       format_sql: true
   profiles:
     active: uat
+jwt:
+  sign_key: 69YzD+lBgYPdLvX4kkzhYF9IX2zZ1okqn1SWi3/Us3iIw8bUbu7FzoX2r4RVe+7V

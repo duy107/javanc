@@ -34,7 +34,7 @@ public class UserEntity {
     String phone;
     @Column(name = "created")
     Date created;
-    @Column(name= "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
     // role
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})

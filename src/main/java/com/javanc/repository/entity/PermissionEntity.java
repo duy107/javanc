@@ -23,7 +23,7 @@ public class PermissionEntity {
     String name;
     @Column(name = "description")
     String description;
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
     @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
     List<RoleEntity> roles = new ArrayList<>();

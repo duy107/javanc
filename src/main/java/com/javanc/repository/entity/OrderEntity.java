@@ -24,7 +24,7 @@ public class OrderEntity {
     Date time;
     @Column(name = "status")
     String status;
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
     // user
     @ManyToOne

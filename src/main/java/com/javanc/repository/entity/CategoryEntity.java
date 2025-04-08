@@ -21,7 +21,7 @@ public class CategoryEntity {
     Long id;
     @Column(name = "name")
     String name;
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
 
     // product
