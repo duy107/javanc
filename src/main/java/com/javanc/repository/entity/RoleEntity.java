@@ -1,5 +1,7 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +28,9 @@ public class RoleEntity {
     String code;
     @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
+
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @JsonBackReference
     List<UserEntity> users = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
@@ -33,5 +38,6 @@ public class RoleEntity {
             joinColumns = @JoinColumn(name = "role_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "permission_id", nullable = false)
     )
+    @JsonManagedReference
     List<PermissionEntity> permissions = new ArrayList<>();
 }
