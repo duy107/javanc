@@ -1,9 +1,13 @@
 package com.javanc.controller;
 
 
+import com.javanc.controlleradvice.customeException.AppException;
+import com.javanc.enums.ErrorCode;
 import com.javanc.model.request.AuthenRequest;
 import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.AuthenResponse;
+import com.javanc.repository.UserRepository;
+import com.javanc.repository.entity.UserEntity;
 import com.javanc.service.AuthenService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +34,11 @@ import java.text.ParseException;
 public class AuthenticationController {
 
     AuthenService authenService;
+    UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login (@RequestBody AuthenRequest authenRequest){
+    public ResponseEntity<?> login(@RequestBody AuthenRequest authenRequest) {
         AuthenResponse response = authenService.login(authenRequest);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         log.info("ROLE: " + auth.getAuthorities().toString());
@@ -43,7 +50,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/introspect")
-    public ResponseEntity<?> introspect (@RequestBody AuthenRequest authenRequest) throws JOSEException, ParseException {
+    public ResponseEntity<?> introspect(@RequestBody AuthenRequest authenRequest) throws JOSEException, ParseException {
         AuthenResponse response = authenService.introspect(authenRequest);
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<AuthenResponse>builder()
@@ -59,5 +66,19 @@ public class AuthenticationController {
                         .result(authenService.refreshToken(authenRequest))
                         .build()
         );
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody AuthenRequest authenRequest) {
+        if (userRepository.existsByEmail(authenRequest.getEmail())) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+        authenRequest.setPassword(passwordEncoder.encode(authenRequest.getPassword()));
+        userRepository.save(UserEntity.builder()
+                .email(authenRequest.getEmail())
+                .password(authenRequest.getPassword())
+                .build()
+        );
+        return ResponseEntity.ok().body("Ok");
     }
 }

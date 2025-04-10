@@ -15,5 +15,5 @@ spring:
     active: uat
 jwt:
   sign_key: 69YzD+lBgYPdLvX4kkzhYF9IX2zZ1okqn1SWi3/Us3iIw8bUbu7FzoX2r4RVe+7V
-  expiry_time_token: 5
-  expiry_time_refreshToken: 2000
+  expiry_time_token: 5000
+  expiry_time_refreshToken: 10000

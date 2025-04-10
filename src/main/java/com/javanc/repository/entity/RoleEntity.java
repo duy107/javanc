@@ -29,10 +29,13 @@ public class RoleEntity {
     @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
 
+    // user
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @JsonBackReference
     List<UserEntity> users = new ArrayList<>();
 
+
+    // permission
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             joinColumns = @JoinColumn(name = "role_id", nullable = false),
