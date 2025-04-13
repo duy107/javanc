@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserEntity {
+public class UserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -33,8 +33,6 @@ public class UserEntity {
     String avatar;
     @Column(name = "phone")
     String phone;
-    @Column(name = "created")
-    Date created;
     @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
     // role
@@ -64,4 +62,5 @@ public class UserEntity {
     // payment
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<PaymentEntity> payments = new ArrayList<>();
+
 }

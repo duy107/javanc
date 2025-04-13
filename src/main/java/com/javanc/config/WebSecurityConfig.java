@@ -26,7 +26,7 @@ public class WebSecurityConfig {
 
     @Value("${jwt.sign_key}")
     private String SIGN_KEY;
-    private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/refreshToken", "/auth/logout"};
+    private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify"};
     private CustomJwtDecoder customerJwtDecoder;
 
 
@@ -43,6 +43,7 @@ public class WebSecurityConfig {
                 }))
                 .authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/cities").permitAll()
                         .anyRequest().authenticated()
                 );
 

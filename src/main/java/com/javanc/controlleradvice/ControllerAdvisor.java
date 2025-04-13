@@ -16,14 +16,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponseDTO<Void>> handleAllExceptions(RuntimeException ex, WebRequest request) {
-        ApiResponseDTO<Void> apiResponseDTO = ApiResponseDTO.<Void>builder()
-                .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
-                .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
-                .build();
-        return ResponseEntity.badRequest().body(apiResponseDTO);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ApiResponseDTO<Void>> handleAllExceptions(RuntimeException ex, WebRequest request) {
+//        ApiResponseDTO<Void> apiResponseDTO = ApiResponseDTO.<Void>builder()
+//                .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
+//                .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
+//                .build();
+//        return ResponseEntity.badRequest().body(apiResponseDTO);
+//    }
 
     @ExceptionHandler(UserNotExistsException.class)
     public ResponseEntity<ApiResponseDTO<Void>> handleUserNotFound(UserNotExistsException ex, WebRequest request) {

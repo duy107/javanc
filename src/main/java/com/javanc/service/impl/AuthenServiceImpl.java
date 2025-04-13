@@ -1,23 +1,24 @@
 package com.javanc.service.impl;
 
-import ch.qos.logback.classic.spi.IThrowableProxy;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javanc.controlleradvice.customeException.AppException;
 import com.javanc.controlleradvice.customeException.UserNotExistsException;
 import com.javanc.enums.ErrorCode;
 import com.javanc.model.request.AuthenRequest;
+import com.javanc.model.request.auth.RegisterRequest;
 import com.javanc.model.response.AuthenResponse;
-import com.javanc.repository.InvalidatedTokenRepository;
-import com.javanc.repository.RoleRepository;
-import com.javanc.repository.UserRepository;
-import com.javanc.repository.entity.InvalidatedTokenEntity;
-import com.javanc.repository.entity.RoleEntity;
-import com.javanc.repository.entity.UserEntity;
+import com.javanc.repository.*;
+import com.javanc.repository.entity.*;
 import com.javanc.service.AuthenService;
+import com.javanc.service.EmailService;
+import com.javanc.service.RedisService;
+import com.javanc.service.UploadImageFileService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,9 +26,12 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -59,45 +63,51 @@ public class AuthenServiceImpl implements AuthenService {
 
 
     UserRepository userRepository;
-    PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
-    InvalidatedTokenRepository invalidatedTokenRepository;
+    AddressRepository addressRepository;
+    UserAddressRepository userAddressRepository;
 
-    private String generateToken(UserEntity user){
+    PasswordEncoder passwordEncoder;
+    InvalidatedTokenRepository invalidatedTokenRepository;
+    UploadImageFileService uploadImageFileService;
+    RedisService redisService;
+    EmailService emailService;
+
+    private String generateToken(UserEntity user) {
         // thuật toán mã hóa
-            JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         // data trong body
-            JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                    // user đăng nhập
-                    .subject(user.getEmail())
-                    .issuer("duytrinh.com")
-                    // thời gian ký
-                    .issueTime(new Date())
-                    // thời gian hết hạn
-                    .expirationTime(new Date(
-                            Instant.now().plus(EXPIRY_TIME_TOKEN, ChronoUnit.SECONDS).toEpochMilli()
-                    ))
-                    .claim("scope", buildScope(user))
-                    // Lưu để lấy thông tin token
-                    .jwtID(UUID.randomUUID().toString())
-                    .build();
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                // user đăng nhập
+                .subject(user.getEmail())
+                .issuer("duytrinh.com")
+                // thời gian ký
+                .issueTime(new Date())
+                // thời gian hết hạn
+                .expirationTime(new Date(
+                        Instant.now().plus(EXPIRY_TIME_TOKEN, ChronoUnit.SECONDS).toEpochMilli()
+                ))
+                .claim("scope", buildScope(user))
+                // Lưu để lấy thông tin token
+                .jwtID(UUID.randomUUID().toString())
+                .build();
 
-            Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 
-            JWSObject jwsObject = new JWSObject(header, payload);
-            try {
-                jwsObject.sign(new MACSigner(SIGN_KEY.getBytes()));
-                return jwsObject.serialize();
-            } catch (Exception e) {
-                log.error("Cannot generate token", e);
-                throw new RuntimeException(e);
-            }
+        JWSObject jwsObject = new JWSObject(header, payload);
+        try {
+            jwsObject.sign(new MACSigner(SIGN_KEY.getBytes()));
+            return jwsObject.serialize();
+        } catch (Exception e) {
+            log.error("Cannot generate token", e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public AuthenResponse login(AuthenRequest authenRequest) {
-        UserEntity user =  userRepository.findByEmail(authenRequest.getEmail()).orElseThrow(
+        UserEntity user = userRepository.findByEmail(authenRequest.getEmail()).orElseThrow(
                 () -> new UserNotExistsException("User not found")
         );
         boolean authenticated = passwordEncoder.matches(authenRequest.getPassword(), user.getPassword());
@@ -112,24 +122,15 @@ public class AuthenServiceImpl implements AuthenService {
     }
 
     @Override
-    public AuthenResponse register(AuthenRequest authenRequest) {
-
-        if (userRepository.existsByEmail(authenRequest.getEmail())) {
+    public void sendEmail(MultipartFile avatar, RegisterRequest registerRequest) throws IOException, MessagingException {
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-
-        RoleEntity role = roleRepository.findByCode("USER")
-                .orElseThrow(() -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION));
-        String password = passwordEncoder.encode(authenRequest.getPassword());
-        UserEntity user = UserEntity.builder()
-                .email(authenRequest.getEmail())
-                .password(password)
-                .roles(List.of(role))
-                .build();
-        userRepository.save(user);
-        return AuthenResponse.builder()
-                .email(user.getEmail())
-                .build();
+//        String src = uploadImageFileService.uploadImage(avatar);
+//        registerRequest.setSrc(src);
+        String otp = String.valueOf((int) (Math.random() * 900000) + 100000);
+        redisService.savePendingUser(registerRequest.getEmail(), otp, registerRequest);
+        emailService.sendSimpleEmail(registerRequest.getEmail(), otp);
     }
 
     @Override
@@ -182,6 +183,46 @@ public class AuthenServiceImpl implements AuthenService {
                 .build();
     }
 
+    @Override
+    public void register(AuthenRequest authenRequest) throws JsonProcessingException {
+        if (userRepository.existsByEmail(authenRequest.getEmail())) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+        RegisterRequest registerRequest = redisService.getPendingUser(authenRequest.getEmail(), authenRequest.getOtp());
+        if(registerRequest == null) {
+            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
+        }
+        RoleEntity role = roleRepository.findByCode("USER").orElseThrow(
+                () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
+        );
+
+        UserEntity newUser = UserEntity.builder()
+                .email(registerRequest.getEmail())
+                .name(registerRequest.getName())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .roles(List.of(role))
+                .avatar(registerRequest.getSrc())
+                .phone(registerRequest.getPhone())
+                .build();
+
+        AddressEntity newAddress = AddressEntity.builder()
+                .cityId(registerRequest.getCityId())
+                .districtId(registerRequest.getDistrictId())
+                .wardId(registerRequest.getWardId())
+                .detail(registerRequest.getDetail())
+                .build();
+
+        userRepository.save(newUser);
+        addressRepository.save(newAddress);
+
+        UserAddressEntity userAddress = UserAddressEntity.builder()
+                .user(newUser)
+                .address(newAddress)
+                .isDefault(true)
+                .build();
+        userAddressRepository.save(userAddress);
+    }
+
 
     // kiem tra tinh hop le cua token (sai / het han)
     // SignedJWT: đại diện cho 1 token đã được ký
@@ -214,10 +255,10 @@ public class AuthenServiceImpl implements AuthenService {
 
     private String buildScope(UserEntity user) {
         StringJoiner stringJoiner = new StringJoiner(" ");
-        if(!user.getRoles().isEmpty()){
+        if (!user.getRoles().isEmpty()) {
             user.getRoles().forEach(role -> {
                 stringJoiner.add("ROLE_" + role.getCode());
-                if(!role.getPermissions().isEmpty()){
+                if (!role.getPermissions().isEmpty()) {
                     role.getPermissions().forEach(permission -> {
                         stringJoiner.add((permission.getName()));
                     });

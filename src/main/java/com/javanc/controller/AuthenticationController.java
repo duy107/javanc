@@ -1,30 +1,33 @@
 package com.javanc.controller;
 
-
-import com.javanc.controlleradvice.customeException.AppException;
-import com.javanc.enums.ErrorCode;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javanc.model.request.AuthenRequest;
+import com.javanc.model.request.auth.RegisterRequest;
 import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.AuthenResponse;
 import com.javanc.repository.UserRepository;
-import com.javanc.repository.entity.UserEntity;
 import com.javanc.service.AuthenService;
+import com.javanc.service.EmailService;
 import com.nimbusds.jose.JOSEException;
+import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,6 +39,7 @@ public class AuthenticationController {
     AuthenService authenService;
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+    EmailService emailService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenRequest authenRequest) {
@@ -68,17 +72,31 @@ public class AuthenticationController {
         );
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthenRequest authenRequest) {
-        if (userRepository.existsByEmail(authenRequest.getEmail())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+    @PostMapping("/sendEmail")
+    public ResponseEntity<?> sendEmail(@Valid @RequestParam MultipartFile avatar, @Valid @ModelAttribute RegisterRequest registerRequest, BindingResult result) throws IOException, MessagingException {
+        if (result.hasErrors()) {
+            List<String> errorMessages = result.getFieldErrors() // lấy các field lỗi
+                    .stream().map(FieldError::getDefaultMessage) // lấy message của từng field bị lỗi
+                    .collect(Collectors.toList());
+            ApiResponseDTO<List<String>> apiResponseDTO = ApiResponseDTO.<List<String>>builder()
+                    .code(400)
+                    .result(errorMessages)
+                    .build();
+            return ResponseEntity.badRequest().body(apiResponseDTO);
         }
-        authenRequest.setPassword(passwordEncoder.encode(authenRequest.getPassword()));
-        userRepository.save(UserEntity.builder()
-                .email(authenRequest.getEmail())
-                .password(authenRequest.getPassword())
-                .build()
+        authenService.sendEmail(avatar, registerRequest);
+        return ResponseEntity.ok().body(ApiResponseDTO.<String>builder()
+                .message("Vui lòng kiểm tra email")
+                .build());
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody AuthenRequest authenRequest) throws JsonProcessingException {
+        authenService.register(authenRequest);
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<Void>builder()
+                        .message("Ok")
+                        .build()
         );
-        return ResponseEntity.ok().body("Ok");
     }
 }

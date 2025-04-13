@@ -13,7 +13,24 @@ spring:
       format_sql: true
   profiles:
     active: uat
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: trinhduy107@gmail.com
+    password: maiobfatsrbohtek
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 jwt:
   sign_key: 69YzD+lBgYPdLvX4kkzhYF9IX2zZ1okqn1SWi3/Us3iIw8bUbu7FzoX2r4RVe+7V
   expiry_time_token: 5000
   expiry_time_refreshToken: 10000
+

@@ -13,4 +13,5 @@ public class AuthenResponse {
     String token;
     Boolean valid;
     String email;
+    String avatar;
 }

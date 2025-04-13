@@ -3,7 +3,9 @@ package com.javanc.controller.client;
 
 import com.javanc.controlleradvice.customeException.AppException;
 import com.javanc.enums.ErrorCode;
+import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.repository.UserRepository;
+import com.javanc.repository.entity.UserEntity;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -37,8 +39,11 @@ public class UserClientController {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         String email = authentication.getName();
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
         return ResponseEntity.ok().body(
-                userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS))
+                ApiResponseDTO.<UserEntity>builder()
+                        .result(user)
+                        .build()
         );
     }
 }
