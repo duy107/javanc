@@ -63,4 +63,9 @@ public class ProductEntity extends BaseEntity {
     // detail
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<DetailEntity> details = new ArrayList<>();
+
+    @PostPersist
+    protected void onCreate() {
+        if(this.getDeleted() == null) this.setDeleted(false);
+    }
 }

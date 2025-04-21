@@ -1,6 +1,7 @@
 package com.javanc.model.request.auth;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,4 +34,6 @@ public class RegisterRequest extends LoginRegister{
     @NotBlank(message = "Vui lòng cung cấp họ tên")
     String name;
     String src;
+    @JsonIgnore
+    MultipartFile avatar;
 }

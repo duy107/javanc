@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -25,5 +26,6 @@ public class ColorEntity {
 
     //detail
     @OneToMany(mappedBy = "color", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<DetailEntity> details = new ArrayList<>();
 }

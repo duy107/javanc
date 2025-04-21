@@ -35,4 +35,10 @@ public class DetailEntity {
     @ManyToOne
     @JoinColumn(name = "product_id")
     ProductEntity product;
+
+
+    @PostPersist
+    protected void onCreate() {
+        if(this.getSold_count() == null) this.setSold_count(0L);
+    }
 }

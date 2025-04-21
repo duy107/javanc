@@ -18,6 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.http.HttpMethod.DELETE;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -28,7 +31,7 @@ public class WebSecurityConfig {
     private String SIGN_KEY;
     private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify"};
     private CustomJwtDecoder customerJwtDecoder;
-
+    private final String apiPrefix = "/api";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -44,6 +47,23 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENPOINTS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/cities").permitAll()
+
+                        // category
+                        .requestMatchers(GET, String.format("%s/categories/**", apiPrefix)).permitAll()
+                        .requestMatchers(POST, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(PATCH, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(DELETE, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
+
+                        // product
+                        .requestMatchers(GET, String.format("%s/products/**", apiPrefix)).permitAll()
+                        .requestMatchers(POST, String.format("%s/products/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(PATCH, String.format("%s/products/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(DELETE, String.format("%s/products/**", apiPrefix)).hasRole("ADMIN")
+
+                        // comoon
+                        .requestMatchers(GET, String.format("%s/common/colors/**", apiPrefix)).permitAll()
+                        .requestMatchers(GET, String.format("%s/common/sizes/**", apiPrefix)).permitAll()
+
                         .anyRequest().authenticated()
                 );
 

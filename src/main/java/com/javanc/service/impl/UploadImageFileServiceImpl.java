@@ -22,49 +22,71 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @Slf4j
-public class UploadImageFileServiceImpl implements UploadImageFileService
-{
+public class UploadImageFileServiceImpl implements UploadImageFileService {
 
     Cloudinary cloudinary;
 
     @Override
     public String uploadImage(MultipartFile file) throws IOException {
-        assert file.getOriginalFilename() != null;
-        String publicValue = generatePublicValue(file.getOriginalFilename());
-        log.info("publicValue is: {}", publicValue);
-        String extension = getFileName(file.getOriginalFilename())[1];
-        log.info("extension is: {}", extension);
-        File fileUpload = convert(file);
-        log.info("fileUpload is: {}", fileUpload);
+        String originalName = file.getOriginalFilename();
+        if (originalName == null || originalName.isBlank()) {
+            throw new IllegalArgumentException("File name is invalid.");
+        }
+
+        String extension = getExtension(originalName);
+        String publicValue = generatePublicValue(originalName);
+
+        log.info("publicValue: {}", publicValue);
+        log.info("extension: {}", extension);
+
+        File fileUpload = convert(file, publicValue, extension);
+        log.info("fileUpload path: {}", fileUpload.getAbsolutePath());
+
         cloudinary.uploader().upload(fileUpload, ObjectUtils.asMap("public_id", publicValue));
         cleanDisk(fileUpload);
-        return  cloudinary.url().generate(StringUtils.join(publicValue, ".", extension));
+
+        return cloudinary.url().generate(publicValue);
     }
-    private File convert(MultipartFile file) throws IOException {
-        assert file.getOriginalFilename() != null;
-        File convFile = new File(StringUtils.join(generatePublicValue(file.getOriginalFilename()), getFileName(file.getOriginalFilename())[1]));
-        try(InputStream is = file.getInputStream()) {
-            Files.copy(is, convFile.toPath());
+
+    private File convert(MultipartFile file, String publicValue, String extension) throws IOException {
+        String safeFilename = sanitizeFileName(publicValue + "." + extension);
+        Path tempPath = Files.createTempFile(safeFilename, null);
+        try (InputStream is = file.getInputStream()) {
+            Files.copy(is, tempPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
         }
-        return convFile;
+        return tempPath.toFile();
     }
 
     private void cleanDisk(File file) {
         try {
-            log.info("file.toPath(): {}", file.toPath());
-            Path filePath = file.toPath();
-            Files.delete(filePath);
+            log.info("Deleting file: {}", file.getAbsolutePath());
+            Files.deleteIfExists(file.toPath());
         } catch (IOException e) {
-            log.error("Error");
+            log.error("Failed to delete temporary file: {}", file.getAbsolutePath(), e);
         }
     }
 
-    public String generatePublicValue(String originalName){
-        String fileName = getFileName(originalName)[0];
-        return StringUtils.join(UUID.randomUUID().toString(), "_", fileName);
+    private String generatePublicValue(String originalName) {
+        String baseName = getBaseName(originalName);
+        return UUID.randomUUID() + "_" + baseName;
     }
 
-    public String[] getFileName(String originalName) {
-        return originalName.split("\\.");
+    private String getBaseName(String originalName) {
+        String sanitized = sanitizeFileName(originalName);
+        int dotIndex = sanitized.lastIndexOf('.');
+        return (dotIndex == -1) ? sanitized : sanitized.substring(0, dotIndex);
+    }
+
+    private String getExtension(String originalName) {
+        int dotIndex = originalName.lastIndexOf('.');
+        if (dotIndex == -1 || dotIndex == originalName.length() - 1) {
+            throw new IllegalArgumentException("File does not have a valid extension.");
+        }
+        return originalName.substring(dotIndex + 1);
+    }
+
+    private String sanitizeFileName(String input) {
+        // Thay thế tất cả ký tự không hợp lệ
+        return input.replaceAll("[\\\\/:*?\"<>|]", "_");
     }
 }

@@ -122,12 +122,12 @@ public class AuthenServiceImpl implements AuthenService {
     }
 
     @Override
-    public void sendEmail(MultipartFile avatar, RegisterRequest registerRequest) throws IOException, MessagingException {
+    public void sendEmail(RegisterRequest registerRequest) throws IOException, MessagingException {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-//        String src = uploadImageFileService.uploadImage(avatar);
-//        registerRequest.setSrc(src);
+        String src = uploadImageFileService.uploadImage(registerRequest.getAvatar());
+        registerRequest.setSrc(src);
         String otp = String.valueOf((int) (Math.random() * 900000) + 100000);
         redisService.savePendingUser(registerRequest.getEmail(), otp, registerRequest);
         emailService.sendSimpleEmail(registerRequest.getEmail(), otp);

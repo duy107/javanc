@@ -23,8 +23,15 @@ public class CategoryEntity {
     String name;
     @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
-
+    @Column(name = "parent_id")
+    Long parentId;
     // product
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     List<ProductEntity> products = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        this.deleted = false;
+        if (this.parentId == null) this.parentId = 0L;
+    }
 }

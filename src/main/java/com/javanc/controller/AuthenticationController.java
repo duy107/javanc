@@ -22,8 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -73,7 +71,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sendEmail")
-    public ResponseEntity<?> sendEmail(@Valid @RequestParam MultipartFile avatar, @Valid @ModelAttribute RegisterRequest registerRequest, BindingResult result) throws IOException, MessagingException {
+    public ResponseEntity<?> sendEmail(@Valid @ModelAttribute RegisterRequest registerRequest, BindingResult result) throws IOException, MessagingException {
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors() // lấy các field lỗi
                     .stream().map(FieldError::getDefaultMessage) // lấy message của từng field bị lỗi
@@ -84,7 +82,7 @@ public class AuthenticationController {
                     .build();
             return ResponseEntity.badRequest().body(apiResponseDTO);
         }
-        authenService.sendEmail(avatar, registerRequest);
+        authenService.sendEmail(registerRequest);
         return ResponseEntity.ok().body(ApiResponseDTO.<String>builder()
                 .message("Vui lòng kiểm tra email")
                 .build());

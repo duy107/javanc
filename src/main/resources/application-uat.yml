@@ -1,9 +1,32 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/javanc?useSSL=false&serverTimezone=UTC
+    url: ${DB_URL}
     username: root
-    password: Duy@0382750958
+    password: ${DB_PASSWORD:Abc@12345}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 5
       maximum-pool-size: 10
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:nguyenvana@gmail.com}
+    password: ${MAIL_PASSWORD:abcdefgh}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+jwt:
+  sign_key: ${SIGN_KEY:123456789}
+  expiry_time_token: 5000
+  expiry_time_refreshToken: 10000
+cloud:
+  api_key: ${CLOUD_API_KEY}
+  api_name: ${CLOUD_API_NAME}
+  api_secret: ${CLOUD_API_SECRET}
