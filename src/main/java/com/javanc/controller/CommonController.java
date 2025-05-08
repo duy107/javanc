@@ -4,6 +4,7 @@ import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.repository.entity.ColorEntity;
 import com.javanc.repository.entity.SizeEntity;
 import com.javanc.service.ColorService;
+import com.javanc.service.ProductService;
 import com.javanc.service.SizeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class CommonController {
 
     ColorService colorService;
     SizeService sizeService;
+    ProductService productService;
 
     @GetMapping("/colors")
     public ResponseEntity<?> getColors() {
@@ -42,4 +44,12 @@ public class CommonController {
         );
     }
 
+//    @GetMapping("/products")
+//    public ResponseEntity<?> getProducts() {
+//        return ResponseEntity.ok().body(
+//                ApiResponseDTO.<List<ProductAdminResponse>>builder()
+//                        .result(productService.getProducts())
+//                        .build()
+//        );
+//    }
 }

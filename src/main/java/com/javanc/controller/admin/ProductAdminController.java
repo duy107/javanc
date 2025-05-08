@@ -2,6 +2,8 @@ package com.javanc.controller.admin;
 
 import com.javanc.model.request.admin.ProductAdminRequest;
 import com.javanc.model.response.ApiResponseDTO;
+import com.javanc.model.response.admin.ProductAdminResponse;
+import com.javanc.model.response.admin.ProductPaginationResponse;
 import com.javanc.service.ProductService;
 import com.javanc.validation.VariantValidator;
 import jakarta.validation.Valid;
@@ -34,7 +36,7 @@ public class ProductAdminController {
         try {
             variantValidator.validateVariants(productAdminRequest.getVariants());
         } catch (Exception e) {
-            result.rejectValue("variants", "variants.invalid", "Dữ liệu variants không hợp lệ: " );
+            result.rejectValue("variants", "variants.invalid", "Dữ liệu variants không hợp lệ: ");
         }
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors() // lấy các field lỗi
@@ -47,6 +49,45 @@ public class ProductAdminController {
             return ResponseEntity.badRequest().body(apiResponseDTO);
         }
 
+        productService.createProduct(productAdminRequest);
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<Void>builder()
+                        .message("OK")
+                        .build()
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<?> filterProduct(@RequestParam(required = true) String searchKey, @RequestParam(required = true) String categoryId, @RequestParam(required = true) String status, @RequestParam(required = true) String pageNumber) {
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<ProductPaginationResponse>builder()
+                        .result(productService.getProducts(searchKey, categoryId, status, pageNumber))
+                        .build()
+        );
+    }
+
+    @DeleteMapping("/{ids}")
+    // api/products/1,2,3
+    public ResponseEntity<?> deleteProduct(@PathVariable List<Long> ids) {
+        productService.deleteProducts(ids);
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<Void>builder()
+                        .message("Xóa sản phẩm thành công")
+                        .build()
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<ProductAdminResponse>builder()
+                        .result(productService.getProductById(id))
+                        .build()
+        );
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> updateProduct(@Valid @ModelAttribute ProductAdminRequest productAdminRequest, BindingResult result) throws IOException {
         productService.createProduct(productAdminRequest);
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<Void>builder()

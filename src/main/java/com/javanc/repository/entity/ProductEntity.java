@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javanc.enums.SizeEnum;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,14 +38,17 @@ public class ProductEntity extends BaseEntity {
 
     // order_product
     @OneToMany(mappedBy="product", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<OrderProductEntity> orderProducts = new ArrayList<>();
 
     // feedback
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<FeedbackEntity> feedbacks = new ArrayList<>();
 
     // product_shoppingcart
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<ProductShoppingCartEntity> productShoppingCarts = new ArrayList<>();
 
     // category
@@ -53,7 +57,7 @@ public class ProductEntity extends BaseEntity {
     CategoryEntity category;
 
     // image
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE}, orphanRemoval = true)
     List<ImageEntity> images = new ArrayList<>();
 
     // product_discount
@@ -61,7 +65,7 @@ public class ProductEntity extends BaseEntity {
     List<ProductDiscountEntity> productDiscounts = new ArrayList<>();
 
     // detail
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE}, orphanRemoval = true)
     List<DetailEntity> details = new ArrayList<>();
 
     @PostPersist

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javanc.controlleradvice.customeException.AppException;
 import com.javanc.enums.ErrorCode;
+import com.javanc.ultis.NumberUltis;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,10 +36,11 @@ public class VariantValidator {
         if (!variant.has("colorId") || !variant.has("sizeId") || !variant.has("stock")) {
             throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);        }
 
-        if (!variant.get("colorId").isNumber() || !variant.get("sizeId").isNumber()) {
-            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);        }
+        long colorId = NumberUltis.parseLong(variant.get("colorId").asText());
+        long sizeId = NumberUltis.parseLong(variant.get("sizeId").asText());
+        long stock = NumberUltis.parseLong(variant.get("stock").asText());
 
-        if (!variant.get("stock").isNumber() || variant.get("stock").asInt() <= 0) {
+        if (stock < 0) {
             throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);        }
     }
 }

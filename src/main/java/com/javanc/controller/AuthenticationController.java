@@ -5,9 +5,8 @@ import com.javanc.model.request.AuthenRequest;
 import com.javanc.model.request.auth.RegisterRequest;
 import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.AuthenResponse;
-import com.javanc.repository.UserRepository;
 import com.javanc.service.AuthenService;
-import com.javanc.service.EmailService;
+import com.javanc.service.OAuthService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
@@ -18,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +33,8 @@ import java.util.stream.Collectors;
 public class AuthenticationController {
 
     AuthenService authenService;
-    UserRepository userRepository;
-    PasswordEncoder passwordEncoder;
-    EmailService emailService;
+    OAuthService oAuthService;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenRequest authenRequest) {
@@ -94,6 +91,15 @@ public class AuthenticationController {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<Void>builder()
                         .message("Ok")
+                        .build()
+        );
+    }
+    @GetMapping("/social-login")
+    public ResponseEntity<?> socialLogin(@RequestParam("type") String type){
+        String url = oAuthService.generateAuthorizationURL(type);
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<Void>builder()
+                        .message(url)
                         .build()
         );
     }

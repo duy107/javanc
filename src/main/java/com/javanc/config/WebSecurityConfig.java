@@ -1,10 +1,13 @@
 package com.javanc.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.http.client.HttpClientAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,11 +28,15 @@ import static org.springframework.http.HttpMethod.DELETE;
 @EnableWebSecurity
 @EnableMethodSecurity
 @PropertySource("classpath:application.yml")
+@EnableAutoConfiguration(exclude = {
+        HttpClientAutoConfiguration.class,
+        org.springframework.boot.autoconfigure.web.client.RestClientAutoConfiguration.class
+})
 public class WebSecurityConfig {
 
     @Value("${jwt.sign_key}")
     private String SIGN_KEY;
-    private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify"};
+    private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/social-login", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify"};
     private CustomJwtDecoder customerJwtDecoder;
     private final String apiPrefix = "/api";
 
@@ -44,8 +51,14 @@ public class WebSecurityConfig {
                     corsConfig.setAllowCredentials(true);
                     return corsConfig;
                 }))
+//                .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENPOINTS).permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/auth/social-login").permitAll()
+//
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/login/google").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/cities").permitAll()
 
                         // category
@@ -60,13 +73,22 @@ public class WebSecurityConfig {
                         .requestMatchers(PATCH, String.format("%s/products/**", apiPrefix)).hasRole("ADMIN")
                         .requestMatchers(DELETE, String.format("%s/products/**", apiPrefix)).hasRole("ADMIN")
 
-                        // comoon
+
+                        // discount
+                        .requestMatchers(GET, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(POST, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(PATCH, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(DELETE, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
+
+
+                        // common
                         .requestMatchers(GET, String.format("%s/common/colors/**", apiPrefix)).permitAll()
                         .requestMatchers(GET, String.format("%s/common/sizes/**", apiPrefix)).permitAll()
+                        .requestMatchers(GET, String.format("%s/common/products/**", apiPrefix)).permitAll()
 
+                        //
                         .anyRequest().authenticated()
                 );
-
         //Kích hoạt OAuth2 Resource Server sử dụng JWT
         //Xác thực bằng JWT Bearer token gửi qua header Authorization
         //Dùng custom JwtDecoder để xác minh chữ ký token.
@@ -75,6 +97,7 @@ public class WebSecurityConfig {
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(new AuthenticationEntryPointConfig())
                 );
+
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 

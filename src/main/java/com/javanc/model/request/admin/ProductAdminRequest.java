@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductAdminRequest {
+    Long id;
     @NotNull(message = "Thư mục không để trống!")
     Long categoryId;
     @NotBlank(message = "Tên không để trống")

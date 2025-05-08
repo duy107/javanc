@@ -18,7 +18,7 @@ public class BuildTreeCategory {
                         .deleted(false)
                         .products(new ArrayList<>())
                         .parentId(category.getParentId())
-                            .children(treeCategory(categories, category.getId()))
+                        .children(treeCategory(categories, category.getId()))
                         .build();
                 result.add(node);
             }

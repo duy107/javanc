@@ -9,6 +9,7 @@ import jakarta.mail.MessagingException;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Map;
 
 public interface AuthenService {
     AuthenResponse login(AuthenRequest authenRequest);
@@ -16,4 +17,5 @@ public interface AuthenService {
     AuthenResponse introspect(AuthenRequest authenRequest) throws JOSEException, ParseException;
     AuthenResponse refreshToken(AuthenRequest authenRequest) throws ParseException, JOSEException;
     void register(AuthenRequest authenRequest) throws JsonProcessingException;
+    AuthenResponse loginWithGoogleOrFacebook(Map<String, Object> info);
 }

@@ -35,10 +35,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -189,7 +186,7 @@ public class AuthenServiceImpl implements AuthenService {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
         RegisterRequest registerRequest = redisService.getPendingUser(authenRequest.getEmail(), authenRequest.getOtp());
-        if(registerRequest == null) {
+        if (registerRequest == null) {
             throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
         RoleEntity role = roleRepository.findByCode("USER").orElseThrow(
@@ -221,6 +218,36 @@ public class AuthenServiceImpl implements AuthenService {
                 .isDefault(true)
                 .build();
         userAddressRepository.save(userAddress);
+    }
+
+    @Override
+    public AuthenResponse loginWithGoogleOrFacebook(Map<String, Object> info) {
+        String email = (String) info.get("email");
+        String name = (String) info.get("name");
+        String avatar = (String) info.get("avatar");
+
+        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+        UserEntity user = null;
+        if (userEntity.isPresent()) {
+            user = userEntity.get();
+        } else {
+            RoleEntity role = roleRepository.findByCode("USER").orElseThrow(
+                    () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
+            );
+            user = UserEntity.builder()
+                    .email(email)
+                    .name(name)
+                    .roles(List.of(role))
+                    .avatar(avatar)
+                    .build();
+            userRepository.save(user);
+        }
+        String token = generateToken(user);
+        return AuthenResponse.builder()
+                .token(token)
+                .email(user.getEmail())
+                .avatar(user.getAvatar())
+                .build();
     }
 
 

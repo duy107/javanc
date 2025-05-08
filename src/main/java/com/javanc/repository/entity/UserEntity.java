@@ -29,7 +29,7 @@ public class UserEntity extends BaseEntity {
     String password;
     @Column(name = "status")
     Boolean status;
-    @Column(name = "avatar")
+    @Column(name = "avatar", length = 512)
     String avatar;
     @Column(name = "phone")
     String phone;

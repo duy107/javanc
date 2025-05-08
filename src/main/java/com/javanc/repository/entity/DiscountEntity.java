@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,5 +27,6 @@ public class DiscountEntity {
 
     // product_discount
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<ProductDiscountEntity> productDiscounts = new ArrayList<>();
 }

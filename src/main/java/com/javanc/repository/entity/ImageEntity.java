@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,5 +23,6 @@ public class ImageEntity {
     // product
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     ProductEntity product;
 }
