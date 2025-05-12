@@ -27,7 +27,7 @@ public class UserEntity extends BaseEntity {
     String email;
     @Column(name = "password")
     String password;
-    @Column(name = "status")
+    @Column(name = "status",  columnDefinition = "tinyint(1)")
     Boolean status;
     @Column(name = "avatar", length = 512)
     String avatar;

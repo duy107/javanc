@@ -18,4 +18,5 @@ public interface AuthenService {
     AuthenResponse refreshToken(AuthenRequest authenRequest) throws ParseException, JOSEException;
     void register(AuthenRequest authenRequest) throws JsonProcessingException;
     AuthenResponse loginWithGoogleOrFacebook(Map<String, Object> info);
+    void logout(String token);
 }

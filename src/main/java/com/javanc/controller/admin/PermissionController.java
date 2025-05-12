@@ -18,7 +18,7 @@ import java.security.Permission;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/permissions")
+@RequestMapping("/api/admin/permissions")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 

@@ -1,12 +1,14 @@
 package com.javanc.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.benmanes.caffeine.cache.Cache;
 import com.javanc.controlleradvice.customeException.AppException;
 import com.javanc.controlleradvice.customeException.UserNotExistsException;
 import com.javanc.enums.ErrorCode;
 import com.javanc.model.request.AuthenRequest;
 import com.javanc.model.request.auth.RegisterRequest;
 import com.javanc.model.response.AuthenResponse;
+import com.javanc.model.response.admin.AccountAdminResponse;
 import com.javanc.repository.*;
 import com.javanc.repository.entity.*;
 import com.javanc.service.AuthenService;
@@ -26,10 +28,8 @@ import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -58,6 +58,9 @@ public class AuthenServiceImpl implements AuthenService {
     @Value("${jwt.expiry_time_refreshToken}")
     private Long EXPIRY_TIME_REFRESH_TOKEN;
 
+    Cache<String, List<AccountAdminResponse>> cache;
+    Cache<String, Boolean> tokenAllowListCache;
+
 
     UserRepository userRepository;
     RoleRepository roleRepository;
@@ -65,7 +68,6 @@ public class AuthenServiceImpl implements AuthenService {
     UserAddressRepository userAddressRepository;
 
     PasswordEncoder passwordEncoder;
-    InvalidatedTokenRepository invalidatedTokenRepository;
     UploadImageFileService uploadImageFileService;
     RedisService redisService;
     EmailService emailService;
@@ -73,7 +75,7 @@ public class AuthenServiceImpl implements AuthenService {
     private String generateToken(UserEntity user) {
         // thuật toán mã hóa
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
-
+        String token_id = UUID.randomUUID().toString();
         // data trong body
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 // user đăng nhập
@@ -87,7 +89,7 @@ public class AuthenServiceImpl implements AuthenService {
                 ))
                 .claim("scope", buildScope(user))
                 // Lưu để lấy thông tin token
-                .jwtID(UUID.randomUUID().toString())
+                .jwtID(token_id)
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -95,6 +97,7 @@ public class AuthenServiceImpl implements AuthenService {
         JWSObject jwsObject = new JWSObject(header, payload);
         try {
             jwsObject.sign(new MACSigner(SIGN_KEY.getBytes()));
+            tokenAllowListCache.put(token_id, true);
             return jwsObject.serialize();
         } catch (Exception e) {
             log.error("Cannot generate token", e);
@@ -109,7 +112,10 @@ public class AuthenServiceImpl implements AuthenService {
         );
         boolean authenticated = passwordEncoder.matches(authenRequest.getPassword(), user.getPassword());
         if (!authenticated) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new RuntimeException("Tài khoản hoặc mật khẩu không chính xác");
+        }
+        if (!user.getStatus() || user.getDeleted()) {
+            throw new AppException(ErrorCode.ACCOUNT_INACTIVE);
         }
         String token = generateToken(user);
 
@@ -132,18 +138,6 @@ public class AuthenServiceImpl implements AuthenService {
 
     @Override
     public AuthenResponse introspect(AuthenRequest authenRequest) throws JOSEException, ParseException {
-//        String token = authenRequest.getToken();
-//
-//        JWSVerifier verifier = new MACVerifier(SIGN_KEY.getBytes());
-//        SignedJWT signedJWT = SignedJWT.parse(token);
-//        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-//        boolean verified = signedJWT.verify(verifier);
-//        if (!(verified && expiryTime.after(new Date()))) {
-//            throw new AppException(ErrorCode.UNAUTHENTICATED);
-//        }
-//        return AuthenResponse.builder()
-//                .valid(true)
-//                .build();
         var token = authenRequest.getToken();
         boolean isValid = true;
         try {
@@ -164,11 +158,8 @@ public class AuthenServiceImpl implements AuthenService {
         // get id and expiry time to create InvalidToken
         String jti = singedJWT.getJWTClaimsSet().getJWTID();
         Date expirationTime = singedJWT.getJWTClaimsSet().getExpirationTime();
-        InvalidatedTokenEntity invalidatedTokenEntity = InvalidatedTokenEntity.builder()
-                .id(jti)
-                .expiryTime(expirationTime)
-                .build();
-        invalidatedTokenRepository.save(invalidatedTokenEntity);
+
+        tokenAllowListCache.invalidate(jti);
 
         // create new token
         String email = singedJWT.getJWTClaimsSet().getSubject();
@@ -230,6 +221,9 @@ public class AuthenServiceImpl implements AuthenService {
         UserEntity user = null;
         if (userEntity.isPresent()) {
             user = userEntity.get();
+            if (user.getDeleted() || !user.getStatus()) {
+                throw new AppException(ErrorCode.ACCOUNT_INACTIVE);
+            }
         } else {
             RoleEntity role = roleRepository.findByCode("USER").orElseThrow(
                     () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
@@ -241,6 +235,7 @@ public class AuthenServiceImpl implements AuthenService {
                     .avatar(avatar)
                     .build();
             userRepository.save(user);
+            cache.invalidate("listAccounts");
         }
         String token = generateToken(user);
         return AuthenResponse.builder()
@@ -248,6 +243,25 @@ public class AuthenServiceImpl implements AuthenService {
                 .email(user.getEmail())
                 .avatar(user.getAvatar())
                 .build();
+    }
+
+    @Override
+    public void logout(String token) {
+        try {
+            // xac minh token
+            SignedJWT signedJWT = verifyToken(token, false);
+            // lay id token
+            String jti = signedJWT.getJWTClaimsSet().getJWTID();
+            // thoi gian het han token
+            Date expiratime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            tokenAllowListCache.invalidate(jti);
+        } catch (AppException exception) {
+            log.info("Token already expired");
+        } catch (JOSEException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -273,7 +287,7 @@ public class AuthenServiceImpl implements AuthenService {
         if (!(verified && expiryTime.after(new Date()))) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
-        if (invalidatedTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
+        if (tokenAllowListCache.getIfPresent(signedJWT.getJWTClaimsSet().getJWTID()) == null)
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         return signedJWT;

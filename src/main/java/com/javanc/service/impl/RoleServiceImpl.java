@@ -3,6 +3,7 @@ package com.javanc.service.impl;
 
 import com.javanc.controlleradvice.customeException.AppException;
 import com.javanc.enums.ErrorCode;
+import com.javanc.model.request.admin.RoleAdminRequest;
 import com.javanc.repository.RoleRepository;
 import com.javanc.repository.entity.RoleEntity;
 import com.javanc.service.RoleService;
@@ -22,10 +23,6 @@ public class RoleServiceImpl implements RoleService {
 
     RoleRepository roleRepository;
 
-    @Override
-    public List<RoleEntity> listRoles() {
-        return roleRepository.findAll();
-    }
 
     @Override
     public void removeAllPermissionsFromRole(Long roleId) {
@@ -36,4 +33,47 @@ public class RoleServiceImpl implements RoleService {
         roleRepository.save(role);
     }
 
+    @Override
+    public List<RoleEntity> getAll() {
+        return roleRepository.findAll();
+    }
+
+    @Override
+    public RoleEntity getById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void delete(Long id) {
+        RoleEntity role = roleRepository.findById(id).orElseThrow(
+                () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
+        );
+        role.setDeleted(!role.getDeleted());
+        roleRepository.save(role);
+    }
+
+    @Override
+    public void create(RoleAdminRequest data) {
+        RoleEntity role = roleRepository.findByCode(data.getCode()).orElseThrow(
+                () -> new RuntimeException("Quyền đã tồn tại")
+        );
+        RoleEntity newRole = RoleEntity.builder()
+                .name(data.getName())
+                .description(data.getDescription())
+                .code(data.getCode())
+                .deleted(false)
+                .build();
+        roleRepository.save(newRole);
+    }
+
+    @Override
+    public void update(Long id, RoleAdminRequest data) {
+        RoleEntity role = roleRepository.findById(id).orElseThrow(
+                () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
+        );
+        role.setName(data.getName());
+        role.setDescription(data.getDescription());
+        role.setCode(data.getCode());
+        roleRepository.save(role);
+    }
 }

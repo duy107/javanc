@@ -28,7 +28,8 @@ public class RoleEntity {
     String code;
     @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
-
+    @Column(name = "description")
+    String description;
     // user
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @JsonBackReference

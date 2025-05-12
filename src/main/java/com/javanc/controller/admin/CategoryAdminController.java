@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/admin/categories")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class CategoryAdminController {
@@ -24,13 +24,13 @@ public class CategoryAdminController {
     public ResponseEntity<?> getCategories() {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<List<CategoryResponse>>builder()
-                        .result(categoryService.listCategories())
+                        .result(categoryService.getAll())
                         .build()
         );
     }
     @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody CategoryAdminRequest categoryAdminRequest) {
-        categoryService.createCategory(categoryAdminRequest);
+        categoryService.create(categoryAdminRequest);
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<Void>builder()
                         .message("Tạo danh mục thành công")
@@ -42,14 +42,14 @@ public class CategoryAdminController {
     public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<CategoryResponse>builder()
-                        .result(categoryService.getCategory(id))
+                        .result(categoryService.getById(id))
                         .build()
         );
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryAdminRequest categoryAdminRequest) {
-        categoryService.updateCategory(id, categoryAdminRequest);
+        categoryService.update(id, categoryAdminRequest);
         return ResponseEntity.ok().body(ApiResponseDTO.<Void>builder().message("Ok").build());
     }
 }

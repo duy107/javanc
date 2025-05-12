@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,7 +37,8 @@ public class WebSecurityConfig {
     private String SIGN_KEY;
     private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/social-login", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify"};
     private CustomJwtDecoder customerJwtDecoder;
-    private final String apiPrefix = "/api";
+    private final String apiPrefix = "/api/admin";
+    private final String userApiPrefix = "/api";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -53,16 +53,23 @@ public class WebSecurityConfig {
                 }))
 //                .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->
+
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENPOINTS).permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/auth/social-login").permitAll()
-//
+
+                // ADMIN
+                        .requestMatchers(HttpMethod.GET, "/auth/profile").authenticated()
+
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth/login/google").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/cities").permitAll()
 
+                        // account
+                        .requestMatchers(GET, String.format("%s/accounts/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(POST, String.format("%s/accounts/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(PATCH, String.format("%s/accounts/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(DELETE, String.format("%s/accounts/**", apiPrefix)).hasRole("ADMIN")
+
                         // category
-                        .requestMatchers(GET, String.format("%s/categories/**", apiPrefix)).permitAll()
                         .requestMatchers(POST, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
                         .requestMatchers(PATCH, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
                         .requestMatchers(DELETE, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
@@ -82,8 +89,9 @@ public class WebSecurityConfig {
 
 
                         // common
-                        .requestMatchers(GET, String.format("%s/common/colors/**", apiPrefix)).permitAll()
-                        .requestMatchers(GET, String.format("%s/common/sizes/**", apiPrefix)).permitAll()
+                        .requestMatchers(GET, String.format("%s/common/colors/**", userApiPrefix)).permitAll()
+                        .requestMatchers(GET, String.format("%s/common/sizes/**", userApiPrefix)).permitAll()
+                        .requestMatchers(GET, String.format("%s/common/categories/**", userApiPrefix)).permitAll()
                         .requestMatchers(GET, String.format("%s/common/products/**", apiPrefix)).permitAll()
 
                         //

@@ -19,14 +19,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ApiResponseDTO<Void>> handleAllExceptions(RuntimeException ex, WebRequest request) {
-//        ApiResponseDTO<Void> apiResponseDTO = ApiResponseDTO.<Void>builder()
-//                .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
-//                .message(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage())
-//                .build();
-//        return ResponseEntity.badRequest().body(apiResponseDTO);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponseDTO<Void>> handleAllExceptions(RuntimeException ex, WebRequest request) {
+        ApiResponseDTO<Void> apiResponseDTO = ApiResponseDTO.<Void>builder()
+                .code(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode())
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity.badRequest().body(apiResponseDTO);
+    }
 
     @ExceptionHandler(UserNotExistsException.class)
     public ResponseEntity<ApiResponseDTO<Void>> handleUserNotFound(UserNotExistsException ex, WebRequest request) {
@@ -38,7 +38,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<ApiResponseDTO<Void>> handleUserNotExistsException(AppException ex, WebRequest request) {
+    public ResponseEntity<ApiResponseDTO<Void>> handleAppException(AppException ex, WebRequest request) {
         ErrorCode errorCode = ex.getErrorCode();
         ApiResponseDTO<Void> apiResponseDTO = ApiResponseDTO.<Void>builder()
                 .code(errorCode.getCode())
@@ -59,7 +59,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NumberFormatException.class)
-    public ResponseEntity<ApiResponseDTO<Void>> handleAccessDenied(NumberFormatException ex, WebRequest request) {
+    public ResponseEntity<ApiResponseDTO<Void>> handleNumberFormat(NumberFormatException ex, WebRequest request) {
         ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
         return ResponseEntity.status(errorCode.getHttpStatus()).body(
                 ApiResponseDTO.<Void>builder()

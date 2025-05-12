@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -22,23 +23,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     CategoryRepository categoryRepository;
 
+
     @Override
-    public List<CategoryResponse> listCategories() {
+    public List<CategoryResponse> getAll() {
         List<CategoryEntity> listCategory = categoryRepository.findAll();
         return BuildTreeCategory.treeCategory(listCategory, 0L);
     }
 
     @Override
-    public void createCategory(CategoryAdminRequest request) {
-        CategoryEntity category = CategoryEntity.builder()
-                .name(request.getName())
-                .parentId(request.getParentId())
-                .build();
-        categoryRepository.save(category);
-    }
-
-    @Override
-    public CategoryResponse getCategory(Long id) {
+    public CategoryResponse getById(Long id) {
         CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION));
         return CategoryResponse.builder()
@@ -48,7 +41,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(Long id, CategoryAdminRequest request) {
+    public void delete(Long id) {
+
+    }
+
+    @Override
+    public void create(CategoryAdminRequest request) {
+        CategoryEntity category = CategoryEntity.builder()
+                .name(request.getName())
+                .parentId(request.getParentId())
+                .build();
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public void update(Long id, CategoryAdminRequest request) {
         CategoryEntity categoryEntity = categoryRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION));
         categoryEntity.setName(request.getName());

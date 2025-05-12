@@ -1,10 +1,14 @@
 package com.javanc.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.javanc.controlleradvice.customeException.AppException;
+import com.javanc.enums.ErrorCode;
 import com.javanc.model.request.AuthenRequest;
 import com.javanc.model.request.auth.RegisterRequest;
 import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.AuthenResponse;
+import com.javanc.repository.UserRepository;
+import com.javanc.repository.entity.UserEntity;
 import com.javanc.service.AuthenService;
 import com.javanc.service.OAuthService;
 import com.nimbusds.jose.JOSEException;
@@ -16,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -34,6 +39,7 @@ public class AuthenticationController {
 
     AuthenService authenService;
     OAuthService oAuthService;
+    UserRepository userRepository;
 
 
     @PostMapping("/login")
@@ -100,6 +106,27 @@ public class AuthenticationController {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<Void>builder()
                         .message(url)
+                        .build()
+        );
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        String email = authentication.getName();
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<UserEntity>builder()
+                        .result(user)
+                        .build()
+        );
+    }
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader){
+        authenService.logout(authHeader.replace("Bearer ", ""));
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<Void>builder()
                         .build()
         );
     }

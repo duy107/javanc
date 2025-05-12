@@ -237,4 +237,8 @@ insert into permission (deleted, description, name) values
 (0, 'Phân quyền', 'ROLE_PERMISSION'),
 (0, 'Xem quyền', 'ROLE_VIEW'),
 (0, 'Sửa quyền', 'ROLE_UPDATE'),
-(0, 'Xem sản phẩm', 'PRODUCT_VIEW');
+(0, 'Xem sản phẩm', 'PRODUCT_VIEW')
+(0, "Xem danh mục", "CATEGORY_VIEW"),
+(0, "Thêm danh mục", "CATEGORY_ADD"),
+(0, "Sửa danh mục", "CATEGORY_UPDATE"),
+(0, "Xóa danh mục", "CATEGORY_DELETE");
