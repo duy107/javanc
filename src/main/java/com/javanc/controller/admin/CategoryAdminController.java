@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CategoryAdminController {
     CategoryService categoryService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT')")
     public ResponseEntity<?> getCategories() {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<List<CategoryResponse>>builder()
@@ -29,6 +31,7 @@ public class CategoryAdminController {
         );
     }
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'CATEGORY_ADD')")
     public ResponseEntity<?> createCategory(@RequestBody CategoryAdminRequest categoryAdminRequest) {
         categoryService.create(categoryAdminRequest);
         return ResponseEntity.ok().body(
@@ -39,6 +42,7 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'CATEGORY_VIEW')")
     public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<CategoryResponse>builder()
@@ -46,8 +50,8 @@ public class CategoryAdminController {
                         .build()
         );
     }
-
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'CATEGORY_UPDATE')")
     public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryAdminRequest categoryAdminRequest) {
         categoryService.update(id, categoryAdminRequest);
         return ResponseEntity.ok().body(ApiResponseDTO.<Void>builder().message("Ok").build());

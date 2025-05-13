@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class ProductAdminController {
     VariantValidator variantValidator;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'PRODUCT_ADD')")
     public ResponseEntity<?> createProduct(@Valid @ModelAttribute ProductAdminRequest productAdminRequest, BindingResult result) throws IOException {
         if (productAdminRequest.getImages() == null || productAdminRequest.getImages().isEmpty()) {
             result.rejectValue("images", "images.empty", "Phải chọn ít nhất một ảnh");
@@ -58,6 +60,7 @@ public class ProductAdminController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT')")
     public ResponseEntity<?> filterProduct(@RequestParam(required = true) String searchKey, @RequestParam(required = true) String categoryId, @RequestParam(required = true) String status, @RequestParam(required = true) String pageNumber) {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<ProductPaginationResponse>builder()
@@ -68,6 +71,7 @@ public class ProductAdminController {
 
     @DeleteMapping("/{ids}")
     // api/products/1,2,3
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'PRODUCT_DELETE')")
     public ResponseEntity<?> deleteProduct(@PathVariable List<Long> ids) {
         productService.deleteProducts(ids);
         return ResponseEntity.ok().body(
@@ -78,6 +82,7 @@ public class ProductAdminController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'PRODUCT_VIEW')")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<ProductAdminResponse>builder()
@@ -87,6 +92,7 @@ public class ProductAdminController {
     }
 
     @PatchMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'PRODUCT_UPDATE')")
     public ResponseEntity<?> updateProduct(@Valid @ModelAttribute ProductAdminRequest productAdminRequest, BindingResult result) throws IOException {
         productService.createProduct(productAdminRequest);
         return ResponseEntity.ok().body(

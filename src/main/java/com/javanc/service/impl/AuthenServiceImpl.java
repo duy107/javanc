@@ -157,7 +157,6 @@ public class AuthenServiceImpl implements AuthenService {
         SignedJWT singedJWT = verifyToken(authenRequest.getToken(), true);
         // get id and expiry time to create InvalidToken
         String jti = singedJWT.getJWTClaimsSet().getJWTID();
-        Date expirationTime = singedJWT.getJWTClaimsSet().getExpirationTime();
 
         tokenAllowListCache.invalidate(jti);
 
@@ -287,9 +286,9 @@ public class AuthenServiceImpl implements AuthenService {
         if (!(verified && expiryTime.after(new Date()))) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
-        if (tokenAllowListCache.getIfPresent(signedJWT.getJWTClaimsSet().getJWTID()) == null)
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
-
+        if (tokenAllowListCache.getIfPresent(signedJWT.getJWTClaimsSet().getJWTID()) == null && !isRefresh) {
+            throw new AppException(ErrorCode.ACCOUNT_INACTIVE);
+        }
         return signedJWT;
     }
 

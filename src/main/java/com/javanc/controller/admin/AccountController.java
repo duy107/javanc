@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class AccountController {
     AccountService accountService;
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ACCOUNT_ADD')")
     public ResponseEntity<?> createAccount(@Valid @ModelAttribute AccountAdminRequest accountAdminRequest, BindingResult result) throws IOException {
         if(accountAdminRequest.getEmail() == null){
             result.rejectValue("email", "email.required", "Email không để trống");
@@ -60,6 +62,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ACCOUNT_DELETE')")
     public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
         accountService.delete(id);
         return ResponseEntity.ok().body(
@@ -69,6 +72,7 @@ public class AccountController {
         );
     }
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ACCOUNT_UPDATE')")
     public ResponseEntity<?> updateAccount (@PathVariable Long id, @RequestBody AccountAdminRequest accountAdminRequest, BindingResult result) throws IOException {
         if(result.hasErrors()){
             List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
@@ -83,6 +87,7 @@ public class AccountController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT')")
     public ResponseEntity<?> filterAccount(@RequestParam(required = true) String searchKey,
                                            @RequestParam(required = true) Long pageNumber,
                                            @RequestParam(required = true) String status,

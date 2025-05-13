@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class RoleAdminController {
     RoleService roleService;
 
     @GetMapping
-    @PostAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_ROLE_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT')")
     public ResponseEntity<?> getRoles(){
 //        Authentication securityContextHolder = SecurityContextHolder.getContext().getAuthentication();
 //        log.info("User name: " + securityContextHolder.getName());
@@ -39,6 +40,7 @@ public class RoleAdminController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_ADD')")
     public ResponseEntity<?> createRole(@Valid @RequestBody RoleAdminRequest roleAdminRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<String> errors = result.getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList();
@@ -59,6 +61,7 @@ public class RoleAdminController {
 
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_UPDATE')")
     public ResponseEntity<?> updateRole(@PathVariable Long id, @Valid @RequestBody RoleAdminRequest roleAdminRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<String> errors = result.getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList();
@@ -78,6 +81,7 @@ public class RoleAdminController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_DELETE')")
     public ResponseEntity<?> deleteRole(@PathVariable Long id) {
         roleService.delete(id);
         return ResponseEntity.ok().body(

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -54,9 +55,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void create(RoleAdminRequest data) {
-        RoleEntity role = roleRepository.findByCode(data.getCode()).orElseThrow(
-                () -> new RuntimeException("Quyền đã tồn tại")
-        );
+        Optional<RoleEntity> role = roleRepository.findByCode(data.getCode());
+        if(role.isPresent()){
+            throw new RuntimeException("Quyền với mã " + data.getCode() + " đã tồn tại");
+        }
         RoleEntity newRole = RoleEntity.builder()
                 .name(data.getName())
                 .description(data.getDescription())

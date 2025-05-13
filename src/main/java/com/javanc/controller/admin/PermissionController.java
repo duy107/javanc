@@ -36,6 +36,7 @@ public class PermissionController {
     }
 
     @PatchMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'ROLE_PERMISSION')")
     public ResponseEntity<?> updatePermissions(@RequestBody List<PermissionAdminRequest> listPermissionAdminRequest) {
         permissionService.updatePermissions(listPermissionAdminRequest);
         return ResponseEntity.ok().body(

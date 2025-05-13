@@ -64,21 +64,14 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/cities").permitAll()
 
                         // account
-                        .requestMatchers(GET, String.format("%s/accounts/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(POST, String.format("%s/accounts/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(PATCH, String.format("%s/accounts/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(DELETE, String.format("%s/accounts/**", apiPrefix)).hasRole("ADMIN")
-
+                        .requestMatchers(String.format("%s/accounts/**", apiPrefix)).authenticated()
+                        //role
+                        .requestMatchers(String.format("%s/roles/**", apiPrefix)).authenticated()
                         // category
-                        .requestMatchers(POST, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(PATCH, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(DELETE, String.format("%s/categories/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(String.format("%s/categories/**", apiPrefix)).authenticated()
 
                         // product
-                        .requestMatchers(GET, String.format("%s/products/**", apiPrefix)).permitAll()
-                        .requestMatchers(POST, String.format("%s/products/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(PATCH, String.format("%s/products/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(DELETE, String.format("%s/products/**", apiPrefix)).hasRole("ADMIN")
+                        .requestMatchers(String.format("%s/products/**", apiPrefix)).authenticated()
 
 
                         // discount
