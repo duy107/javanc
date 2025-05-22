@@ -7,6 +7,7 @@ import com.javanc.model.request.AuthenRequest;
 import com.javanc.model.request.auth.RegisterRequest;
 import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.AuthenResponse;
+import com.javanc.model.response.ProfileResponse;
 import com.javanc.repository.UserRepository;
 import com.javanc.repository.entity.UserEntity;
 import com.javanc.service.AuthenService;
@@ -117,8 +118,14 @@ public class AuthenticationController {
         String email = authentication.getName();
         UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
         return ResponseEntity.ok().body(
-                ApiResponseDTO.<UserEntity>builder()
-                        .result(user)
+                ApiResponseDTO.<ProfileResponse>builder()
+                        .result(ProfileResponse.builder()
+                                .id(user.getId())
+                                .name(user.getName())
+                                .avatar(user.getAvatar())
+                                .email(user.getEmail())
+                                .status(user.getStatus())
+                                .build())
                         .build()
         );
     }

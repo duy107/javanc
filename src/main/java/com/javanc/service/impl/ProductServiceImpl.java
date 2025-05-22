@@ -2,6 +2,7 @@ package com.javanc.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.slugify.Slugify;
 import com.javanc.controlleradvice.customeException.AppException;
 import com.javanc.enums.ErrorCode;
 import com.javanc.model.request.admin.ProductAdminRequest;
@@ -9,15 +10,20 @@ import com.javanc.model.request.common.DetailCommonResquest;
 import com.javanc.model.response.admin.DetailResponse;
 import com.javanc.model.response.admin.ProductAdminResponse;
 import com.javanc.model.response.admin.ProductPaginationResponse;
+import com.javanc.model.response.client.*;
 import com.javanc.repository.*;
 import com.javanc.repository.custom.FilterProductCustom;
+import com.javanc.repository.custom.impl.FilterProductUserCustomImpl;
 import com.javanc.repository.entity.*;
 import com.javanc.service.ProductService;
 import com.javanc.service.UploadImageFileService;
+import com.javanc.ultis.BuildArrayCategoryId;
+import com.javanc.ultis.SlugUltis;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import me.xuender.unidecode.Unidecode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,6 +48,8 @@ public class ProductServiceImpl implements ProductService {
     ImageRepository imageRepository;
     UploadImageFileService uploadImageFileService;
     FilterProductCustom filterProductCustom;
+    FilterProductUserCustomImpl filterProductUserCustom;
+    final Slugify slug = Slugify.builder().build();
 
     @Override
     public void createProduct(ProductAdminRequest productAdminRequest) throws IOException {
@@ -49,7 +57,8 @@ public class ProductServiceImpl implements ProductService {
                 productAdminRequest.getVariants(),
                 new TypeReference<List<DetailCommonResquest>>() {
                 });
-
+        // tim tat ca cac color trong bien the
+        List<ColorEntity> listColor = colorRepository.findAllByIdIn(variants.stream().map(DetailCommonResquest::getColorId).collect(Collectors.toList()));
         CategoryEntity category = categoryRepository.findById(productAdminRequest.getCategoryId()).orElseThrow(
                 () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
         );
@@ -99,17 +108,25 @@ public class ProductServiceImpl implements ProductService {
         // create image
         for (MultipartFile avatar : productAdminRequest.getImages()) {
             String src = uploadImageFileService.uploadImage(avatar);
-            ImageEntity image = ImageEntity.builder()
-                    .src(src)
-                    .product(product)
-                    .build();
-            imageRepository.save(image);
+//            for(ColorEntity color : listColor){
+//                String slugColor = slug.slugify(Unidecode.decode(color.getName()));
+//                if(src.contains(slugColor)){
+                    ImageEntity image = ImageEntity.builder()
+                            .src(src)
+                            .product(product)
+                            .color_id(1L)
+                            .build();
+                    imageRepository.save(image);
+//                }
+//            }
+
         }
     }
 
     @Override
     public ProductPaginationResponse getProducts(String searchKey, String categoryId, String status, String pageNumber) {
         List<ProductAdminResponse> result = new ArrayList<>();
+        // tim dannh sach san pham
         Map<String, Object> listProducts = filterProductCustom.findProductByOption(searchKey, categoryId, status, pageNumber);
 
         @SuppressWarnings("unchecked")
@@ -185,6 +202,63 @@ public class ProductServiceImpl implements ProductService {
                 .category(product.getCategory())
                 .src(src)
                 .variants(variants)
+                .build();
+    }
+
+    @Override
+    public List<ProductClientResponse> getProductsForClient(Long categoryId, String searchKey) {
+        List<ProductEntity> listProducts = filterProductUserCustom.findProductByOptionForUser(categoryId, searchKey);
+        return listProducts.stream().map(this::mapToProductClientResponse).collect(Collectors.toList());
+    }
+
+    private ProductClientResponse mapToProductClientResponse(ProductEntity product) {
+        return ProductClientResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .slug(product.getSlug())
+                .category(CategoryClientResponse.builder()
+                        .id(product.getCategory().getId())
+                        .name(product.getCategory().getName())
+                        .build())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
+                .description(product.getDescription())
+                .images(product.getImages().stream().map(image ->
+                        ImageClientResponse.builder()
+                                .id(image.getId())
+                                .src(image.getSrc())
+                                .colorId(image.getColor_id())
+                                .build()).collect(Collectors.toList()))
+                .details(product.getDetails().stream().map(detail ->
+                        DetailClientResponse.builder()
+                                .size(SizeClientResponse.builder()
+                                        .id(detail.getSize().getId())
+                                        .name(detail.getSize().getName())
+                                        .description(detail.getSize().getDescription())
+                                        .build())
+                                .color(ColorClientResponse.builder()
+                                        .id(detail.getColor().getId())
+                                        .name(detail.getColor().getName())
+                                        .hexCode(detail.getColor().getHexCode())
+                                        .build())
+                                .stock(detail.getStock())
+                                .soldCount(detail.getSold_count())
+                                .build()).collect(Collectors.toList()))
+                .feedbacks(product.getFeedbacks().stream().map(feedback ->
+                        FeedbackClientResponse.builder()
+                                .id(feedback.getId())
+                                .userId(feedback.getUser().getId())
+                                .description(feedback.getDescription())
+                                .rating(feedback.getRating())
+                                .time(feedback.getTime())
+                                .build()).collect(Collectors.toList()))
+                .discounts(product.getProductDiscounts().stream().map(discount ->
+                        DiscountClientResponse.builder()
+                                .id(discount.getId())
+                                .percent(discount.getDiscount().getPercent())
+                                .endDate(discount.getEndTime())
+                                .startDate(discount.getStartTime())
+                                .build()).collect(Collectors.toList()))
                 .build();
     }
 }

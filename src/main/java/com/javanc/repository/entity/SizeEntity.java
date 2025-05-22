@@ -29,4 +29,7 @@ public class SizeEntity {
     @OneToMany(mappedBy = "size", fetch = FetchType.LAZY)
     @JsonIgnore
     List<DetailEntity> details = new ArrayList<>();
+
+    @OneToMany(mappedBy = "size", fetch = FetchType.LAZY)
+    List<ProductShoppingCartEntity> productShoppingCarts = new ArrayList<>();
 }

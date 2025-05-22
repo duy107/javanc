@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,10 +22,13 @@ public class ShoppingCartEntity {
     Long id;
     // user
     @OneToOne
+    @JsonBackReference("user-shoppingCart")
     @JoinColumn(name = "user_id")
     UserEntity user;
 
     // product_shoppingcart
     @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.LAZY)
     List<ProductShoppingCartEntity> productShoppingCarts = new ArrayList<>();
+
+
 }

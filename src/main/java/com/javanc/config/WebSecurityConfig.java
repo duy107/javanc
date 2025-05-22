@@ -67,7 +67,9 @@ public class WebSecurityConfig {
                         .requestMatchers(String.format("%s/accounts/**", apiPrefix)).authenticated()
                         //role
                         .requestMatchers(String.format("%s/roles/**", apiPrefix)).authenticated()
+
                         // category
+                        .requestMatchers(GET ,String.format("%s/categories/**", apiPrefix)).permitAll()
                         .requestMatchers(String.format("%s/categories/**", apiPrefix)).authenticated()
 
                         // product
@@ -87,6 +89,13 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, String.format("%s/common/categories/**", userApiPrefix)).permitAll()
                         .requestMatchers(GET, String.format("%s/common/products/**", apiPrefix)).permitAll()
 
+
+                        // USER
+                        //product
+                        .requestMatchers(GET, String.format("%s/products/**", userApiPrefix)).permitAll()
+
+                        //shopping cart
+                        .requestMatchers(POST, String.format("%s/shopping-cart/**", userApiPrefix)).permitAll()     
                         //
                         .anyRequest().authenticated()
                 );

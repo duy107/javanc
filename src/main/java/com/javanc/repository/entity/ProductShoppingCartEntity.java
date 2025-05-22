@@ -18,6 +18,8 @@ public class ProductShoppingCartEntity {
     Long id;
     @Column(name = "quantity")
     Long quantity;
+    @Column(name = "stock")
+    Long stock;
 
     // product
     @ManyToOne
@@ -28,4 +30,18 @@ public class ProductShoppingCartEntity {
     @ManyToOne
     @JoinColumn(name = "shoppingcart_id")
     ShoppingCartEntity shoppingCart;
+
+    @ManyToOne
+    @JoinColumn(name = "color_id")
+    ColorEntity color;
+
+    @ManyToOne
+    @JoinColumn(name = "size_id")
+    SizeEntity size;
+
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    ImageEntity image;
+
+
 }
