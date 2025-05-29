@@ -1,6 +1,8 @@
 package com.javanc.model.request.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -14,6 +16,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class ImageRequest {
+    @NotNull(message = "Image id is mandatory")
     Long id;
+    @NotBlank(message = "Image src is mandatory")
     String src;
 }

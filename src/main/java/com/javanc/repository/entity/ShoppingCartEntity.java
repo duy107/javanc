@@ -26,9 +26,9 @@ public class ShoppingCartEntity {
     @JoinColumn(name = "user_id")
     UserEntity user;
 
+
     // product_shoppingcart
     @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.LAZY)
     List<ProductShoppingCartEntity> productShoppingCarts = new ArrayList<>();
-
 
 }

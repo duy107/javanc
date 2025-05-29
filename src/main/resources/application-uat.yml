@@ -45,9 +45,16 @@ spring:
             user-info-uri: https://graph.facebook.com/me?fields=id,name,email,picture.type(large)
 jwt:
   sign_key: ${SIGN_KEY:69YzD+lBgYPdLvX4kkzhYF9IX2zZ1okqn1SWi3/Us3iIw8bUbu7FzoX2r4RVe+7V}
-  expiry_time_token: 1000
-  expiry_time_refreshToken: 10000
+  expiry_time_token: 1000000
+  expiry_time_refreshToken: 1000000
 cloud:
   api_key: ${CLOUD_API_KEY}
   api_name: ${CLOUD_API_NAME}
   api_secret: ${CLOUD_API_SECRET}
+vnpay:
+  pay-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  return-url: http://localhost:3000/payments/callback
+  tmn-code: 7NB8GD0M
+  secret-key: DUSQCXTEBGA238ARQ2W6FP1WHW9W2P1U
+  api-url: https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+

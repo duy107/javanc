@@ -26,12 +26,14 @@ public class OrderEntity {
     String status;
     @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
+    @Column(name = "total")
+    float total;
     // user
     @ManyToOne
     @JoinColumn(name = "user_id")
     UserEntity user;
     // order_product
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<OrderProductEntity> orderProducts = new ArrayList<>();
 
     // address

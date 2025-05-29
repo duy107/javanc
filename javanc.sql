@@ -72,6 +72,9 @@ CREATE TABLE order_product (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	order_id BIGINT NOT NULL,
 	product_id BIGINT NOT NULL,
+	image_id BIGINT,
+	size_id BIGINT,
+	color_id BIGINT,
 	quantity BIGINT,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
@@ -84,13 +87,15 @@ CREATE TABLE orders (
 	time DATETIME(6),
 	user_id BIGINT,
 	status VARCHAR(255),
+	total FLOAT(23),
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
 CREATE TABLE payment (
 	id BIGINT NOT NULL AUTO_INCREMENT,
-	product_id BIGINT,
-	type VARCHAR(255),
+	user_id BIGINT,
+	code VARCHAR(255),
+	name VARCHAR(255),
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
@@ -217,7 +222,13 @@ ALTER TABLE
 ADD
 	CONSTRAINT fk_order_product_order_id FOREIGN KEY (order_id) REFERENCES orders(id),
 ADD
-	CONSTRAINT fk_order_product_product_id FOREIGN KEY (product_id) REFERENCES product(id);
+	CONSTRAINT fk_order_product_product_id FOREIGN KEY (product_id) REFERENCES product(id),
+ADD
+	CONSTRAINT fk_order_product_size_id FOREIGN KEY (size_id) REFERENCES size(id),
+ADD
+	CONSTRAINT fk_order_product_color_id FOREIGN KEY (color_id) REFERENCES color(id),
+ADD
+	CONSTRAINT fk_order_product_image_id FOREIGN KEY (image_id) REFERENCES image(id);
 
 ALTER TABLE
 	orders
@@ -264,7 +275,7 @@ ADD
 ALTER TABLE
 	payment
 ADD
-	CONSTRAINT fk_payment_product_id FOREIGN KEY (product_id) REFERENCES product(id);
+	CONSTRAINT fk_payment_user_id FOREIGN KEY (user_id) REFERENCES user(id);
 
 ALTER TABLE
 	product_shoppingcart

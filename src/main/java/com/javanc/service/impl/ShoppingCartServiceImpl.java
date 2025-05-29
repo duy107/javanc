@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -36,8 +35,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     SizeRepository sizeRepository;
     ImageRepository imageRepository;
     ColorRepository colorRepository;
-    DetailRepository detailRepository;
-    DiscountRepository discountRepository;
     ProductDiscountRepository productDiscountRepository;
 
     @Override
@@ -53,6 +50,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             return;
         }
 
+        ShoppingCartEntity shoppingCart = ShoppingCartEntity.builder()
+                .user(user)
+                .build();
+        shoppingCart = shoppingCartRepository.save(shoppingCart);
+
         for (ProductCartItemRequest productCartItemRequest : productCartItemRequests) {
             ProductEntity productEntity = productRepository.findById(productCartItemRequest.getId()).orElseThrow(
                     () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
@@ -66,8 +68,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             ImageEntity imageEntity = imageRepository.findById(productCartItemRequest.getImage().getId()).orElseThrow(
                     () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
             );
+
             ProductShoppingCartEntity productShoppingCartEntity = ProductShoppingCartEntity.builder()
-                    .shoppingCart(shoppingCartEntity.get())
+                    .shoppingCart(shoppingCart)
                     .product(productEntity)
                     .color(colorEntity)
                     .size(sizeEntity)
@@ -151,5 +154,4 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         return cart;
     }
-
 }

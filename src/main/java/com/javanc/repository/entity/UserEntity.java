@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name="user")
@@ -50,6 +48,7 @@ public class UserEntity extends BaseEntity {
     // address
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<UserAddressEntity> addresses = new ArrayList<>();
+
 
     // feedback
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

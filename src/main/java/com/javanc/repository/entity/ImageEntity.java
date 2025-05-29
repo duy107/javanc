@@ -33,4 +33,7 @@ public class ImageEntity {
     @OneToMany(mappedBy = "image", fetch = FetchType.LAZY)
     List<ProductShoppingCartEntity> productShoppingCarts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "image", fetch = FetchType.LAZY)
+    List<OrderProductEntity> orderProducts = new ArrayList<>();
+
 }

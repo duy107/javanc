@@ -1,9 +1,8 @@
 package com.javanc.controller.client;
 
-import com.cloudinary.Api;
-import com.javanc.model.request.client.ProductCartItemRequest;
+import com.javanc.model.request.client.AddressRequest;
 import com.javanc.model.response.ApiResponseDTO;
-import com.javanc.service.ShoppingCartService;
+import com.javanc.service.AddressService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +16,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/shopping-cart")
+@RequestMapping("/api/addresses")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class ShoppingCartController {
 
-    ShoppingCartService shoppingCartService;
+public class AddressController {
+
+    AddressService addressService;
 
     @PostMapping
-    public ResponseEntity<?> addOrUpdateCart(@Valid @RequestBody List<ProductCartItemRequest> productCartItemRequests, BindingResult result) {
+    public ResponseEntity<?> createAddress(@Valid @RequestBody AddressRequest addressRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors() // lấy các field lỗi
                     .stream().map(FieldError::getDefaultMessage) // lấy message của từng field bị lỗi
@@ -36,25 +36,16 @@ public class ShoppingCartController {
                     .build();
             return ResponseEntity.badRequest().body(apiResponseDTO);
         }
-        shoppingCartService.createCart(productCartItemRequests);
+        addressService.create(addressRequest);
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<Void>builder()
-                        .message("Add cart item success")
+                        .message("Address created successfully")
                         .build()
         );
     }
 
-    @GetMapping
-    public ResponseEntity<?> getCart() {
-        return ResponseEntity.ok().body(
-                ApiResponseDTO.<List<ProductCartItemRequest>>builder()
-                        .result(shoppingCartService.getCartByUser())
-                        .build()
-        );
-    }
-
-    @PatchMapping
-    public ResponseEntity<?> updateCart(@Valid @RequestBody List<ProductCartItemRequest> productCartItemRequests, BindingResult result) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateAddress(@PathVariable Long id,   @Valid @RequestBody AddressRequest addressRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors() // lấy các field lỗi
                     .stream().map(FieldError::getDefaultMessage) // lấy message của từng field bị lỗi
@@ -65,19 +56,10 @@ public class ShoppingCartController {
                     .build();
             return ResponseEntity.badRequest().body(apiResponseDTO);
         }
-        shoppingCartService.updateCart(productCartItemRequests);
+        addressService.update(id, addressRequest);
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<Void>builder()
-                        .message("Update cart item success")
-                        .build()
-        );
-    }
-
-    @DeleteMapping
-    public ResponseEntity<?> deleteCart() {
-        return ResponseEntity.ok().body(
-                ApiResponseDTO.<Void>builder()
-                        .message("Delete cart item success")
+                        .message("Address updated successfully")
                         .build()
         );
     }

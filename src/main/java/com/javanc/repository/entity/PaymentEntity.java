@@ -19,8 +19,10 @@ public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "type")
-    String type;
+    @Column(name = "code")
+    String code;
+    @Column(name = "name")
+    String name;
 
     // order
     @OneToMany(mappedBy = "payment", fetch = FetchType.LAZY)
@@ -28,6 +30,6 @@ public class PaymentEntity {
 
     // user
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "user_id")
     UserEntity user;
 }

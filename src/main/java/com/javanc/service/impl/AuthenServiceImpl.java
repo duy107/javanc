@@ -49,7 +49,6 @@ public class AuthenServiceImpl implements AuthenService {
     @Value("${jwt.sign_key}")
     String SIGN_KEY;
 
-
     @NonFinal
     @Value("${jwt.expiry_time_token}")
     private Long EXPIRY_TIME_TOKEN;

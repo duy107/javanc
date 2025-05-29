@@ -43,5 +43,4 @@ public class ProductShoppingCartEntity {
     @JoinColumn(name = "image_id")
     ImageEntity image;
 
-
 }

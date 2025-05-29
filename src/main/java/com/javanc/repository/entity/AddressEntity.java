@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "address")
@@ -16,13 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "city", nullable = false)
-//    CityEnum city;
     @Column(name = "city_id")
     Long cityId;
     @Column(name = "ward_id")

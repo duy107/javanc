@@ -17,8 +17,6 @@ import com.javanc.repository.custom.impl.FilterProductUserCustomImpl;
 import com.javanc.repository.entity.*;
 import com.javanc.service.ProductService;
 import com.javanc.service.UploadImageFileService;
-import com.javanc.ultis.BuildArrayCategoryId;
-import com.javanc.ultis.SlugUltis;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -108,18 +106,17 @@ public class ProductServiceImpl implements ProductService {
         // create image
         for (MultipartFile avatar : productAdminRequest.getImages()) {
             String src = uploadImageFileService.uploadImage(avatar);
-//            for(ColorEntity color : listColor){
-//                String slugColor = slug.slugify(Unidecode.decode(color.getName()));
-//                if(src.contains(slugColor)){
+            for(ColorEntity color : listColor){
+                String slugColor = slug.slugify(Unidecode.decode(color.getName()));
+                if(src.contains(slugColor)){
                     ImageEntity image = ImageEntity.builder()
                             .src(src)
                             .product(product)
-                            .color_id(1L)
+                            .color_id(color.getId())
                             .build();
                     imageRepository.save(image);
-//                }
-//            }
-
+                }
+            }
         }
     }
 

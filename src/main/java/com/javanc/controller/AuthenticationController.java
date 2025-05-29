@@ -8,6 +8,7 @@ import com.javanc.model.request.auth.RegisterRequest;
 import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.AuthenResponse;
 import com.javanc.model.response.ProfileResponse;
+import com.javanc.model.response.client.AddressResponse;
 import com.javanc.repository.UserRepository;
 import com.javanc.repository.entity.UserEntity;
 import com.javanc.service.AuthenService;
@@ -23,9 +24,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -101,8 +105,9 @@ public class AuthenticationController {
                         .build()
         );
     }
+
     @GetMapping("/social-login")
-    public ResponseEntity<?> socialLogin(@RequestParam("type") String type){
+    public ResponseEntity<?> socialLogin(@RequestParam("type") String type) {
         String url = oAuthService.generateAuthorizationURL(type);
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<Void>builder()
@@ -125,12 +130,24 @@ public class AuthenticationController {
                                 .avatar(user.getAvatar())
                                 .email(user.getEmail())
                                 .status(user.getStatus())
+                                .phone(user.getPhone())
+                                .addresses(user.getAddresses().stream().map(item -> AddressResponse.builder()
+                                        .addressId(item.getAddress().getId())
+                                        .userId(user.getId())
+                                        .cityId(item.getAddress().getCityId())
+                                        .wardId(item.getAddress().getWardId())
+                                        .districtId(item.getAddress().getDistrictId())
+                                        .detail(item.getAddress().getDetail())
+                                        .isDefault(item.getIsDefault())
+                                        .build()
+                                ).collect(Collectors.toList()))
                                 .build())
                         .build()
         );
     }
+
     @GetMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
         authenService.logout(authHeader.replace("Bearer ", ""));
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<Void>builder()

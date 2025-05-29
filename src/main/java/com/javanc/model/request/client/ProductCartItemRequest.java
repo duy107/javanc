@@ -1,6 +1,7 @@
 package com.javanc.model.request.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,10 +13,13 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 public class ProductCartItemRequest {
+    @NotNull(message = "Product id is mandatory")
     Long id;
+    @NotNull(message = "Quantity is mandatory")
     Long quantity;
-    String name;
     Double percent;
+    @NotNull(message = "Product name is mandatory")
+    String name;
     float price;
     Long stock;
     ColorRequest color;

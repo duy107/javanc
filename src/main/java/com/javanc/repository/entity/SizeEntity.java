@@ -32,4 +32,7 @@ public class SizeEntity {
 
     @OneToMany(mappedBy = "size", fetch = FetchType.LAZY)
     List<ProductShoppingCartEntity> productShoppingCarts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "size", fetch = FetchType.LAZY)
+    List<OrderProductEntity> orderProducts = new ArrayList<>();
 }

@@ -1,8 +1,12 @@
 package com.javanc.model.response;
 
 
+import com.javanc.model.response.client.AddressResponse;
+import com.javanc.repository.entity.AddressEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,4 +20,6 @@ public class ProfileResponse {
     String email;
     Boolean status;
     String avatar;
+    String phone;
+    List<AddressResponse> addresses;
 }

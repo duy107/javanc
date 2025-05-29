@@ -95,7 +95,8 @@ public class WebSecurityConfig {
                         .requestMatchers(GET, String.format("%s/products/**", userApiPrefix)).permitAll()
 
                         //shopping cart
-                        .requestMatchers(POST, String.format("%s/shopping-cart/**", userApiPrefix)).permitAll()     
+                        .requestMatchers(POST, String.format("%s/shopping-cart/**", userApiPrefix)).permitAll()
+
                         //
                         .anyRequest().authenticated()
                 );
