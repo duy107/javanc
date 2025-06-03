@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -34,5 +35,12 @@ public class DetailEntity {
     //product
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     ProductEntity product;
+
+
+    @PostPersist
+    protected void onCreate() {
+        if(this.getSold_count() == null) this.setSold_count(0L);
+    }
 }

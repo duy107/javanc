@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,10 +22,18 @@ public class CategoryEntity {
     Long id;
     @Column(name = "name")
     String name;
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
-
+    @Column(name = "parent_id")
+    Long parentId;
     // product
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<ProductEntity> products = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        this.deleted = false;
+        if (this.parentId == null) this.parentId = 0L;
+    }
 }

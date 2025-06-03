@@ -20,14 +20,17 @@ public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "city", nullable = false)
-    CityEnum city;
-    @Column(name = "street")
-    String street;
-    @Column(name = "district")
-    String district;
-
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "city", nullable = false)
+//    CityEnum city;
+    @Column(name = "city_id")
+    Long cityId;
+    @Column(name = "ward_id")
+    Long wardId;
+    @Column(name = "district_id")
+    Long districtId;
+    @Column(name = "detail")
+    String detail;
     // user_address
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
     List<UserAddressEntity> userAddresses = new ArrayList<>();

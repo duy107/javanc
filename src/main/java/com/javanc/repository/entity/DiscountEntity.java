@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,10 +22,11 @@ public class DiscountEntity {
     Long id;
     @Column(name = "percent")
     Double percent;
-    @Column(name = "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
 
     // product_discount
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<ProductDiscountEntity> productDiscounts = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserEntity {
+public class UserEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -26,21 +27,20 @@ public class UserEntity {
     String email;
     @Column(name = "password")
     String password;
-    @Column(name = "status")
+    @Column(name = "status",  columnDefinition = "tinyint(1)")
     Boolean status;
-    @Column(name = "avatar")
+    @Column(name = "avatar", length = 512)
     String avatar;
     @Column(name = "phone")
     String phone;
-    @Column(name = "created")
-    Date created;
-    @Column(name= "deleted")
+    @Column(name = "deleted", columnDefinition = "tinyint(1)")
     Boolean deleted;
     // role
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(name = "user_role",
         joinColumns = @JoinColumn(name = "user_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
+    @JsonManagedReference
     List<RoleEntity> roles = new ArrayList<>();
 
     // orders
@@ -62,4 +62,5 @@ public class UserEntity {
     // payment
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<PaymentEntity> payments = new ArrayList<>();
+
 }

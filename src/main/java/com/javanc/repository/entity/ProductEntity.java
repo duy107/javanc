@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javanc.enums.SizeEnum;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductEntity {
+public class ProductEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,14 +38,17 @@ public class ProductEntity {
 
     // order_product
     @OneToMany(mappedBy="product", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<OrderProductEntity> orderProducts = new ArrayList<>();
 
     // feedback
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<FeedbackEntity> feedbacks = new ArrayList<>();
 
     // product_shoppingcart
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<ProductShoppingCartEntity> productShoppingCarts = new ArrayList<>();
 
     // category
@@ -53,7 +57,7 @@ public class ProductEntity {
     CategoryEntity category;
 
     // image
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE}, orphanRemoval = true)
     List<ImageEntity> images = new ArrayList<>();
 
     // product_discount
@@ -61,6 +65,11 @@ public class ProductEntity {
     List<ProductDiscountEntity> productDiscounts = new ArrayList<>();
 
     // detail
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE}, orphanRemoval = true)
     List<DetailEntity> details = new ArrayList<>();
+
+    @PostPersist
+    protected void onCreate() {
+        if(this.getDeleted() == null) this.setDeleted(false);
+    }
 }

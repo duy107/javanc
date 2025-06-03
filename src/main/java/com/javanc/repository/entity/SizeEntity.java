@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,5 +27,9 @@ public class SizeEntity {
 
     // detail
     @OneToMany(mappedBy = "size", fetch = FetchType.LAZY)
+    @JsonIgnore
     List<DetailEntity> details = new ArrayList<>();
+
+    @OneToMany(mappedBy = "size", fetch = FetchType.LAZY)
+    List<ProductShoppingCartEntity> productShoppingCarts = new ArrayList<>();
 }

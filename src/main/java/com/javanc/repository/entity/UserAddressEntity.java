@@ -1,5 +1,6 @@
 package com.javanc.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,10 +23,12 @@ public class UserAddressEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
+    @JsonIgnore
     AddressEntity address;
 
 }
