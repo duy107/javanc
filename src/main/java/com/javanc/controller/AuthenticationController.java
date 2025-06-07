@@ -5,25 +5,19 @@ import com.javanc.controlleradvice.customeException.AppException;
 import com.javanc.enums.ErrorCode;
 import com.javanc.model.request.AuthenRequest;
 import com.javanc.model.request.auth.RegisterRequest;
-<<<<<<< HEAD
 import com.javanc.model.request.client.AddressRequest;
 import com.javanc.model.request.client.InformationUserUpdateRequest;
-=======
->>>>>>> implement_chatbot
 import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.AuthenResponse;
 import com.javanc.model.response.ProfileResponse;
 import com.javanc.model.response.client.AddressResponse;
-<<<<<<< HEAD
+
 import com.javanc.model.response.client.InformationUserUpdateResponse;
 import com.javanc.repository.AddressRepository;
 import com.javanc.repository.UserAddressRepository;
 import com.javanc.repository.UserRepository;
 import com.javanc.repository.entity.AddressEntity;
 import com.javanc.repository.entity.UserAddressEntity;
-=======
-import com.javanc.repository.UserRepository;
->>>>>>> implement_chatbot
 import com.javanc.repository.entity.UserEntity;
 import com.javanc.service.AuthenService;
 import com.javanc.service.OAuthService;
@@ -34,10 +28,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
-=======
->>>>>>> implement_chatbot
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -52,11 +43,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
-<<<<<<< HEAD
-import java.util.ArrayList;
-=======
 
->>>>>>> implement_chatbot
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/auth")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -67,13 +56,11 @@ public class AuthenticationController {
     AuthenService authenService;
     OAuthService oAuthService;
     UserRepository userRepository;
-<<<<<<< HEAD
     @Autowired
     private UserAddressRepository userAddressRepository;
     @Autowired
     private AddressRepository addressRepository;
-=======
->>>>>>> implement_chatbot
+
 
 
     @PostMapping("/login")
@@ -161,10 +148,9 @@ public class AuthenticationController {
                                 .status(user.getStatus())
                                 .phone(user.getPhone())
                                 .addresses(user.getAddresses().stream().map(item -> AddressResponse.builder()
-<<<<<<< HEAD
+
                                         .userAddressId(item.getId())
-=======
->>>>>>> implement_chatbot
+
                                         .addressId(item.getAddress().getId())
                                         .userId(user.getId())
                                         .cityId(item.getAddress().getCityId())
@@ -178,7 +164,7 @@ public class AuthenticationController {
                         .build()
         );
     }
-<<<<<<< HEAD
+
     @PatchMapping("/profile")
     public ResponseEntity<?> setProfile(@RequestBody InformationUserUpdateRequest informationUserUpdateRequest){
         SecurityContext context = SecurityContextHolder.getContext();
@@ -271,8 +257,7 @@ for(UserAddressEntity ua : userAddressEntities) {
         );
     }
 
-=======
->>>>>>> implement_chatbot
+
 
     @GetMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {

@@ -27,8 +27,7 @@ public class ProductClientController {
                         .build()
         );
     }
-<<<<<<< HEAD
-=======
+
     @GetMapping("/{slug}")
     public ResponseEntity<?> getDetailProduct(@PathVariable String slug) {
         return ResponseEntity.ok().body(
@@ -37,5 +36,5 @@ public class ProductClientController {
                         .build()
         );
     }
->>>>>>> implement_chatbot
+
 }

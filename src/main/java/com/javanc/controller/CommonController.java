@@ -1,10 +1,8 @@
 package com.javanc.controller;
 
 import com.javanc.model.response.ApiResponseDTO;
-<<<<<<< HEAD
-=======
+
 import com.javanc.model.response.common.SizeResponse;
->>>>>>> implement_chatbot
 import com.javanc.repository.entity.ColorEntity;
 import com.javanc.repository.entity.SizeEntity;
 import com.javanc.service.ColorService;
@@ -42,11 +40,8 @@ public class CommonController {
     @GetMapping("/sizes")
     public ResponseEntity<?> getSizes() {
         return ResponseEntity.ok().body(
-<<<<<<< HEAD
-                ApiResponseDTO.<List<SizeEntity>>builder()
-=======
+
                 ApiResponseDTO.<List<SizeResponse>>builder()
->>>>>>> implement_chatbot
                         .result(sizeService.getSizes())
                         .build()
         );

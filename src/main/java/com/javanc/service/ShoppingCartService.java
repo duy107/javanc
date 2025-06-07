@@ -1,10 +1,9 @@
 package com.javanc.service;
 
 import com.javanc.model.request.client.ProductCartItemRequest;
-<<<<<<< HEAD
+
 import com.javanc.model.response.client.ProductFavoriteResponse;
-=======
->>>>>>> implement_chatbot
+
 
 import java.util.List;
 

@@ -22,10 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import me.xuender.unidecode.Unidecode;
-<<<<<<< HEAD
-=======
 import org.springframework.stereotype.Component;
->>>>>>> implement_chatbot
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,11 +58,9 @@ public class ProductServiceImpl implements ProductService {
                 });
         // tim tat ca cac color trong bien the
         List<ColorEntity> listColor = colorRepository.findAllByIdIn(variants.stream().map(DetailCommonResquest::getColorId).collect(Collectors.toList()));
-<<<<<<< HEAD
-        CategoryEntity category = categoryRepository.findById(productAdminRequest.getCategoryId()).orElseThrow(
-=======
+
          CategoryEntity category = categoryRepository.findById(productAdminRequest.getCategoryId()).orElseThrow(
->>>>>>> implement_chatbot
+
                 () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
         );
 
@@ -216,9 +211,7 @@ public class ProductServiceImpl implements ProductService {
         return listProducts.stream().map(this::mapToProductClientResponse).collect(Collectors.toList());
     }
 
-<<<<<<< HEAD
-    private ProductClientResponse mapToProductClientResponse(ProductEntity product) {
-=======
+
     @Override
     public ProductClientResponse getDetailProduct(String slug) {
         ProductEntity product = productRepository.findBySlug(slug).orElseThrow(
@@ -228,7 +221,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductClientResponse mapToProductClientResponse(ProductEntity product) {
->>>>>>> implement_chatbot
         return ProductClientResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -240,10 +232,6 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .quantity(product.getQuantity())
                 .description(product.getDescription())
-<<<<<<< HEAD
-=======
-
->>>>>>> implement_chatbot
                 .images(product.getImages().stream().map(image ->
                         ImageClientResponse.builder()
                                 .id(image.getId())
@@ -266,11 +254,7 @@ public class ProductServiceImpl implements ProductService {
                                 .soldCount(detail.getSold_count())
                                 .build()).collect(Collectors.toList()))
                 .feedbacks(product.getFeedbacks().stream().map(feedback ->
-<<<<<<< HEAD
-                        FeedbackClientResponse.builder()
-                                .id(feedback.getId())
-                                .userId(feedback.getUser().getId())
-=======
+
                         FeedbackResponse.builder()
                                 .id(feedback.getId())
                                 .userId(feedback.getUser().getId())
@@ -284,7 +268,6 @@ public class ProductServiceImpl implements ProductService {
                                 .id(feedback.getId())
                                 .userId(feedback.getUser().getId())
                                 .name(feedback.getUser().getName())
->>>>>>> implement_chatbot
                                 .description(feedback.getDescription())
                                 .rating(feedback.getRating())
                                 .time(feedback.getTime())
