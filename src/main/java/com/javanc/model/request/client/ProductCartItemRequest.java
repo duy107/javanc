@@ -1,9 +1,12 @@
 package com.javanc.model.request.client;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.javanc.model.response.client.FeedbackResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
@@ -25,4 +28,5 @@ public class ProductCartItemRequest {
     ColorRequest color;
     SizeRequest size;
     ImageRequest image;
+    List<FeedbackResponse> feedbacks;
 }

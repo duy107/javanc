@@ -57,4 +57,7 @@ vnpay:
   tmn-code: 7NB8GD0M
   secret-key: DUSQCXTEBGA238ARQ2W6FP1WHW9W2P1U
   api-url: https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
-
+openai:
+  key: ${OPENAI_KEY:123456789}
+qdrant:
+  url: ${QDRANT_URL:123456789}

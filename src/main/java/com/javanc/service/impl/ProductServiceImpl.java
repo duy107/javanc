@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import me.xuender.unidecode.Unidecode;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
                 });
         // tim tat ca cac color trong bien the
         List<ColorEntity> listColor = colorRepository.findAllByIdIn(variants.stream().map(DetailCommonResquest::getColorId).collect(Collectors.toList()));
-        CategoryEntity category = categoryRepository.findById(productAdminRequest.getCategoryId()).orElseThrow(
+         CategoryEntity category = categoryRepository.findById(productAdminRequest.getCategoryId()).orElseThrow(
                 () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
         );
 
@@ -208,7 +209,15 @@ public class ProductServiceImpl implements ProductService {
         return listProducts.stream().map(this::mapToProductClientResponse).collect(Collectors.toList());
     }
 
-    private ProductClientResponse mapToProductClientResponse(ProductEntity product) {
+    @Override
+    public ProductClientResponse getDetailProduct(String slug) {
+        ProductEntity product = productRepository.findBySlug(slug).orElseThrow(
+                () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
+        );
+        return mapToProductClientResponse(product);
+    }
+
+    public ProductClientResponse mapToProductClientResponse(ProductEntity product) {
         return ProductClientResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -220,6 +229,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .quantity(product.getQuantity())
                 .description(product.getDescription())
+
                 .images(product.getImages().stream().map(image ->
                         ImageClientResponse.builder()
                                 .id(image.getId())
@@ -242,9 +252,19 @@ public class ProductServiceImpl implements ProductService {
                                 .soldCount(detail.getSold_count())
                                 .build()).collect(Collectors.toList()))
                 .feedbacks(product.getFeedbacks().stream().map(feedback ->
-                        FeedbackClientResponse.builder()
+                        FeedbackResponse.builder()
                                 .id(feedback.getId())
                                 .userId(feedback.getUser().getId())
+                                .name(feedback.getUser().getName())
+                                .description(feedback.getDescription())
+                                .rating(feedback.getRating())
+                                .time(feedback.getTime())
+                                .build()).collect(Collectors.toList()))
+                .feedbacks(product.getFeedbacks().stream().map(feedback ->
+                        FeedbackResponse.builder()
+                                .id(feedback.getId())
+                                .userId(feedback.getUser().getId())
+                                .name(feedback.getUser().getName())
                                 .description(feedback.getDescription())
                                 .rating(feedback.getRating())
                                 .time(feedback.getTime())

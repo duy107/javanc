@@ -12,9 +12,10 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class FeedbackClientResponse {
+public class FeedbackResponse {
     Long id;
     Long userId;
+    String name;
     String description;
     Date time;
     float rating;

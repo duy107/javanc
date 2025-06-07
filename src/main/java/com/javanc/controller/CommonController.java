@@ -1,6 +1,7 @@
 package com.javanc.controller;
 
 import com.javanc.model.response.ApiResponseDTO;
+import com.javanc.model.response.common.SizeResponse;
 import com.javanc.repository.entity.ColorEntity;
 import com.javanc.repository.entity.SizeEntity;
 import com.javanc.service.ColorService;
@@ -38,7 +39,7 @@ public class CommonController {
     @GetMapping("/sizes")
     public ResponseEntity<?> getSizes() {
         return ResponseEntity.ok().body(
-                ApiResponseDTO.<List<SizeEntity>>builder()
+                ApiResponseDTO.<List<SizeResponse>>builder()
                         .result(sizeService.getSizes())
                         .build()
         );

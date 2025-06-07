@@ -15,7 +15,7 @@ public interface ProductService {
     ProductPaginationResponse getProducts(String searchKey, String categoryId, String status, String pageNumber);
     void deleteProducts(List<Long> ids);
     ProductAdminResponse getProductById(Long id);
-
     // user
     List<ProductClientResponse> getProductsForClient(Long categoryId, String searchKey);
+    ProductClientResponse getDetailProduct(String slug);
 }

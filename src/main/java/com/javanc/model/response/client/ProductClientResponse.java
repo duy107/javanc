@@ -22,5 +22,5 @@ public class ProductClientResponse {
     List<ImageClientResponse> images;
     List<DetailClientResponse> details;
     List<DiscountClientResponse> discounts;
-    List<FeedbackClientResponse> feedbacks;
+    List<FeedbackResponse> feedbacks;
 }

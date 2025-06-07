@@ -27,4 +27,12 @@ public class ProductClientController {
                         .build()
         );
     }
+    @GetMapping("/{slug}")
+    public ResponseEntity<?> getDetailProduct(@PathVariable String slug) {
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<ProductClientResponse>builder()
+                        .result(productService.getDetailProduct(slug))
+                        .build()
+        );
+    }
 }
