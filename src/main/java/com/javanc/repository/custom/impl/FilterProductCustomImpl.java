@@ -25,7 +25,8 @@ public class FilterProductCustomImpl implements FilterProductCustom {
     @PersistenceContext
     private EntityManager entityManager;
     BuildArrayCategoryId buildArrayCategoryId;
-    final Long limitProduct = 2L;
+
+    final Long limitProduct = 4L;
 
     public void queryNomarl(String searchKey, String status, StringBuilder where){
         if(!searchKey.equals("")) {

@@ -8,7 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
+=======
+>>>>>>> implement_chatbot
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -20,9 +23,14 @@ import java.util.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
+<<<<<<< HEAD
     @Autowired
     VNPCofig vnpCofig;
     @Autowired
+=======
+
+    VNPCofig vnpCofig;
+>>>>>>> implement_chatbot
     VNPUntils vnPayUtils;
 
     @Override

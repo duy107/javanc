@@ -3,8 +3,11 @@ package com.javanc.controller.client;
 import com.cloudinary.Api;
 import com.javanc.model.request.client.ProductCartItemRequest;
 import com.javanc.model.response.ApiResponseDTO;
+<<<<<<< HEAD
 import com.javanc.model.response.client.ProductFavoriteResponse;
 import com.javanc.repository.ProductFavoriteRepository;
+=======
+>>>>>>> implement_chatbot
 import com.javanc.service.ShoppingCartService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -25,7 +28,10 @@ import java.util.stream.Collectors;
 public class ShoppingCartController {
 
     ShoppingCartService shoppingCartService;
+<<<<<<< HEAD
     private final ProductFavoriteRepository productFavoriteRepository;
+=======
+>>>>>>> implement_chatbot
 
     @PostMapping
     public ResponseEntity<?> addOrUpdateCart(@Valid @RequestBody List<ProductCartItemRequest> productCartItemRequests, BindingResult result) {

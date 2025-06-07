@@ -294,25 +294,35 @@ ADD
 insert into
 	role(deleted, name, code)
 values
-	(1, "admin", "ADMIN"),
-	(1, "user", "USER");
+	(0, "admin", "ADMIN"),
+	(0, "user", "USER"),
+	(0, "Quản lý sản phẩm", "PRODUCT_MANAGEMENT"),
+	(0, "Quản lý quyền", "ROLE_MANAGEMENT"),
+	(0, "Quản lý danh mục", "CATEGORY_MANAGEMENT"),
+	(0, "Quản lý tài khoản", "ACCOUNT_MANAGEMENT"),
+	(0, "Quản lý đơn hàng", "ORDER_MANAGEMENT");
+	
+	
+INSERT INTO `permission` VALUES (0, 1, 'Xóa sản phẩm', 'PRODUCT_DELETE');
+INSERT INTO `permission` VALUES (0, 2, 'Thêm sản phẩm', 'PRODUCT_ADD');
+INSERT INTO `permission` VALUES (0, 3, 'Sửa sản phẩm', 'PRODUCT_UPDATE');
+INSERT INTO `permission` VALUES (0, 4, 'Thêm quyền', 'ROLE_ADD');
+INSERT INTO `permission` VALUES (0, 5, 'Xóa quyền', 'ROLE_DELETE');
+INSERT INTO `permission` VALUES (0, 6, 'Phân quyền', 'ROLE_PERMISSION');
+INSERT INTO `permission` VALUES (0, 7, 'Xem quyền', 'ROLE_VIEW');
+INSERT INTO `permission` VALUES (0, 8, 'Sửa quyền', 'ROLE_UPDATE');
+INSERT INTO `permission` VALUES (0, 9, 'Xem sản phẩm', 'PRODUCT_VIEW');
+INSERT INTO `permission` VALUES (0, 10, 'Xem danh mục', 'CATEGORY_VIEW');
+INSERT INTO `permission` VALUES (0, 11, 'Thêm danh mục', 'CATEGORY_ADD');
+INSERT INTO `permission` VALUES (0, 12, 'Sửa danh mục', 'CATEGORY_UPDATE');
+INSERT INTO `permission` VALUES (0, 13, 'Xóa danh mục', 'CATEGORY_DELETE');
+INSERT INTO `permission` VALUES (0, 15, 'Xem tài khoản', 'ACCOUNT_VIEW');
+INSERT INTO `permission` VALUES (0, 16, 'Thêm tài khoản', 'ACCOUNT_ADD');
+INSERT INTO `permission` VALUES (0, 17, 'Sửa tài khoản', 'ACCOUNT_UPDATE');
+INSERT INTO `permission` VALUES (0, 18, 'Xóa tài khoản', 'ACCOUNT_DELETE');
+INSERT INTO `permission` VALUES (0, 19, 'Xóa đơn hàng', 'ORDER_DELETE');
+INSERT INTO `permission` VALUES (0, 20, 'Sửa đơn hàng', 'ORDER_UPDATE');
 
-insert into
-	permission (deleted, description, name)
-values
-	(0, 'Xóa sản phẩm', 'PRODUCT_DELETE'),
-	(0, 'Thêm sản phẩm', 'PRODUCT_ADD'),
-	(0, 'Sửa sản phẩm', 'PRODUCT_UPDATE'),
-	(0, 'Thêm quyền', 'ROLE_ADD'),
-	(0, 'Xóa quyền', 'ROLE_DELETE'),
-	(0, 'Phân quyền', 'ROLE_PERMISSION'),
-	(0, 'Xem quyền', 'ROLE_VIEW'),
-	(0, 'Sửa quyền', 'ROLE_UPDATE'),
-	(0, 'Xem sản phẩm', 'PRODUCT_VIEW'),
-	(0, "Xem danh mục", "CATEGORY_VIEW"),
-	(0, "Thêm danh mục", "CATEGORY_ADD"),
-	(0, "Sửa danh mục", "CATEGORY_UPDATE"),
-	(0, "Xóa danh mục", "CATEGORY_DELETE");
 
 -- danh muc
 INSERT INTO
@@ -618,7 +628,7 @@ values
 	),
 	(
 		26,
-		"http://res.cloudinary.com/dxx1lgamz/image/upload/6a808bc1-e628-4c74-8563-cb3222418468_nike-air-jordan-den",
+		"http://res.cloudinary.com/dxx1lgamz/image/upload/389f2fd3-7d3b-4b44-86d6-f6a0c83186fa_nike-air-jordan-den",
 		1
 	),
 	(
@@ -874,7 +884,7 @@ insert into
 values
 	(
 		2,
-		"http://res.cloudinary.com/dv6fjob4v/image/upload/3d4d40f6-a1fd-48fc-bd54-80e3d7ca744f_au-cong-so-nam-den",
+		"http://res.cloudinary.com/dxx1lgamz/image/upload/fa30c56c-c83e-460a-bd40-ed452f6c2333_au-cong-so-nam-den",
 		1
 	),
 	(
@@ -1261,7 +1271,7 @@ insert into
 values
 	(
 		11,
-		"http://res.cloudinary.com/dq4guha5o/image/upload/11c31475-87e3-426b-8f7b-598d3e5b15ad_ao-thun-cam",
+		"http://res.cloudinary.com/dxx1lgamz/image/upload/91d6c08b-234d-4b55-9bc6-c931feff00e4_ao-thun-cam",
 		10
 	),
 	(
@@ -1281,7 +1291,7 @@ values
 	),
 	(
 		11,
-		"http://res.cloudinary.com/dq4guha5o/image/upload/e5efc25c-1e03-47f3-8945-02cedba3e9b4_ao-thun-xanh-reu",
+		"http://res.cloudinary.com/dq4guha5o/image/upload/88ba657e-6587-4afd-9373-295fb7819c07_ao-thun-xanh-reu-removebg-preview",
 		13
 	);
 
@@ -1940,3 +1950,52 @@ values
 	(4, 18, 2, 3, 0),
 	(4, 1, 39, 10, 0),
 	(4, 6, 39, 10, 0);
+
+INSERT INTO `discount` VALUES (0, 30, 1);
+INSERT INTO `discount` VALUES (0, 66, 2);
+INSERT INTO `discount` VALUES (0, 30, 3);
+INSERT INTO `product_discount` VALUES (1, '2025-06-07 00:00:00.000000', 1, 2, '2025-05-14 00:00:00.000000');
+INSERT INTO `product_discount` VALUES (2, '2025-06-08 00:00:00.000000', 2, 11, '2025-05-27 00:00:00.000000');
+INSERT INTO `product_discount` VALUES (3, '2025-06-08 00:00:00.000000', 3, 26, '2025-05-21 00:00:00.000000');
+
+INSERT INTO `role_permissions` VALUES (9, 1);
+INSERT INTO `role_permissions` VALUES (2, 1);
+INSERT INTO `role_permissions` VALUES (3, 1);
+INSERT INTO `role_permissions` VALUES (1, 1);
+INSERT INTO `role_permissions` VALUES (7, 1);
+INSERT INTO `role_permissions` VALUES (4, 1);
+INSERT INTO `role_permissions` VALUES (8, 1);
+INSERT INTO `role_permissions` VALUES (5, 1);
+INSERT INTO `role_permissions` VALUES (6, 1);
+INSERT INTO `role_permissions` VALUES (10, 1);
+INSERT INTO `role_permissions` VALUES (11, 1);
+INSERT INTO `role_permissions` VALUES (12, 1);
+INSERT INTO `role_permissions` VALUES (13, 1);
+INSERT INTO `role_permissions` VALUES (15, 1);
+INSERT INTO `role_permissions` VALUES (16, 1);
+INSERT INTO `role_permissions` VALUES (17, 1);
+INSERT INTO `role_permissions` VALUES (18, 1);
+INSERT INTO `role_permissions` VALUES (20, 1);
+INSERT INTO `role_permissions` VALUES (19, 1);
+INSERT INTO `role_permissions` VALUES (9, 3);
+INSERT INTO `role_permissions` VALUES (2, 3);
+INSERT INTO `role_permissions` VALUES (3, 3);
+INSERT INTO `role_permissions` VALUES (1, 3);
+INSERT INTO `role_permissions` VALUES (7, 4);
+INSERT INTO `role_permissions` VALUES (4, 4);
+INSERT INTO `role_permissions` VALUES (8, 4);
+INSERT INTO `role_permissions` VALUES (5, 4);
+INSERT INTO `role_permissions` VALUES (6, 4);
+INSERT INTO `role_permissions` VALUES (10, 5);
+INSERT INTO `role_permissions` VALUES (11, 5);
+INSERT INTO `role_permissions` VALUES (12, 5);
+INSERT INTO `role_permissions` VALUES (13, 5);
+INSERT INTO `role_permissions` VALUES (15, 6);
+INSERT INTO `role_permissions` VALUES (16, 6);
+INSERT INTO `role_permissions` VALUES (17, 6);
+INSERT INTO `role_permissions` VALUES (18, 6);
+INSERT INTO `role_permissions` VALUES (20, 7);
+INSERT INTO `role_permissions` VALUES (19, 7);
+
+insert into user(id, name, password, email, avatar) values(1, "Nguyễn Văn A", "$2a$10$hJSftRyD11HMkc4QDwTYkeKlgAzWa646.qyaQRyWNY1WcX5jq4Y2.", "nguyenvana@gmail.com", "https://ugc.production.linktr.ee/5e77e148-1b07-4429-8471-d0a13edc9fa3_boy.png");
+insert into feedback(user_id, product_id, description, rating, feedback_time, deleted) values(1, 2, "Shop giao hàng nhanh, đóng gói cẩn thận, shipper thân thiện, cho shop 5s", 5, '2025-06-07 00:00:00.000000', 0);

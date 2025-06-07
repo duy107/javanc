@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressResponse {
     Long userAddressId;
+
     Long addressId;
     Long cityId;
     Long wardId;

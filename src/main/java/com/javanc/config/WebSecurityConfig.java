@@ -97,6 +97,11 @@ public class WebSecurityConfig {
                         //shopping cart
                         .requestMatchers(POST, String.format("%s/shopping-cart/**", userApiPrefix)).permitAll()
 
+
+                        //chatbox/trainning
+                        .requestMatchers(POST, String.format("%s/chatbot/**", apiPrefix)).permitAll()
+                        .requestMatchers(POST, String.format("%s/chatbot/**", userApiPrefix)).permitAll()
+
                         //
                         .anyRequest().authenticated()
                 );

@@ -65,4 +65,5 @@ public class UserEntity extends BaseEntity {
     @OneToOne(mappedBy = "user" ,fetch = FetchType.LAZY)
     FavoriteEntity favorite;
 
+
 }

@@ -26,6 +26,4 @@ public class AddressRequest {
     @NotNull(message = "Default address cannot be blank")
     Boolean isDefault;
     Long userAddressId;
-
-
 }

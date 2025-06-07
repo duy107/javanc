@@ -4,6 +4,10 @@ import com.javanc.controlleradvice.customeException.AppException;
 import com.javanc.enums.ErrorCode;
 import com.javanc.model.request.client.*;
 import com.javanc.model.response.client.AddressResponse;
+<<<<<<< HEAD
+=======
+import com.javanc.model.response.client.FeedbackResponse;
+>>>>>>> implement_chatbot
 import com.javanc.model.response.client.OrderResponse;
 import com.javanc.model.response.client.PaymentResponse;
 import com.javanc.repository.*;
@@ -43,6 +47,10 @@ public class OrderServiceImpl implements OrderService {
     PaymentRepository paymentRepository;
     ProductShoppingCartRepository productShoppingCartRepository;
     OrderProductRepository orderProductRepository;
+<<<<<<< HEAD
+=======
+    FeedbackRepository feedbackRepository;
+>>>>>>> implement_chatbot
 
     @Override
     public List<OrderResponse> getAll() {
@@ -61,12 +69,31 @@ public class OrderServiceImpl implements OrderService {
             List<OrderProductEntity> orderProducts = orderProductRepository.findAllByOrder_id(order.getId());
             for( OrderProductEntity orderProduct : orderProducts ) {
                 ProductCartItemRequest productCartItemRequest = ProductCartItemRequest.builder()
+<<<<<<< HEAD
+=======
+                        .id(orderProduct.getProduct().getId())
+>>>>>>> implement_chatbot
                         .name(orderProduct.getProduct().getName())
                         .image(ImageRequest.builder().id(orderProduct.getImage().getId()).src(orderProduct.getImage().getSrc()).build())
                         .size(SizeRequest.builder().id(orderProduct.getSize().getId()).name(orderProduct.getSize().getName()).build())
                         .color(ColorRequest.builder().id(orderProduct.getColor().getId()).name(orderProduct.getColor().getName()).hex(orderProduct.getColor().getHexCode()).build())
                         .price(orderProduct.getPrice())
                         .quantity(orderProduct.getQuantity())
+<<<<<<< HEAD
+=======
+                        .feedbacks(
+                                feedbackRepository.findAllByProduct_id(orderProduct.getProduct().getId())
+                                        .stream().map(feedback ->
+                                                        FeedbackResponse.builder()
+                                                                .id(feedback.getId())
+                                                                .rating(feedback.getRating())
+                                                                .description(feedback.getDescription())
+                                                                .time(feedback.getTime())
+                                                                .name(feedback.getUser().getName())
+                                                                .build()
+                                                ).collect(Collectors.toList())
+                        )
+>>>>>>> implement_chatbot
                         .build();
                 cartItem.add(productCartItemRequest);
             }
