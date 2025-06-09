@@ -75,6 +75,8 @@ public class WebSecurityConfig {
                         // product
                         .requestMatchers(String.format("%s/products/**", apiPrefix)).authenticated()
 
+                        .requestMatchers("/api/admin/ordersAdmin/**").permitAll()
+
 
                         // discount
                         .requestMatchers(GET, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
