@@ -7,6 +7,9 @@ import com.javanc.controlleradvice.customeException.UserNotExistsException;
 import com.javanc.enums.ErrorCode;
 import com.javanc.model.request.AuthenRequest;
 import com.javanc.model.request.auth.RegisterRequest;
+import com.javanc.model.request.client.CheckOTPRequest;
+import com.javanc.model.request.client.OTPRequest;
+import com.javanc.model.request.client.ResetPasswordRequest;
 import com.javanc.model.response.AuthenResponse;
 import com.javanc.model.response.admin.AccountAdminResponse;
 import com.javanc.repository.*;
@@ -30,6 +33,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -103,6 +108,7 @@ public class AuthenServiceImpl implements AuthenService {
             throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public AuthenResponse login(AuthenRequest authenRequest) {
@@ -261,6 +267,43 @@ public class AuthenServiceImpl implements AuthenService {
             throw new RuntimeException(e);
         }
     }
+
+
+    @Override
+    public void sendForgotPasswordOTP(OTPRequest otpRequest) throws JsonProcessingException ,MessagingException{
+        String email = otpRequest.getEmail();
+        if(!userRepository.findByEmail(email).isPresent()){
+            throw new AppException(ErrorCode.USER_NOT_EXISTS);
+        }
+        String otp = String.valueOf((int) (Math.random() * 900000) + 100000);
+        redisService.savePendingUserOTP(email, otp, otpRequest);
+        emailService.sendSimpleEmail(email, otp);
+
+
+    }
+
+    @Override
+    public boolean checkForgotPasswordOTP(CheckOTPRequest checkOTPRequest) throws ParseException, JOSEException {
+        String storeOtp = redisService.getOTP(checkOTPRequest.getEmail());
+        if(storeOtp == null || !storeOtp.equals(checkOTPRequest.getOtp())){
+            return false;
+        }
+
+        // Optional: có thể xoá OTP ngay sau khi verify
+        redisService.deleteOTP(checkOTPRequest.getEmail());
+        return true;
+
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) throws ParseException, JOSEException {
+        UserEntity user = userRepository.findByEmail(resetPasswordRequest.getEmail()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+        String hashedPassword = passwordEncoder.encode(resetPasswordRequest.getNewPassword());
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+    }
+
 
 
     // kiem tra tinh hop le cua token (sai / het han)

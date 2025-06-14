@@ -1,4 +1,7 @@
 
+drop database if exists test;
+
+create database test;
 
 use test;
 
@@ -1995,6 +1998,11 @@ INSERT INTO `role_permissions` VALUES (18, 6);
 INSERT INTO `role_permissions` VALUES (20, 7);
 INSERT INTO `role_permissions` VALUES (19, 7);
 
+<<<<<<< HEAD
 insert into user(id, name, password, email, avatar, deleted, status, created_at) values(1, "Nguyễn Văn A", "$2a$10$hJSftRyD11HMkc4QDwTYkeKlgAzWa646.qyaQRyWNY1WcX5jq4Y2.", "nguyenvana@gmail.com", "https://ugc.production.linktr.ee/5e77e148-1b07-4429-8471-d0a13edc9fa3_boy.png", 0, 1, "2025-06-05 18:04:48.399110");
 insert into feedback(user_id, product_id, description, rating, feedback_time, deleted) values(1, 2, "Shop giao hàng nhanh, đóng gói cẩn thận, shipper thân thiện, cho shop 5s", 5, '2025-06-07 00:00:00.000000', 0);
 insert into user_role(user_id, role_id) values (1, 2);
+=======
+insert into user(id, name, password, email, avatar) values(1, "Nguyễn Văn A", "$2a$10$hJSftRyD11HMkc4QDwTYkeKlgAzWa646.qyaQRyWNY1WcX5jq4Y2.", "nguyenvana@gmail.com", "https://ugc.production.linktr.ee/5e77e148-1b07-4429-8471-d0a13edc9fa3_boy.png");
+insert into feedback(user_id, product_id, description, rating, feedback_time, deleted) values(1, 2, "Shop giao hàng nhanh, đóng gói cẩn thận, shipper thân thiện, cho shop 5s", 5, '2025-06-07 00:00:00.000000', 0);
+>>>>>>> feat/forgot

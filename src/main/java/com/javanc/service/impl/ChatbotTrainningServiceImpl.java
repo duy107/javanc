@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,7 @@ public class ChatbotTrainningServiceImpl implements ChatbotTrainningService {
     QdrantService qdrantService;
     OpenAIService openAIService;
     ProductRepository productRepository;
+
 
     final List<String> questions = List.of(
             "Chính sách đổi trả như thế nào?",
@@ -44,6 +46,7 @@ public class ChatbotTrainningServiceImpl implements ChatbotTrainningService {
             +"Với nhiều năm kinh nghiệm và cam kết cung cấp sản phẩm/dịch vụ chất lượng cao, chúng tôi đã xây dựng được lòng tin từ hàng ngàn khách hàng. Bạn có thể yên tâm khi lựa chọn chúng tôi!",
             "Bạn có thể liên hệ qua số điện thoại 0123 456 789 hoặc email f5clothes@support.com."
     );
+
     @Override
     public void trainningWithProduct() {
 
@@ -72,6 +75,7 @@ public class ChatbotTrainningServiceImpl implements ChatbotTrainningService {
         }
     }
 
+
     @Override
     public void trainningWithFAQ() {
         for(int i = 0; i < questions.size(); i++) {
@@ -82,6 +86,7 @@ public class ChatbotTrainningServiceImpl implements ChatbotTrainningService {
             qdrantService.upsertPoint("products_collection", pointId, embedding, Map.of("question", question, "answer", answer));
         }
     }
+
 
     private String buildInforProductString(ProductClientResponse product) {
         StringBuilder sb = new StringBuilder();

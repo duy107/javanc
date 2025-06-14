@@ -24,13 +24,17 @@ public class OpenAIServiceImpl implements OpenAIService {
 
     @Override
     public List<Float> createEmbedding(String text) {
+
         String embeddingURL =  chatbotConfig.getOpenaiEmbeddingUrl();
+
         Map<String, Object> body = Map.of("input", text, "model", "text-embedding-ada-002");
         org.springframework.http.HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(chatbotConfig.getOpenaiKey());
         headers.set("Content-Type", "application/json");
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+
         var response = restTemplate.postForEntity(embeddingURL, request, Map.class);
+
         Map<String, Object> responseBody = response.getBody();
         var data = (List<Map<String, Object>>) responseBody.get("data");
         List<Float> embedding = (List<Float>) data.get(0).get("embedding");
@@ -39,7 +43,9 @@ public class OpenAIServiceImpl implements OpenAIService {
 
     @Override
     public String chatCompletion(String prompt) {
+
         String completionURL = chatbotConfig.getOpenaiCompletionUrl();
+
 
         Map<String, Object> message = Map.of("role", "user", "content", prompt);
 
@@ -50,7 +56,9 @@ public class OpenAIServiceImpl implements OpenAIService {
         headers.set("Content-Type", "application/json");
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+
         var response = restTemplate.postForEntity(completionURL, request, Map.class);
+
 
         Map<String, Object> responseBody = response.getBody();
         var choices = (List<Map<String, Object>>) responseBody.get("choices");

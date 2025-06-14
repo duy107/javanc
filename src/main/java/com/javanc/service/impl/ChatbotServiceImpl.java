@@ -30,7 +30,6 @@ public class ChatbotServiceImpl implements ChatbotService {
         String question = (String) request.get("question");
         List<Float> embedding = openAIService.createEmbedding(question);
         var results = qdrantService.search("products_collection", embedding, 10);
-
         StringBuilder context = new StringBuilder();
         boolean foundFAQ = false;
 
@@ -91,5 +90,4 @@ public class ChatbotServiceImpl implements ChatbotService {
 
         return openAIService.chatCompletion(prompt);
     }
-
 }

@@ -22,7 +22,9 @@ public class QdrantServiceImpl implements QdrantService {
     RestTemplate restTemplate;
 
     @Override
+
     public void upsertPoint(String collectionName, Object pointId, List<Float> vector, Map<String, Object> payload) {
+
         String url = chatbotConfig.getQdrantUrl() + "/collections/" + collectionName + "/points?wait=true";
 
         Map<String, Object> body = Map.of(

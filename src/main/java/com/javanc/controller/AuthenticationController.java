@@ -7,6 +7,9 @@ import com.javanc.model.request.AuthenRequest;
 import com.javanc.model.request.auth.RegisterRequest;
 import com.javanc.model.request.client.AddressRequest;
 import com.javanc.model.request.client.InformationUserUpdateRequest;
+
+import com.javanc.model.request.client.*;
+
 import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.AuthenResponse;
 import com.javanc.model.response.ProfileResponse;
@@ -33,6 +36,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -60,23 +66,28 @@ public class AuthenticationController {
     private AddressRepository addressRepository;
 
 
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenRequest authenRequest) {
         AuthenResponse response = authenService.login(authenRequest);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         log.info("ROLE: " + auth.getAuthorities().toString());
         return ResponseEntity.ok().body(ApiResponseDTO.<AuthenResponse>builder().result(response).build());
+
     }
 
     @PostMapping("/introspect")
     public ResponseEntity<?> introspect(@RequestBody AuthenRequest authenRequest) throws JOSEException, ParseException {
         AuthenResponse response = authenService.introspect(authenRequest);
         return ResponseEntity.ok().body(ApiResponseDTO.<AuthenResponse>builder().result(response).build());
+
     }
 
     @PostMapping("/refreshToken")
     public ResponseEntity<?> refreshToken(@RequestBody AuthenRequest authenRequest) throws ParseException, JOSEException {
+
         return ResponseEntity.ok().body(ApiResponseDTO.<AuthenResponse>builder().result(authenService.refreshToken(authenRequest)).build());
+
     }
 
     @PostMapping("/sendEmail")
@@ -85,6 +96,7 @@ public class AuthenticationController {
             List<String> errorMessages = result.getFieldErrors() // lấy các field lỗi
                     .stream().map(FieldError::getDefaultMessage) // lấy message của từng field bị lỗi
                     .collect(Collectors.toList());
+
             ApiResponseDTO<List<String>> apiResponseDTO = ApiResponseDTO.<List<String>>builder().code(400).result(errorMessages).build();
             return ResponseEntity.badRequest().body(apiResponseDTO);
         }
@@ -95,13 +107,93 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthenRequest authenRequest) throws JsonProcessingException {
         authenService.register(authenRequest);
-        return ResponseEntity.ok().body(ApiResponseDTO.<Void>builder().message("Ok").build());
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<Void>builder()
+                        .message("Ok")
+                        .build()
+        );
+    }
+    @PostMapping("/forgot/OTPRequest")
+    public ResponseEntity<?> forgot( @Valid @RequestBody OTPRequest otpRequest , BindingResult result) throws IOException, MessagingException {
+        if (result.hasErrors()) {
+            List<String> errorMessages = result.getFieldErrors() // lấy các field lỗi
+                    .stream().map(FieldError::getDefaultMessage) // lấy message của từng field bị lỗi
+                    .collect(Collectors.toList());
+            ApiResponseDTO<List<String>> apiResponseDTO = ApiResponseDTO.<List<String>>builder()
+                    .code(400)
+                    .result(errorMessages)
+                    .build();
+            return ResponseEntity.badRequest().body(apiResponseDTO);
+        }
+        authenService.sendForgotPasswordOTP(otpRequest);
+        return ResponseEntity.ok(ApiResponseDTO.<String>builder()
+                .message("OTP đã được gửi về email")
+                .build());
+    }
+    @PostMapping("/forgot/checkOTP")
+    public ResponseEntity<?> checkOTP(@Valid @RequestBody CheckOTPRequest checkOTPRequest, BindingResult result) throws IOException, MessagingException {
+        if (result.hasErrors()) {
+            List<String> errors = result.getFieldErrors().stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(ApiResponseDTO.<List<String>>builder()
+                    .code(400)
+                    .result(errors)
+                    .build());
+        }
+        boolean valid;
+        String kq;
+        try{
+            valid = authenService.checkForgotPasswordOTP(checkOTPRequest);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if(valid){
+            kq="OTP hợp lệ";
+            return ResponseEntity.ok(ApiResponseDTO.builder()
+                    .code(200)
+                    .result(kq)
+                    .build());
+
+        }
+        else{
+            kq="OTP ko hợp lệ";
+            return ResponseEntity.ok(ApiResponseDTO.builder()
+                    .code(599)
+                    .result(kq)
+                    .build());
+        }
+
+
+    }
+    @PatchMapping("/forgot/reset")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest, BindingResult result) throws IOException, MessagingException {
+        if (result.hasErrors()) {
+            List<String> errors = result.getFieldErrors().stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(ApiResponseDTO.<List<String>>builder()
+                    .code(400)
+                    .result(errors)
+                    .build());
+        }
+        try{
+
+            authenService.resetPassword(resetPasswordRequest);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(ApiResponseDTO.<String>builder()
+                .message("Đổi mật khẩu thành công")
+                .build());
     }
 
     @GetMapping("/social-login")
     public ResponseEntity<?> socialLogin(@RequestParam("type") String type) {
         String url = oAuthService.generateAuthorizationURL(type);
         return ResponseEntity.ok().body(ApiResponseDTO.<Void>builder().message(url).build());
+
     }
 
     @GetMapping("/profile")
@@ -119,12 +211,14 @@ public class AuthenticationController {
 
     @PatchMapping("/profile")
     public ResponseEntity<?> setProfile(@RequestBody InformationUserUpdateRequest informationUserUpdateRequest) {
+
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         String email = authentication.getName();
 
         UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
         user.setAvatar(informationUserUpdateRequest.getAvatar());
+
         user.setName(informationUserUpdateRequest.getName());
         user.setEmail(informationUserUpdateRequest.getEmail());
         user.setPhone(informationUserUpdateRequest.getPhone());
@@ -157,23 +251,21 @@ public class AuthenticationController {
             return userAddressEntity;
         }).collect(Collectors.toList());
 
+
         userAddressRepository.saveAll(userAddressEntities);
 
         List<InformationUserUpdateResponse.AddressUpdateDTO> addressUpdateDTOS = new ArrayList<>();
+
         for (UserAddressEntity ua : userAddressEntities) {
             AddressEntity addressEntity = ua.getAddress();
 
             InformationUserUpdateResponse.AddressUpdateDTO dto = InformationUserUpdateResponse.AddressUpdateDTO.builder().userAddressId(ua.getId()).addressId(addressEntity.getId()).cityId(addressEntity.getCityId()).districtId(addressEntity.getDistrictId()).wardId(addressEntity.getWardId()).detail(addressEntity.getDetail())
-
                     .build();
             addressUpdateDTOS.add(dto);
         }
 
 
-        InformationUserUpdateResponse informationUserUpdateResponse = InformationUserUpdateResponse.builder().avatar(user.getAvatar()).name(user.getName()).phone(user.getPhone()).email(user.getEmail()).addressUpdateDTOs(addressUpdateDTOS)
-
-                .build();
-
+        InformationUserUpdateResponse informationUserUpdateResponse = InformationUserUpdateResponse.builder().avatar(user.getAvatar()).name(user.getName()).phone(user.getPhone()).email(user.getEmail()).addressUpdateDTOs(addressUpdateDTOS).build();
 
         return ResponseEntity.ok().body(ApiResponseDTO.<InformationUserUpdateResponse>builder().message("Oke").result(informationUserUpdateResponse).build());
     }
@@ -183,5 +275,6 @@ public class AuthenticationController {
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
         authenService.logout(authHeader.replace("Bearer ", ""));
         return ResponseEntity.ok().body(ApiResponseDTO.<Void>builder().build());
+
     }
 }

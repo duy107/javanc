@@ -35,7 +35,9 @@ public class WebSecurityConfig {
 
     @Value("${jwt.sign_key}")
     private String SIGN_KEY;
-    private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/social-login", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify"};
+
+    private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/social-login", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify","/auth/forgot/OTPRequest","/auth/forgot/checkOTP"};
+
     private CustomJwtDecoder customerJwtDecoder;
     private final String apiPrefix = "/api/admin";
     private final String userApiPrefix = "/api";
@@ -45,7 +47,9 @@ public class WebSecurityConfig {
         httpSecurity
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
+
                     corsConfig.addAllowedOriginPattern("*"); // Cho phép tất cả origin
+
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                     corsConfig.setAllowedHeaders(List.of("*"));
                     corsConfig.setAllowCredentials(true);
@@ -64,6 +68,7 @@ public class WebSecurityConfig {
                         //shopping cart
                         .requestMatchers(POST, String.format("%s/shopping-cart/**", userApiPrefix)).permitAll()
 
+
                         // common
                         .requestMatchers(GET, String.format("%s/common/**", userApiPrefix)).permitAll()
 
@@ -71,6 +76,8 @@ public class WebSecurityConfig {
                         //ask
                         .requestMatchers(POST, String.format("%s/chatbot/ask", userApiPrefix)).permitAll()
 
+                        .requestMatchers(HttpMethod.PATCH, "/auth/forgot/reset").permitAll()
+                        
                         .anyRequest().authenticated()
                 );
         //Kích hoạt OAuth2 Resource Server sử dụng JWT
