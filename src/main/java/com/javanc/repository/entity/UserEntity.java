@@ -62,4 +62,8 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<PaymentEntity> payments = new ArrayList<>();
 
+
+    @OneToOne(mappedBy = "user" ,fetch = FetchType.LAZY)
+    FavoriteEntity favorite;
+
 }

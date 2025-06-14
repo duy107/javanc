@@ -12,4 +12,5 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     boolean existsByAddress(AddressEntity address);
     List<OrderEntity> findByUserAndDeleted(UserEntity user, Boolean deleted);
     List<OrderEntity> findByDeletedFalse();
+
 }

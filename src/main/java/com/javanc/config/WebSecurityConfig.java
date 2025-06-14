@@ -35,7 +35,11 @@ public class WebSecurityConfig {
 
     @Value("${jwt.sign_key}")
     private String SIGN_KEY;
-    private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/social-login", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify"};
+
+
+    private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/social-login", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify","/auth/forgot/OTPRequest","/auth/forgot/checkOTP"};
+
+
     private CustomJwtDecoder customerJwtDecoder;
     private final String apiPrefix = "/api/admin";
     private final String userApiPrefix = "/api";
@@ -45,7 +49,10 @@ public class WebSecurityConfig {
         httpSecurity
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+
+                    corsConfig.addAllowedOriginPattern("*"); // Cho phép tất cả origin
+
+
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                     corsConfig.setAllowedHeaders(List.of("*"));
                     corsConfig.setAllowCredentials(true);
@@ -54,52 +61,29 @@ public class WebSecurityConfig {
 //                .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->
 
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENPOINTS).permitAll()
 
-                // ADMIN
-                        .requestMatchers(HttpMethod.GET, "/auth/profile").authenticated()
+                        request.requestMatchers(HttpMethod.POST, PUBLIC_ENPOINTS).permitAll()
+
 
                         .requestMatchers("/auth/**").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/cities").permitAll()
-
-                        // account
-                        .requestMatchers(String.format("%s/accounts/**", apiPrefix)).authenticated()
-                        //role
-                        .requestMatchers(String.format("%s/roles/**", apiPrefix)).authenticated()
-
-                        // category
-                        .requestMatchers(GET ,String.format("%s/categories/**", apiPrefix)).permitAll()
-                        .requestMatchers(String.format("%s/categories/**", apiPrefix)).authenticated()
-
-                        // product
-                        .requestMatchers(String.format("%s/products/**", apiPrefix)).authenticated()
-
-                        .requestMatchers("/api/admin/ordersAdmin/**").permitAll()
-
-
-                        // discount
-                        .requestMatchers(GET, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(POST, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(PATCH, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
-                        .requestMatchers(DELETE, String.format("%s/discounts/**", apiPrefix)).hasRole("ADMIN")
-
-
-                        // common
-                        .requestMatchers(GET, String.format("%s/common/colors/**", userApiPrefix)).permitAll()
-                        .requestMatchers(GET, String.format("%s/common/sizes/**", userApiPrefix)).permitAll()
-                        .requestMatchers(GET, String.format("%s/common/categories/**", userApiPrefix)).permitAll()
-                        .requestMatchers(GET, String.format("%s/common/products/**", apiPrefix)).permitAll()
-
-
-                        // USER
                         //product
                         .requestMatchers(GET, String.format("%s/products/**", userApiPrefix)).permitAll()
 
                         //shopping cart
                         .requestMatchers(POST, String.format("%s/shopping-cart/**", userApiPrefix)).permitAll()
 
-                        //
+
+
+                        // common
+                        .requestMatchers(GET, String.format("%s/common/**", userApiPrefix)).permitAll()
+
+
+                        //ask
+                        .requestMatchers(POST, String.format("%s/chatbot/ask", userApiPrefix)).permitAll()
+
+                        .requestMatchers(HttpMethod.PATCH, "/auth/forgot/reset").permitAll()
+                        
                         .anyRequest().authenticated()
                 );
         //Kích hoạt OAuth2 Resource Server sử dụng JWT

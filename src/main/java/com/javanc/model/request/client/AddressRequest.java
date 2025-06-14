@@ -25,4 +25,5 @@ public class AddressRequest {
     String detail;
     @NotNull(message = "Default address cannot be blank")
     Boolean isDefault;
+    Long userAddressId;
 }

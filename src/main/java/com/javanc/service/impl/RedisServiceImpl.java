@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javanc.model.request.auth.RegisterRequest;
+import com.javanc.model.request.client.OTPRequest;
 import com.javanc.service.RedisService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,15 @@ public class RedisServiceImpl implements RedisService {
         String key = "otp:" + email;
         redisTemplate.delete(key);
     }
+
+
+    @Override
+
+    public void savePendingUserOTP(String email, String otp, OTPRequest otpRequest) {
+        String key = "otp:" + email;
+        redisTemplate.opsForValue().set(key, otp, 5, TimeUnit.MINUTES);
+    }
+
 
 
     @Override

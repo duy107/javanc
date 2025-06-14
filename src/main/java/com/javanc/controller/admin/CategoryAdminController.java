@@ -21,15 +21,7 @@ public class CategoryAdminController {
 
     CategoryService categoryService;
 
-    @GetMapping
-//    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT', 'ROLE_USER')")
-    public ResponseEntity<?> getCategories() {
-        return ResponseEntity.ok().body(
-                ApiResponseDTO.<List<CategoryResponse>>builder()
-                        .result(categoryService.getAll())
-                        .build()
-        );
-    }
+
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'CATEGORY_ADD')")
     public ResponseEntity<?> createCategory(@RequestBody CategoryAdminRequest categoryAdminRequest) {
@@ -42,7 +34,9 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'CATEGORY_VIEW')")
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT', 'ROLE_USER', 'ROLE_ORDER_MANAGEMENT')")
+
     public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<CategoryResponse>builder()

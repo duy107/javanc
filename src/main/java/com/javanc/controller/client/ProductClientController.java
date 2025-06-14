@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,15 @@ public class ProductClientController {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<List<ProductClientResponse>>builder()
                         .result(productService.getProductsForClient(categoryId, searchKey))
+                        .build()
+        );
+    }
+
+    @GetMapping("/{slug}")
+    public ResponseEntity<?> getDetailProduct(@PathVariable String slug) {
+        return ResponseEntity.ok().body(
+                ApiResponseDTO.<ProductClientResponse>builder()
+                        .result(productService.getDetailProduct(slug))
                         .build()
         );
     }

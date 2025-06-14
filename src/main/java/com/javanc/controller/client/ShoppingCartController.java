@@ -3,12 +3,15 @@ package com.javanc.controller.client;
 import com.cloudinary.Api;
 import com.javanc.model.request.client.ProductCartItemRequest;
 import com.javanc.model.response.ApiResponseDTO;
+import com.javanc.model.response.client.ProductFavoriteResponse;
+import com.javanc.repository.ProductFavoriteRepository;
 import com.javanc.service.ShoppingCartService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 public class ShoppingCartController {
 
     ShoppingCartService shoppingCartService;
+
+    ProductFavoriteRepository productFavoriteRepository;
 
     @PostMapping
     public ResponseEntity<?> addOrUpdateCart(@Valid @RequestBody List<ProductCartItemRequest> productCartItemRequests, BindingResult result) {

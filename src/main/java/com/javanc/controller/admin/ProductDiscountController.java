@@ -5,6 +5,10 @@ import com.javanc.model.response.ApiResponseDTO;
 import com.javanc.model.response.admin.DiscountAdminResponse;
 import com.javanc.service.ProductDiscountService;
 import jakarta.validation.Valid;
+
+
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.validation.BindingResult;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,8 @@ public class ProductDiscountController {
     ProductDiscountService productDiscountService;
 
     @GetMapping("/{productId}")
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_PRODUCT_MANAGEMENT')")
     public ResponseEntity<?> findAll(@PathVariable Long productId) {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<List<DiscountAdminResponse>>builder()
@@ -34,6 +40,8 @@ public class ProductDiscountController {
     }
 
     @PostMapping
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_PRODUCT_MANAGEMENT')")
     public ResponseEntity<?> create(@Valid @RequestBody DiscountAdminRequest request, BindingResult result) {
         if (request.getStart_date() == null || request.getEnd_date() == null ||
                 request.getEnd_date().before(request.getStart_date())) {
@@ -58,6 +66,7 @@ public class ProductDiscountController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_PRODUCT_MANAGEMENT')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         productDiscountService.deleteProductDiscountByDiscountId(id);
         return ResponseEntity.ok().body(

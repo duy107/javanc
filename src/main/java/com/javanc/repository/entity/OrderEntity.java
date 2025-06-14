@@ -3,9 +3,10 @@ package com.javanc.repository.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.util.Date;
+
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity

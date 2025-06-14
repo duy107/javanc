@@ -16,7 +16,7 @@ public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(500, "Uncategorized Exception", HttpStatus.INTERNAL_SERVER_ERROR),
     UNAUTHENTICATED(401, "UNAUTHENTICATED", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(403, "UNAUTHORIZED", HttpStatus.FORBIDDEN),
-    BAD_REQUEST(400, "Invalid data", HttpStatus.BAD_REQUEST);
+    BAD_REQUEST(400, "Invalid data", HttpStatus.BAD_REQUEST),USER_ADDRESS_NOT_FOUND(404, "User address not found", HttpStatus.NOT_FOUND);
     private int code;
     private String message;
     private HttpStatus httpStatus;
