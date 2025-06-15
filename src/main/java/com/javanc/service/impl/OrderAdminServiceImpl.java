@@ -2,6 +2,7 @@ package com.javanc.service.impl;
 
 import com.javanc.model.response.admin.OrderAdminResponse;
 import com.javanc.repository.OrderRepository;
+import com.javanc.repository.ProductRepository;
 import com.javanc.repository.entity.OrderEntity;
 import com.javanc.service.OrderAdminService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class OrderAdminServiceImpl implements OrderAdminService {
 
     final OrderRepository orderRepository;
     final DetailRepository detailRepository;
+    private final ProductRepository productRepository;
+
     @Override
     public List<OrderAdminResponse> getAllOrders() {
         return orderRepository.findByDeletedFalse().stream()
@@ -49,8 +52,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
         order.setStatus(status);
 
         // Chỉ cập nhật tồn kho nếu chuyển từ "Chờ xác nhận" hoặc "Đã hủy" sang "Đang giao" hoặc "Hoàn thành"
-        if ((currentStatus.equals("Chờ xác nhận") || currentStatus.equals("Đã hủy")) &&
-                (status.equals("Đang giao") || status.equals("Hoàn thành"))) {
+        if (status.equals("Hoàn thành")) {
 
             for (OrderProductEntity orderProduct : order.getOrderProducts()) {
                 Long productId = orderProduct.getProduct().getId();
@@ -70,11 +72,11 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                 // Cập nhật tồn kho và số lượng bán
                 detail.setStock(detail.getStock() - quantityOrdered);
                 detail.setSold_count(detail.getSold_count() + quantityOrdered);
+                ProductEntity productEntity = orderProduct.getProduct();
+                productEntity.setQuantity(productEntity.getQuantity() - orderProduct.getQuantity());
+                productRepository.save(productEntity);
                 detailRepository.save(detail); // Đảm bảo bạn có repository cho DetailEntity
 
-                System.out.println("Đã cập nhật kho cho sản phẩm: "
-                        + "slug=" + orderProduct.getProduct().getSlug()
-                        + ", SL=" + quantityOrdered);
             }
         }
 

@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
         UserEntity user = userRepository.findByEmail(email).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
-        List<OrderEntity> orders = orderRepository.findByUserAndDeleted(user, false);
+        List<OrderEntity> orders = orderRepository.findByUser(user);
 
         List<OrderResponse> result = new ArrayList<>();
 
@@ -125,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity order = orderRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
         );
-        order.setDeleted(true);
+        order.setStatus("Đã hủy");
         orderRepository.save(order);
     }
 
