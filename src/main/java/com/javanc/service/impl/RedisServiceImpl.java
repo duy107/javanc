@@ -46,7 +46,6 @@ public class RedisServiceImpl implements RedisService {
 
 
     @Override
-
     public void savePendingUserOTP(String email, String otp, OTPRequest otpRequest) {
         String key = "otp:" + email;
         redisTemplate.opsForValue().set(key, otp, 5, TimeUnit.MINUTES);

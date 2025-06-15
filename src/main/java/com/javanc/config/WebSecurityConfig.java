@@ -36,9 +36,7 @@ public class WebSecurityConfig {
     @Value("${jwt.sign_key}")
     private String SIGN_KEY;
 
-
     private final String[] PUBLIC_ENPOINTS = {"/users", "/auth/login", "/auth/register", "/auth/social-login", "/auth/refreshToken", "/auth/logout", "/api/upload", "/auth/sendEmail", "/api/otp/send", "/api/otp/verify","/auth/forgot/OTPRequest","/auth/forgot/checkOTP"};
-
 
     private CustomJwtDecoder customerJwtDecoder;
     private final String apiPrefix = "/api/admin";
@@ -52,7 +50,6 @@ public class WebSecurityConfig {
 
                     corsConfig.addAllowedOriginPattern("*"); // Cho phép tất cả origin
 
-
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                     corsConfig.setAllowedHeaders(List.of("*"));
                     corsConfig.setAllowCredentials(true);
@@ -61,30 +58,34 @@ public class WebSecurityConfig {
 //                .oauth2Login(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->
 
-
                         request.requestMatchers(HttpMethod.POST, PUBLIC_ENPOINTS).permitAll()
 
 
-                        .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/auth/**").permitAll()
+                                //product
+                                .requestMatchers(GET, String.format("%s/products/**", userApiPrefix)).permitAll()
 
-                        //product
-                        .requestMatchers(GET, String.format("%s/products/**", userApiPrefix)).permitAll()
-
-                        //shopping cart
-                        .requestMatchers(POST, String.format("%s/shopping-cart/**", userApiPrefix)).permitAll()
-
+                                //shopping cart
+                                .requestMatchers(POST, String.format("%s/shopping-cart/**", userApiPrefix)).permitAll()
 
 
-                        // common
-                        .requestMatchers(GET, String.format("%s/common/**", userApiPrefix)).permitAll()
+                                // common
+                                .requestMatchers(GET, String.format("%s/common/**", userApiPrefix)).permitAll()
 
 
-                        //ask
-                        .requestMatchers(POST, String.format("%s/chatbot/ask", userApiPrefix)).permitAll()
+                                //ask
+                                .requestMatchers(POST, String.format("%s/chatbot/ask", userApiPrefix)).permitAll()
 
-                        .requestMatchers(HttpMethod.PATCH, "/auth/forgot/reset").permitAll()
-                        
-                        .anyRequest().authenticated()
+                                .requestMatchers(HttpMethod.PATCH, "/auth/forgot/reset").permitAll()
+                                //admin/user
+                                .requestMatchers(GET, "/api/admin/user" ).permitAll()
+                                .requestMatchers(GET, "/api/admin/orders" ).permitAll()
+                                .requestMatchers(GET, "/api/admin/product" ).permitAll()
+                                .requestMatchers(GET, "/api/admin/recent" ).permitAll()
+                                .requestMatchers(GET, "/api/admin/total_month" ).permitAll()
+                                .requestMatchers(GET, "/api/admin/topOrder" ).permitAll()
+
+                                .anyRequest().authenticated()
                 );
         //Kích hoạt OAuth2 Resource Server sử dụng JWT
         //Xác thực bằng JWT Bearer token gửi qua header Authorization
@@ -93,7 +94,7 @@ public class WebSecurityConfig {
                 oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(customerJwtDecoder)
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(new AuthenticationEntryPointConfig())
-                );
+        );
 
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);

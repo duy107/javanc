@@ -45,7 +45,6 @@ public class CommonController {
         );
     }
 
-
     @PreAuthorize("permitAll()")
     @GetMapping("/sizes")
     public ResponseEntity<?> getSizes() {
@@ -56,6 +55,7 @@ public class CommonController {
                         .build()
         );
     }
+
     @GetMapping("/categories")
     public ResponseEntity<?> getCategories() {
         return ResponseEntity.ok().body(

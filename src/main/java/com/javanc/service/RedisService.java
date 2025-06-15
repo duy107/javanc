@@ -3,7 +3,6 @@ package com.javanc.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javanc.model.request.auth.RegisterRequest;
 
-
 import com.javanc.model.request.client.OTPRequest;
 
 public interface RedisService {

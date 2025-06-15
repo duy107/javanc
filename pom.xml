@@ -32,7 +32,10 @@
             <optional>true</optional>
         </dependency>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> feat/dashboard
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -51,7 +54,10 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> feat/dashboard
         <dependency>
 
             <groupId>com.mysql</groupId>
@@ -119,13 +125,19 @@
         </dependency>
 
         <dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> feat/dashboard
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> feat/dashboard
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-client</artifactId>
             <version>6.4.4</version>

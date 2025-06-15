@@ -1,7 +1,6 @@
 package com.javanc.service.impl;
 
 
-
 import com.javanc.model.response.client.ColorClientResponse;
 
 import com.javanc.repository.ColorRepository;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 import java.util.stream.Collectors;
 
 
@@ -22,8 +20,6 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AllArgsConstructor
 public class ColorServiceImpl implements ColorService {
-
-
 
     ColorRepository colorRepository;
 

@@ -23,8 +23,6 @@ public interface AuthenService {
     void register(AuthenRequest authenRequest) throws JsonProcessingException;
     AuthenResponse loginWithGoogleOrFacebook(Map<String, Object> info);
     void logout(String token);
-
-
     void sendForgotPasswordOTP(OTPRequest otpRequest) throws JsonProcessingException,MessagingException;
     boolean checkForgotPasswordOTP(CheckOTPRequest checkOTPRequest) throws ParseException, JOSEException;
     void resetPassword(ResetPasswordRequest resetPasswordRequest) throws ParseException, JOSEException;

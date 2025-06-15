@@ -13,7 +13,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -36,7 +35,6 @@ public class ApplicationInitConfig {
         return args -> {
 
             if (userRepository.findByEmail("admin@admin.com").isEmpty()) {
-
                 RoleEntity roleEntity = roleRepository.findByCode("ADMIN").orElseThrow(() -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION));
                 UserEntity userEntity = UserEntity.builder()
                         .email("admin@admin.com")

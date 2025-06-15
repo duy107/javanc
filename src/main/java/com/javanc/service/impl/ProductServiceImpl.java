@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import me.xuender.unidecode.Unidecode;
-
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,8 +58,6 @@ public class ProductServiceImpl implements ProductService {
                 });
         // tim tat ca cac color trong bien the
         List<ColorEntity> listColor = colorRepository.findAllByIdIn(variants.stream().map(DetailCommonResquest::getColorId).collect(Collectors.toList()));
-
-
          CategoryEntity category = categoryRepository.findById(productAdminRequest.getCategoryId()).orElseThrow(
 
                 () -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)
@@ -212,8 +209,6 @@ public class ProductServiceImpl implements ProductService {
         List<ProductEntity> listProducts = filterProductUserCustom.findProductByOptionForUser(categoryId, searchKey);
         return listProducts.stream().map(this::mapToProductClientResponse).collect(Collectors.toList());
     }
-
-
 
     @Override
     public ProductClientResponse getDetailProduct(String slug) {

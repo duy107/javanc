@@ -15,7 +15,6 @@ import com.javanc.model.response.AuthenResponse;
 import com.javanc.model.response.ProfileResponse;
 import com.javanc.model.response.client.AddressResponse;
 
-
 import com.javanc.model.response.client.InformationUserUpdateResponse;
 import com.javanc.repository.AddressRepository;
 import com.javanc.repository.UserAddressRepository;
@@ -49,7 +48,6 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 import java.util.ArrayList;
 
 @RestController
@@ -75,7 +73,6 @@ public class AuthenticationController {
         AuthenResponse response = authenService.login(authenRequest);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         log.info("ROLE: " + auth.getAuthorities().toString());
-
         return ResponseEntity.ok().body(ApiResponseDTO.<AuthenResponse>builder().result(response).build());
 
     }
@@ -83,14 +80,11 @@ public class AuthenticationController {
     @PostMapping("/introspect")
     public ResponseEntity<?> introspect(@RequestBody AuthenRequest authenRequest) throws JOSEException, ParseException {
         AuthenResponse response = authenService.introspect(authenRequest);
-
         return ResponseEntity.ok().body(ApiResponseDTO.<AuthenResponse>builder().result(response).build());
     }
 
     @PostMapping("/refreshToken")
     public ResponseEntity<?> refreshToken(@RequestBody AuthenRequest authenRequest) throws ParseException, JOSEException {
-
-
         return ResponseEntity.ok().body(ApiResponseDTO.<AuthenResponse>builder().result(authenService.refreshToken(authenRequest)).build());
 
     }
@@ -118,7 +112,6 @@ public class AuthenticationController {
                         .build()
         );
     }
-
     @PostMapping("/forgot/OTPRequest")
     public ResponseEntity<?> forgot( @Valid @RequestBody OTPRequest otpRequest , BindingResult result) throws IOException, MessagingException {
         if (result.hasErrors()) {
@@ -194,7 +187,6 @@ public class AuthenticationController {
                 .message("Đổi mật khẩu thành công")
                 .build());
     }
-
 
     @GetMapping("/social-login")
     public ResponseEntity<?> socialLogin(@RequestParam("type") String type) {

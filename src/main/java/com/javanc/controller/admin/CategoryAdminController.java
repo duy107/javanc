@@ -34,9 +34,7 @@ public class CategoryAdminController {
     }
 
     @GetMapping("/{id}")
-
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT', 'ROLE_USER', 'ROLE_ORDER_MANAGEMENT')")
-
     public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok().body(
                 ApiResponseDTO.<CategoryResponse>builder()

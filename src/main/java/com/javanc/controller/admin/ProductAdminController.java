@@ -60,7 +60,6 @@ public class ProductAdminController {
     }
 
     @GetMapping
-
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT', 'ROLE_ORDER_MANAGEMENT')")
     public ResponseEntity<?> filterProduct(@RequestParam(required = true) String searchKey, @RequestParam(required = true) String categoryId, @RequestParam(required = true) String status, @RequestParam(required = true) String pageNumber) {
         return ResponseEntity.ok().body(
@@ -83,7 +82,6 @@ public class ProductAdminController {
     }
 
     @GetMapping("/{id}")
-
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT', 'ROLE_ORDER_MANAGEMENT')")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok().body(

@@ -32,7 +32,5 @@ public class ProductCartItemRequest {
     ColorRequest color;
     SizeRequest size;
     ImageRequest image;
-
     List<FeedbackResponse> feedbacks;
-
 }

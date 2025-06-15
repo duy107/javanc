@@ -18,6 +18,5 @@ public interface ProductService {
 
     // user
     List<ProductClientResponse> getProductsForClient(Long categoryId, String searchKey);
-
     ProductClientResponse getDetailProduct(String slug);
 }
