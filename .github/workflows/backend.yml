@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build & run with docker-compose
-        run: docker compose up -d --build
+        run: docker build -t duytrinh107/backend:latest .
 
       - name: Push image to Docker Hub
         run: docker push duytrinh107/backend:latest
