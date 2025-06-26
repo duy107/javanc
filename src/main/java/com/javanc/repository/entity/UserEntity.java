@@ -66,4 +66,17 @@ public class UserEntity extends BaseEntity {
     @OneToOne(mappedBy = "user" ,fetch = FetchType.LAZY)
     FavoriteEntity favorite;
 
+    // notification
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<NotificationEntity> notifications = new ArrayList<>();
+
+    // chat room user
+    @OneToMany(mappedBy = "user")
+    List<ChatRoomEntity> chatRoomAsUser;
+
+    // chat room admin
+    @OneToMany(mappedBy = "admin")
+    List<ChatRoomEntity> chatRoomAsAdmin;
+
+
 }

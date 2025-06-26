@@ -87,7 +87,7 @@ public class AccountController {
 
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT', 'ROLE_ORDER_MANAGEMENT')")
     public ResponseEntity<?> filterAccount(@RequestParam(required = true) String searchKey,
                                            @RequestParam(required = true) Long pageNumber,
                                            @RequestParam(required = true) String status,

@@ -1,8 +1,10 @@
 package com.javanc.service;
 
 
+import com.javanc.model.response.client.ChatbotResponse;
+
 import java.util.Map;
 
 public interface ChatbotService {
-    String answer(Map<String, Object> question);
+    ChatbotResponse answer(Map<String, Object> question);
 }

@@ -2,6 +2,7 @@ package com.javanc.model.response;
 
 
 import com.javanc.model.response.client.AddressResponse;
+import com.javanc.model.response.client.NotificationResponse;
 import com.javanc.repository.entity.AddressEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -22,4 +23,5 @@ public class ProfileResponse {
     String avatar;
     String phone;
     List<AddressResponse> addresses;
+    List<NotificationResponse> notifications;
 }

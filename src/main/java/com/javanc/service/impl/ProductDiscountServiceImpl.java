@@ -29,6 +29,7 @@ public class ProductDiscountServiceImpl implements ProductDiscountService {
     ProductDiscountRepository productDiscountRepository;
     DiscountRepository discountRepository;
     ProductRepository productRepository;
+    ProductDiscountWebSocketServiceImpl productDiscountWebSocketServiceImpl;
 
     @Override
     public List<DiscountAdminResponse> findAllByProductId(Long productId) {
@@ -67,6 +68,7 @@ public class ProductDiscountServiceImpl implements ProductDiscountService {
                 .endTime(discountAdminRequest.getEnd_date())
                 .build();
         productDiscountRepository.save(productDiscountEntity);
+        productDiscountWebSocketServiceImpl.sendForAllUser(productDiscountEntity);
     }
 
     @Override

@@ -45,6 +45,8 @@ public class RedisConfig {
         //Sử dụng để serialize/deserialize giá trị của Redis dưới dạng JSON.
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
 
+        jackson2JsonRedisSerializer.setObjectMapper(redisObjectMapper());
+
         // mặc định: lư key dưới bảng byte array
 
         // lưu key dạng String

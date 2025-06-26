@@ -16,14 +16,17 @@ import com.javanc.model.response.ProfileResponse;
 import com.javanc.model.response.client.AddressResponse;
 
 import com.javanc.model.response.client.InformationUserUpdateResponse;
+import com.javanc.model.response.client.NotificationResponse;
 import com.javanc.repository.AddressRepository;
 import com.javanc.repository.UserAddressRepository;
 import com.javanc.repository.UserRepository;
 import com.javanc.repository.entity.AddressEntity;
+import com.javanc.repository.entity.NotificationEntity;
 import com.javanc.repository.entity.UserAddressEntity;
 import com.javanc.repository.entity.UserEntity;
 import com.javanc.service.AuthenService;
 import com.javanc.service.OAuthService;
+import com.javanc.ultis.GetTimeAgo;
 import com.nimbusds.jose.JOSEException;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
@@ -45,6 +48,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -201,11 +205,35 @@ public class AuthenticationController {
         Authentication authentication = context.getAuthentication();
         String email = authentication.getName();
         UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
-        return ResponseEntity.ok().body(ApiResponseDTO.<ProfileResponse>builder().result(ProfileResponse.builder().id(user.getId()).name(user.getName()).avatar(user.getAvatar()).email(user.getEmail()).status(user.getStatus()).phone(user.getPhone()).addresses(user.getAddresses().stream().map(item -> AddressResponse.builder()
-
-                .userAddressId(item.getId())
-
-                .addressId(item.getAddress().getId()).userId(user.getId()).cityId(item.getAddress().getCityId()).wardId(item.getAddress().getWardId()).districtId(item.getAddress().getDistrictId()).detail(item.getAddress().getDetail()).isDefault(item.getIsDefault()).build()).collect(Collectors.toList())).build()).build());
+        return ResponseEntity.ok().body(ApiResponseDTO.<ProfileResponse>builder().result(ProfileResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .avatar(user.getAvatar())
+                .email(user.getEmail())
+                .status(user.getStatus())
+                .phone(user.getPhone())
+                        .notifications(
+                                user.getNotifications().stream()
+                                        .sorted(Comparator.comparing(NotificationEntity::getId).reversed())
+                                        .map(item -> NotificationResponse.builder()
+                                                .id(item.getId())
+                                                .content(item.getContent())
+                                                .status(item.getStatus())
+                                                .timeAgo(GetTimeAgo.getTimeAgo(item.getCreatedAt()))
+                                                .build())
+                                        .collect(Collectors.toList())
+                        )
+                .addresses(user.getAddresses().stream().map(item -> AddressResponse.builder()
+                        .userAddressId(item.getId())
+                        .addressId(item.getAddress().getId())
+                        .userId(user.getId())
+                        .cityId(item.getAddress().getCityId())
+                        .wardId(item.getAddress().getWardId())
+                        .districtId(item.getAddress().getDistrictId())
+                        .detail(item.getAddress().getDetail())
+                        .isDefault(item.getIsDefault()).build())
+                        .collect(Collectors.toList())).build())
+                .build());
     }
 
     @PatchMapping("/profile")

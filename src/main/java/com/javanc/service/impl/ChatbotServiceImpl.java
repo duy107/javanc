@@ -1,6 +1,8 @@
 package com.javanc.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.javanc.model.response.ApiResponseDTO;
+import com.javanc.model.response.client.ChatbotResponse;
 import com.javanc.model.response.client.DetailClientResponse;
 import com.javanc.model.response.client.DiscountClientResponse;
 import com.javanc.service.ChatbotService;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,13 +24,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ChatbotServiceImpl implements ChatbotService {
 
+    String [] QUESTION = {"nhan vien ho tro", "nhân viên hỗ trợ", "nhân viên tư vấn", "nhan vien tu van"};
+
     OpenAIService openAIService;
     QdrantService qdrantService;
     ObjectMapper objectMapper;
 
     @Override
-    public String answer(Map<String, Object> request) {
+    public ChatbotResponse answer(Map<String, Object> request) {
         String question = (String) request.get("question");
+        if (Arrays.stream(QUESTION).anyMatch(keyword -> question.toLowerCase().contains(keyword.toLowerCase()))) {
+            return ChatbotResponse.builder()
+                    .answer("Bạn muốn kết nối với nhân viên hỗ trợ. Vui lòng nhấn nút bên dưới để bắt đầu.")
+                    .needAdminSupport(true)
+                    .build();
+        }
         List<Float> embedding = openAIService.createEmbedding(question);
         var results = qdrantService.search("products_collection", embedding, 10);
         StringBuilder context = new StringBuilder();
@@ -88,6 +99,10 @@ public class ChatbotServiceImpl implements ChatbotService {
                     question, context.toString());
         }
 
-        return openAIService.chatCompletion(prompt);
+        String responseText = openAIService.chatCompletion(prompt);
+        return ChatbotResponse.builder()
+                    .answer(responseText)
+                    .needAdminSupport(false)
+                    .build();
     }
 }

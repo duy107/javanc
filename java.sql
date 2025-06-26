@@ -29,7 +29,7 @@ CREATE TABLE `address` (
   `ward_id` bigint DEFAULT NULL,
   `detail` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `address` (
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT INTO `address` VALUES (2,NULL,1,NULL,'kk'),(2,24,2,691,'fff'),(2,24,3,691,'fff'),(2,NULL,4,NULL,'kk'),(2,NULL,5,NULL,'kk');
+INSERT INTO `address` VALUES (2,NULL,1,NULL,'kk'),(2,24,2,691,'fff'),(2,24,3,691,'fff'),(2,NULL,4,NULL,'kk'),(2,NULL,5,NULL,'kk'),(2,24,6,691,'fff'),(1,1,7,31,'11111'),(2,24,8,691,'rf'),(1,1,9,25,'vv'),(2,24,10,691,'rf'),(2,24,11,691,'rf'),(1,1,12,31,'11111'),(1,1,13,31,'11111'),(2,24,14,691,'fff');
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +123,7 @@ CREATE TABLE `detail` (
 
 LOCK TABLES `detail` WRITE;
 /*!40000 ALTER TABLE `detail` DISABLE KEYS */;
-INSERT INTO `detail` VALUES (1,1,21,5,0,10),(8,2,21,2,0,5),(11,3,21,3,0,3),(14,4,21,7,0,2),(12,5,21,1,0,7),(1,6,22,5,0,5),(16,7,22,4,0,6),(12,8,22,7,0,7),(14,9,22,1,0,8),(1,10,23,1,0,7),(8,11,23,2,0,8),(3,12,23,3,0,9),(14,13,23,4,0,10),(2,14,24,7,0,7),(11,15,24,6,0,3),(14,16,24,5,0,1),(9,17,25,4,0,7),(11,18,25,3,0,7),(3,19,25,2,0,7),(14,20,25,1,0,7),(1,21,26,6,0,5),(8,22,26,7,0,3),(2,23,26,7,0,11),(14,24,26,7,0,7),(1,25,27,4,0,6),(2,26,27,4,0,13),(3,27,27,4,0,15),(13,28,27,3,0,9),(10,29,28,3,0,8),(1,30,28,3,0,8),(2,31,28,1,0,14),(3,32,28,2,0,20),(1,33,29,5,0,17),(18,34,29,6,0,7),(2,35,29,7,0,10),(1,36,30,1,0,12),(2,37,30,2,0,13),(11,38,30,3,0,5),(13,39,30,4,0,4),(1,40,2,5,0,10),(3,41,2,2,0,5),(15,42,2,3,0,3),(17,43,3,4,0,4),(17,44,3,3,0,4),(6,45,3,5,0,3),(1,46,3,4,0,3),(1,47,3,5,0,5),(1,48,4,3,0,5),(1,49,4,4,0,3),(2,50,4,4,0,3),(15,51,4,4,0,8),(15,52,4,5,0,3),(17,53,4,4,0,5),(17,54,4,5,0,3),(1,55,5,4,0,6),(6,56,5,4,0,1),(1,57,5,5,0,7),(11,58,5,3,0,1),(15,59,5,4,0,2),(15,60,5,5,0,1),(5,61,6,4,0,3),(1,62,6,4,0,2),(1,63,6,5,0,3),(8,64,6,4,0,1),(1,65,6,3,0,3),(15,66,6,4,0,6),(15,67,6,5,0,10),(2,68,7,3,0,1),(2,69,7,4,0,10),(2,70,7,5,0,5),(3,71,7,4,0,3),(15,72,7,4,0,5),(15,73,7,5,0,21),(17,74,7,4,0,3),(1,75,8,4,0,3),(1,76,8,5,0,10),(2,77,8,4,0,3),(2,78,8,5,0,5),(3,79,8,4,0,3),(5,80,8,4,0,2),(5,81,8,5,0,3),(7,82,8,4,0,2),(17,83,8,4,0,6),(17,84,8,5,0,1),(1,85,9,3,0,3),(1,86,9,4,0,1),(1,87,9,5,0,5),(2,88,9,4,0,3),(3,89,9,4,0,3),(15,90,2,4,0,3),(15,91,2,5,0,3),(2,92,10,4,0,3),(3,93,10,4,0,1),(3,94,10,5,0,1),(15,95,10,4,0,3),(15,96,10,5,0,3),(17,97,10,4,0,3),(17,98,10,5,0,3),(1,99,1,4,0,3),(1,100,1,5,0,5),(3,101,1,4,0,8),(15,102,1,4,0,10),(15,103,1,5,0,10),(17,104,1,4,0,10),(10,105,11,3,0,10),(1,106,11,3,0,10),(8,107,11,3,0,10),(2,108,11,3,0,10),(13,109,11,3,0,10),(2,110,12,3,0,25),(1,111,12,3,0,25),(14,112,13,3,0,10),(11,113,13,3,0,10),(2,114,13,3,0,10),(1,115,13,3,0,20),(13,116,14,3,0,10),(3,117,14,3,0,10),(2,118,14,3,0,10),(8,119,14,3,0,10),(1,120,14,3,0,10),(3,121,15,3,0,10),(11,122,15,3,0,10),(2,123,15,3,0,10),(8,124,15,3,0,10),(1,125,15,3,0,10),(14,126,16,3,0,10),(3,127,16,3,0,10),(2,128,16,3,0,10),(1,129,16,3,0,10),(5,130,16,3,0,10),(14,131,17,3,0,10),(3,132,17,3,0,10),(2,133,17,3,0,10),(9,134,17,3,0,10),(8,135,17,3,0,5),(1,136,17,3,0,5),(14,137,18,3,0,10),(2,138,18,3,0,10),(18,139,18,3,0,10),(9,140,18,3,0,10),(1,141,18,3,0,5),(5,142,18,3,0,5),(12,143,19,3,0,10),(11,144,19,3,0,10),(2,145,19,3,0,10),(18,146,19,3,0,5),(9,147,19,3,0,5),(8,148,19,3,0,5),(1,149,19,3,0,5),(11,150,20,3,0,10),(2,151,20,3,0,10),(6,152,20,3,0,10),(1,153,20,3,0,10),(5,154,20,3,0,10),(15,155,31,4,0,10),(3,156,31,4,0,10),(6,157,31,4,0,10),(2,158,32,4,0,7),(3,159,32,4,0,5),(6,160,32,4,0,10),(9,161,32,4,0,11),(5,162,32,4,0,3),(1,163,33,4,0,6),(3,164,33,4,0,5),(6,165,33,4,0,7),(5,166,33,4,0,5),(1,167,34,4,0,9),(6,168,34,4,0,15),(1,169,35,4,0,10),(2,170,35,4,0,7),(3,171,35,4,0,5),(15,172,35,4,0,15),(1,173,36,4,0,15),(5,174,36,4,0,10),(8,175,36,4,0,5),(2,176,37,4,0,5),(6,177,37,4,0,5),(8,178,37,4,0,7),(15,179,37,4,0,5),(1,180,38,4,0,10),(2,181,38,4,0,10),(6,182,38,4,0,5),(8,183,38,4,0,5),(9,184,38,4,0,4),(18,185,2,4,0,3),(1,186,39,4,0,10),(6,187,39,4,0,10);
+INSERT INTO `detail` VALUES (1,1,21,5,0,10),(8,2,21,2,0,5),(11,3,21,3,0,3),(14,4,21,7,0,2),(12,5,21,1,0,7),(1,6,22,5,0,5),(16,7,22,4,0,6),(12,8,22,7,0,7),(14,9,22,1,0,8),(1,10,23,1,0,7),(8,11,23,2,0,8),(3,12,23,3,0,9),(14,13,23,4,0,10),(2,14,24,7,0,7),(11,15,24,6,0,3),(14,16,24,5,0,1),(9,17,25,4,0,7),(11,18,25,3,0,7),(3,19,25,2,0,7),(14,20,25,1,0,7),(1,21,26,6,0,5),(8,22,26,7,0,3),(2,23,26,7,0,11),(14,24,26,7,0,7),(1,25,27,4,0,6),(2,26,27,4,0,13),(3,27,27,4,0,15),(13,28,27,3,0,9),(10,29,28,3,0,8),(1,30,28,3,0,8),(2,31,28,1,0,14),(3,32,28,2,0,20),(1,33,29,5,0,17),(18,34,29,6,0,7),(2,35,29,7,0,10),(1,36,30,1,0,12),(2,37,30,2,0,13),(11,38,30,3,0,5),(13,39,30,4,0,4),(1,40,2,5,5,5),(3,41,2,2,0,5),(15,42,2,3,0,3),(17,43,3,4,1,3),(17,44,3,3,0,4),(6,45,3,5,0,3),(1,46,3,4,0,3),(1,47,3,5,0,5),(1,48,4,3,2,3),(1,49,4,4,0,3),(2,50,4,4,0,3),(15,51,4,4,0,8),(15,52,4,5,0,3),(17,53,4,4,0,5),(17,54,4,5,0,3),(1,55,5,4,2,4),(6,56,5,4,0,1),(1,57,5,5,0,7),(11,58,5,3,0,1),(15,59,5,4,0,2),(15,60,5,5,0,1),(5,61,6,4,1,2),(1,62,6,4,0,2),(1,63,6,5,0,3),(8,64,6,4,0,1),(1,65,6,3,0,3),(15,66,6,4,0,6),(15,67,6,5,0,10),(2,68,7,3,1,0),(2,69,7,4,0,10),(2,70,7,5,0,5),(3,71,7,4,0,3),(15,72,7,4,0,5),(15,73,7,5,0,21),(17,74,7,4,0,3),(1,75,8,4,0,3),(1,76,8,5,0,10),(2,77,8,4,0,3),(2,78,8,5,0,5),(3,79,8,4,0,3),(5,80,8,4,0,2),(5,81,8,5,0,3),(7,82,8,4,0,2),(17,83,8,4,0,6),(17,84,8,5,0,1),(1,85,9,3,0,3),(1,86,9,4,0,1),(1,87,9,5,0,5),(2,88,9,4,0,3),(3,89,9,4,0,3),(15,90,2,4,0,3),(15,91,2,5,0,3),(2,92,10,4,1,2),(3,93,10,4,0,1),(3,94,10,5,0,1),(15,95,10,4,0,3),(15,96,10,5,0,3),(17,97,10,4,0,3),(17,98,10,5,0,3),(1,99,1,4,3,0),(1,100,1,5,0,5),(3,101,1,4,2,6),(15,102,1,4,0,10),(15,103,1,5,0,10),(17,104,1,4,0,10),(10,105,11,3,1,9),(1,106,11,3,0,10),(8,107,11,3,0,10),(2,108,11,3,0,10),(13,109,11,3,0,10),(2,110,12,3,0,25),(1,111,12,3,0,25),(14,112,13,3,0,10),(11,113,13,3,0,10),(2,114,13,3,0,10),(1,115,13,3,0,20),(13,116,14,3,0,10),(3,117,14,3,0,10),(2,118,14,3,0,10),(8,119,14,3,0,10),(1,120,14,3,0,10),(3,121,15,3,0,10),(11,122,15,3,0,10),(2,123,15,3,0,10),(8,124,15,3,0,10),(1,125,15,3,0,10),(14,126,16,3,0,10),(3,127,16,3,0,10),(2,128,16,3,0,10),(1,129,16,3,0,10),(5,130,16,3,0,10),(14,131,17,3,0,10),(3,132,17,3,0,10),(2,133,17,3,0,10),(9,134,17,3,0,10),(8,135,17,3,0,5),(1,136,17,3,0,5),(14,137,18,3,0,10),(2,138,18,3,0,10),(18,139,18,3,0,10),(9,140,18,3,0,10),(1,141,18,3,0,5),(5,142,18,3,0,5),(12,143,19,3,0,10),(11,144,19,3,0,10),(2,145,19,3,0,10),(18,146,19,3,0,5),(9,147,19,3,0,5),(8,148,19,3,0,5),(1,149,19,3,0,5),(11,150,20,3,0,10),(2,151,20,3,0,10),(6,152,20,3,0,10),(1,153,20,3,0,10),(5,154,20,3,0,10),(15,155,31,4,0,10),(3,156,31,4,0,10),(6,157,31,4,0,10),(2,158,32,4,0,7),(3,159,32,4,0,5),(6,160,32,4,0,10),(9,161,32,4,0,11),(5,162,32,4,0,3),(1,163,33,4,0,6),(3,164,33,4,0,5),(6,165,33,4,0,7),(5,166,33,4,0,5),(1,167,34,4,0,9),(6,168,34,4,0,15),(1,169,35,4,0,10),(2,170,35,4,0,7),(3,171,35,4,0,5),(15,172,35,4,0,15),(1,173,36,4,0,15),(5,174,36,4,0,10),(8,175,36,4,0,5),(2,176,37,4,0,5),(6,177,37,4,0,5),(8,178,37,4,0,7),(15,179,37,4,0,5),(1,180,38,4,0,10),(2,181,38,4,0,10),(6,182,38,4,0,5),(8,183,38,4,0,5),(9,184,38,4,0,4),(18,185,2,4,0,3),(1,186,39,4,0,10),(6,187,39,4,0,10);
 /*!40000 ALTER TABLE `detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,7 +165,7 @@ CREATE TABLE `favorite` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK8f4j36u3ealttx057oeppnphm` (`user_id`),
   CONSTRAINT `FKh3f2dg11ibnht4fvnmx60jcif` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,7 +174,7 @@ CREATE TABLE `favorite` (
 
 LOCK TABLES `favorite` WRITE;
 /*!40000 ALTER TABLE `favorite` DISABLE KEYS */;
-INSERT INTO `favorite` VALUES (4,1),(1,3),(2,4),(3,6);
+INSERT INTO `favorite` VALUES (4,1),(1,3),(2,4),(5,5),(3,6);
 /*!40000 ALTER TABLE `favorite` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +198,7 @@ CREATE TABLE `feedback` (
   KEY `fk_feedback_user_id` (`user_id`),
   CONSTRAINT `fk_feedback_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT `fk_feedback_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,7 +207,7 @@ CREATE TABLE `feedback` (
 
 LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
-INSERT INTO `feedback` VALUES (0,5,'2025-06-07 00:00:00.000000',1,2,1,'Shop giao hàng nhanh, đóng gói cẩn thận, shipper thân thiện, cho shop 5s'),(0,3,'2025-06-08 05:37:05.780000',2,7,3,'Áo đẹp\n');
+INSERT INTO `feedback` VALUES (0,5,'2025-06-07 00:00:00.000000',1,2,1,'Shop giao hàng nhanh, đóng gói cẩn thận, shipper thân thiện, cho shop 5s'),(0,3,'2025-06-08 05:37:05.780000',2,7,3,'Áo đẹp\n'),(0,5,'2025-06-15 14:49:39.313000',3,2,5,'sản phẩm như c');
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +266,7 @@ CREATE TABLE `order_product` (
   CONSTRAINT `fk_order_product_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   CONSTRAINT `fk_order_product_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT `fk_order_product_size_id` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +275,7 @@ CREATE TABLE `order_product` (
 
 LOCK TABLES `order_product` WRITE;
 /*!40000 ALTER TABLE `order_product` DISABLE KEYS */;
-INSERT INTO `order_product` VALUES (140000,1,1,2,40,5,1,1),(140000,2,2,2,40,5,1,1),(300000,3,3,7,58,3,2,1),(30600,4,4,11,80,3,10,1),(300000,5,5,7,58,3,2,1);
+INSERT INTO `order_product` VALUES (140000,1,1,2,40,5,1,1),(140000,2,2,2,40,5,1,1),(300000,3,3,7,58,3,2,1),(30600,4,4,11,80,3,10,1),(300000,5,5,7,58,3,2,1),(190000,6,6,5,53,4,1,1),(140000,7,6,2,40,5,1,1),(320000,8,6,1,78,4,1,2),(320000,9,7,1,78,4,1,1),(320000,10,8,1,78,4,1,1),(140000,11,8,2,40,5,1,1),(250000,12,8,3,43,4,17,1),(140000,13,9,2,40,5,1,1),(250000,14,10,3,43,4,17,1),(320000,15,11,1,79,4,3,2),(140000,16,11,2,40,5,1,1),(210000,17,12,4,46,3,1,2),(150000,18,13,6,54,4,5,1),(430000,19,14,10,73,4,2,1);
 /*!40000 ALTER TABLE `order_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,7 +302,7 @@ CREATE TABLE `orders` (
   CONSTRAINT `fk_orders_address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
   CONSTRAINT `fk_orders_payment_id` FOREIGN KEY (`payment_id`) REFERENCES `payment` (`id`),
   CONSTRAINT `fk_orders_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,7 +311,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,2,1,1,'2025-06-06 15:28:22.016000',6,'Chờ xác nhận',140000),(0,3,2,1,'2025-06-06 15:29:52.598000',6,'Chờ xác nhận',140000),(0,1,3,2,'2025-06-08 05:34:51.209000',3,'Chờ xác nhận',300000),(0,4,4,2,'2025-06-08 05:36:09.741000',3,'Chờ xác nhận',30600),(0,5,5,2,'2025-06-08 05:36:30.041000',3,'Chờ xác nhận',300000);
+INSERT INTO `orders` VALUES (0,2,1,1,'2025-05-06 15:28:22.016000',6,'Hoàn thành',140000),(0,3,2,1,'2025-05-06 15:29:52.598000',6,'Đã hủy',140000),(0,1,3,2,'2025-05-08 05:34:51.209000',3,'Hoàn thành',300000),(0,4,4,2,'2025-04-08 05:36:09.741000',3,'Hoàn thành',30600),(0,5,5,2,'2025-04-08 05:36:30.041000',3,'Đã hủy',300000),(0,6,6,1,'2025-03-14 17:30:00.946000',6,'Hoàn thành',970000),(0,7,7,3,'2025-03-15 02:04:10.300000',4,'Hoàn thành',320000),(0,8,8,4,'2025-02-15 08:23:22.506000',5,'Đã hủy',710000),(0,9,9,4,'2025-02-15 08:23:52.902000',5,'Hoàn thành',140000),(0,10,10,4,'2025-01-15 08:24:04.709000',5,'Đã hủy',250000),(0,11,11,4,'2025-01-15 15:01:49.640000',5,'Hoàn thành',780000),(0,12,12,3,'2025-06-15 15:43:46.673000',4,'Hoàn thành',420000),(0,13,13,3,'2025-06-15 17:30:00.138000',4,'Hoàn thành',150000),(0,14,14,1,'2025-06-15 17:36:00.713000',6,'Hoàn thành',430000);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -330,7 +330,7 @@ CREATE TABLE `payment` (
   PRIMARY KEY (`id`),
   KEY `fk_payment_user_id` (`user_id`),
   CONSTRAINT `fk_payment_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -339,7 +339,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (1,6,'COD','Thanh toán khi nhận hàng'),(2,3,'COD','Thanh toán khi nhận hàng');
+INSERT INTO `payment` VALUES (1,6,'COD','Thanh toán khi nhận hàng'),(2,3,'COD','Thanh toán khi nhận hàng'),(3,4,'COD','Thanh toán khi nhận hàng'),(4,5,'COD','Thanh toán khi nhận hàng');
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -365,7 +365,7 @@ CREATE TABLE `permission` (
 
 LOCK TABLES `permission` WRITE;
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` VALUES (0,1,'Xóa sản phẩm','PRODUCT_DELETE'),(0,2,'Thêm sản phẩm','PRODUCT_ADD'),(0,3,'Sửa sản phẩm','PRODUCT_UPDATE'),(0,4,'Thêm quyền','ROLE_ADD'),(0,5,'Xóa quyền','ROLE_DELETE'),(0,6,'Phân quyền','ROLE_PERMISSION'),(0,7,'Xem quyền','ROLE_VIEW'),(0,8,'Sửa quyền','ROLE_UPDATE'),(0,9,'Xem sản phẩm','PRODUCT_VIEW'),(0,10,'Xem danh mục','CATEGORY_VIEW'),(0,11,'Thêm danh mục','CATEGORY_ADD'),(0,12,'Sửa danh mục','CATEGORY_UPDATE'),(0,13,'Xóa danh mục','CATEGORY_DELETE'),(0,15,'Xem tài khoản','ACCOUNT_VIEW'),(0,16,'Thêm tài khoản','ACCOUNT_ADD'),(0,17,'Sửa tài khoản','ACCOUNT_UPDATE'),(0,18,'Xóa tài khoản','ACCOUNT_DELETE'),(0,19,'Xóa đơn hàng','ORDER_DELETE'),(0,20,'Sửa đơn hàng','ORDER_UPDATE');
+INSERT INTO `permission` VALUES (0,1,'Xóa sản phẩm','PRODUCT_DELETE'),(0,2,'Thêm sản phẩm','PRODUCT_ADD'),(0,3,'Sửa sản phẩm','PRODUCT_UPDATE'),(0,4,'Thêm quyền','ROLE_ADD'),(0,5,'Xóa quyền','ROLE_DELETE'),(0,6,'Phân quyền','ROLE_PERMISSION'),(0,7,'Xem quyền','ROLE_VIEW'),(0,8,'Sửa quyền','ROLE_UPDATE'),(0,9,'Xem sản phẩm','PRODUCT_VIEW'),(0,10,'Xem danh mục','CATEGORY_VIEW'),(0,11,'Thêm danh mục','CATEGORY_ADD'),(0,12,'Sửa danh mục','CATEGORY_UPDATE'),(0,13,'Xóa danh mục','CATEGORY_DELETE'),(0,15,'Xem tài khoản','ACCOUNT_VIEW'),(0,16,'Thêm tài khoản','ACCOUNT_ADD'),(0,17,'Sửa tài khoản','ACCOUNT_UPDATE'),(0,18,'Xóa tài khoản','ACCOUNT_DELETE'),(0,19,'Xem đơn hàng','ORDER_VIEW'),(0,20,'Sửa đơn hàng','ORDER_UPDATE');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -399,7 +399,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (_binary '\0',320000,10,NULL,1,50,NULL,'Quần âu bò thương hiệu','Quần short bò nữ','quan-short-bo-nu'),(_binary '\0',200000,8,NULL,2,50,NULL,'Quần âu thời trang','Quần âu nam công sở','quan-au-nam-cong-so'),(_binary '\0',250000,8,NULL,3,50,NULL,'Quần âu thời trang','Quần âu nữ công sở','quan-au-nu-cong-so'),(_binary '\0',210000,8,NULL,4,50,NULL,'Quần âu thời trang','Quần âu nỉ nam ','quan-au-ni-nam'),(_binary '\0',190000,8,NULL,5,50,NULL,'Quần âu thời trang','Quần âu nữ ống rộng','quan-au-nu-ong-rong'),(_binary '\0',150000,8,NULL,6,50,NULL,'Quần âu thời trang','Quần âu vải nữ','quan-au-vai-nu'),(_binary '\0',300000,10,NULL,7,50,NULL,'Quần âu bò thương hiệu','Quần bò jeans nam','quan-bo-jeans-nam'),(_binary '\0',290000,10,NULL,8,50,NULL,'Quần âu bò thương hiệu','Quần bò nam ống rộng','quan-bo-nam-ong-rong'),(_binary '\0',400000,10,NULL,9,50,NULL,'Quần âu bò thương hiệu','Quần bò nữ ống rộng','quan-bo-nu-ong-rong'),(_binary '\0',430000,10,NULL,10,50,NULL,'Quần âu bò thương hiệu','Quần short bò nam','quan-short-bo-nam'),(_binary '\0',90000,4,NULL,11,50,NULL,'Áo thun chính hãng của nhà F5','Áo thun','ao-thun'),(_binary '\0',150000,5,NULL,12,50,NULL,'Áo sơ mi chính hãng của nhà F5','Áo sơ mi','ao-so-mi'),(_binary '\0',100000,6,NULL,13,50,NULL,'Áo polo chính hãng của nhà F5','Áo polo','ao-polo'),(_binary '\0',200000,7,NULL,14,50,NULL,'Áo hoodie chính hãng của nhà F5','Áo hoodie','ao-hoodie'),(_binary '\0',95000,18,NULL,15,50,NULL,'Áo len cổ lọ chính hãng của nhà F5','Áo len cổ lọ','ao-len-co-lo'),(_binary '\0',500000,19,NULL,16,50,NULL,'Áo blazer chính hãng của nhà F5','Áo blazer','ao-blazer'),(_binary '\0',90000,20,NULL,17,50,NULL,'Áo ba lỗ chính hãng của nhà F5','Áo ba lỗ','ao-balo'),(_binary '\0',300000,21,NULL,18,50,NULL,'Áo khoác chính hãng của nhà F5','Áo khoác','ao-khoac'),(_binary '\0',200000,22,NULL,19,50,NULL,'Áo croptop chính hãng của nhà F5','Áo croptop','ao-croptop'),(_binary '\0',150000,23,NULL,20,50,NULL,'Áo giữ nhiệt chính hãng của nhà F5','Áo giữ nhiệt','ao-giu-nhiet'),(_binary '\0',140000,17,NULL,21,50,NULL,'Giá thành rẻ, thiết kế chắc chắn, phù hợp với sân phủi và người mới chơi.','Giày Đá Banh Wika 3 Sọc Ct3','giay-da-banh-wika-3-soc-ct3'),(_binary '\0',2100000,17,NULL,22,50,NULL,'Chất liệu da mềm mại mang lại cảm giác bóng tốt, phù hợp với cầu thủ chơi ở vị trí tiền vệ.','Giày Đá Bóng Firm Ground Copa Pure 3 Elite','giay-da-bong-firm-ground-copa-pure-3-elite'),(_binary '\0',1600000,17,NULL,23,50,NULL,'Thiết kế đặc biệt ở phần thân giày giúp kiểm soát bóng tốt, phù hợp với cầu thủ thiên về kỹ thuật.','Giày đá Bóng Nam adidas Predator League Firm Ground','giay-da-bong-nam-adidas-predator-league-firm-ground'),(_binary '\0',320000,17,NULL,24,50,NULL,'Thiết kế hiện đại, ôm chân, hỗ trợ di chuyển linh hoạt trên sân cỏ nhân tạo.','Giày Đá Bóng Sân Cỏ Nhân Tạo Future Z 1.1','giay-da-bong-san-co-nhan-tao-future-z-11'),(_binary '\0',230000,17,NULL,25,50,NULL,'Chất liệu da PU với bề mặt vân nổi, đế TF bám sân tốt, thiết kế phối màu trắng xanh trẻ trung.','Giày đá bóng Wika Toni Kroos','giay-da-bong-wika-toni-kroos'),(_binary '\0',2700000,16,NULL,26,50,NULL,'Được thiết kế với công nghệ Air-Sole độc quyền của Nike, kết hợp kiểu dáng hầm hố, cá tính, và phong cách retro độc đáo, Air Jordan đã tạo nên cơn sốt toàn cầu suốt nhiều thập kỷ.','Giày thể thao Nike Air Jordan','giay-the-thao-nike-air-jordan'),(_binary '\0',3500000,16,NULL,27,50,NULL,'Ultraboost là dòng giày chạy bộ cao cấp của Adidas, nổi bật với công nghệ Boost siêu nhẹ, hoàn trả năng lượng tối đa. Thiết kế ôm chân với vải dệt Primeknit linh hoạt, tạo cảm giác như đi tất.','Giày thể thao Adidas Ultraboost','giay-the-thao-adidas-ultraboost'),(_binary '\0',800000,16,NULL,28,50,NULL,'Biti’s Hunter là sản phẩm giày thể thao quốc dân của Việt Nam. Thiết kế trẻ trung, đệm EVA êm nhẹ, phần upper thoáng khí và kiểu dáng dễ phối đồ. Giá thành hợp lý, phù hợp với học sinh, sinh viên.','Giày thể thao Biti’s Hunter','giay-the-thao-bitis-hunter'),(_binary '\0',2200000,16,NULL,29,50,NULL,'MLB Bigball Chunky là dòng giày thể thao thời trang từ thương hiệu MLB (Hàn Quốc), nổi bật với thiết kế đế dày, form \'hầm hố\' cá tính. Logo đội bóng Mỹ được in nổi bật tạo điểm nhấn phong cách đường phố.','Giày thể thao MLB Bigball','giay-the-thao-mlb-bigball'),(_binary '\0',1800000,16,NULL,30,50,NULL,'Nike Court là dòng giày tennis và lifestyle đơn giản nhưng cực kỳ thanh lịch. Đế cao su bền chắc, kiểu dáng cổ điển, dễ phối với quần jeans, kaki hay đồ thể thao.','Giày thể thao Nike Court','giay-the-thao-nike-court'),(_binary '\0',150000,14,NULL,31,50,NULL,'Mũ phớt thời trang hiện đại cá tính','Mũ phớt nỉ nam','mu-phot-ni-nam'),(_binary '\0',200000,14,NULL,32,50,NULL,'Mũ phớt thời trang hiện đại cá tính','Mũ phớt nỉ nữ','mu-phot-ni-nu'),(_binary '\0',50000,14,NULL,33,50,NULL,'Mũ phớt thời trang hiện đại cá tính','Mũ phớt cói nam','mu-phot-coi-nam'),(_binary '\0',400000,14,NULL,34,50,NULL,'Mũ phớt thời trang hiện đại cá tính','Mũ phớt da bò','mu-phot-da-bo'),(_binary '\0',70000,13,NULL,35,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai Nike','mu-luoi-trai-nike'),(_binary '\0',60000,13,NULL,36,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai Teelab','mu-luoi-trai-teelab'),(_binary '\0',80000,13,NULL,37,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai Jogarbola','mu-luoi-trai-jogarbola'),(_binary '\0',100000,13,NULL,38,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai nhung','mu-luoi-trai-nhung'),(_binary '\0',300000,13,NULL,39,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai da','mu-luoi-trai-da');
+INSERT INTO `product` VALUES (_binary '\0',320000,10,NULL,1,48,'2025-06-15 15:02:41.223078','Quần âu bò thương hiệu','Quần short bò nữ','quan-short-bo-nu'),(_binary '\0',200000,8,NULL,2,47,'2025-06-15 15:56:56.977509','Quần âu thời trang','Quần âu nam công sở','quan-au-nam-cong-so'),(_binary '\0',250000,8,NULL,3,50,NULL,'Quần âu thời trang','Quần âu nữ công sở','quan-au-nu-cong-so'),(_binary '\0',210000,8,NULL,4,48,'2025-06-15 15:44:46.012007','Quần âu thời trang','Quần âu nỉ nam ','quan-au-ni-nam'),(_binary '\0',190000,8,NULL,5,49,'2025-06-15 15:56:56.961170','Quần âu thời trang','Quần âu nữ ống rộng','quan-au-nu-ong-rong'),(_binary '\0',150000,8,NULL,6,49,'2025-06-15 17:34:47.752426','Quần âu thời trang','Quần âu vải nữ','quan-au-vai-nu'),(_binary '\0',300000,10,NULL,7,49,'2025-06-15 15:52:44.601188','Quần âu bò thương hiệu','Quần bò jeans nam','quan-bo-jeans-nam'),(_binary '\0',290000,10,NULL,8,50,NULL,'Quần âu bò thương hiệu','Quần bò nam ống rộng','quan-bo-nam-ong-rong'),(_binary '\0',400000,10,NULL,9,50,NULL,'Quần âu bò thương hiệu','Quần bò nữ ống rộng','quan-bo-nu-ong-rong'),(_binary '\0',430000,10,NULL,10,49,'2025-06-15 17:37:45.383252','Quần âu bò thương hiệu','Quần short bò nam','quan-short-bo-nam'),(_binary '\0',90000,4,NULL,11,49,'2025-06-15 15:57:07.720249','Áo thun chính hãng của nhà F5','Áo thun','ao-thun'),(_binary '\0',150000,5,NULL,12,50,NULL,'Áo sơ mi chính hãng của nhà F5','Áo sơ mi','ao-so-mi'),(_binary '\0',100000,6,NULL,13,50,NULL,'Áo polo chính hãng của nhà F5','Áo polo','ao-polo'),(_binary '\0',200000,7,NULL,14,50,NULL,'Áo hoodie chính hãng của nhà F5','Áo hoodie','ao-hoodie'),(_binary '\0',95000,18,NULL,15,50,NULL,'Áo len cổ lọ chính hãng của nhà F5','Áo len cổ lọ','ao-len-co-lo'),(_binary '\0',500000,19,NULL,16,50,NULL,'Áo blazer chính hãng của nhà F5','Áo blazer','ao-blazer'),(_binary '\0',90000,20,NULL,17,50,NULL,'Áo ba lỗ chính hãng của nhà F5','Áo ba lỗ','ao-balo'),(_binary '\0',300000,21,NULL,18,50,NULL,'Áo khoác chính hãng của nhà F5','Áo khoác','ao-khoac'),(_binary '\0',200000,22,NULL,19,50,NULL,'Áo croptop chính hãng của nhà F5','Áo croptop','ao-croptop'),(_binary '\0',150000,23,NULL,20,50,NULL,'Áo giữ nhiệt chính hãng của nhà F5','Áo giữ nhiệt','ao-giu-nhiet'),(_binary '\0',140000,17,NULL,21,50,NULL,'Giá thành rẻ, thiết kế chắc chắn, phù hợp với sân phủi và người mới chơi.','Giày Đá Banh Wika 3 Sọc Ct3','giay-da-banh-wika-3-soc-ct3'),(_binary '\0',2100000,17,NULL,22,50,NULL,'Chất liệu da mềm mại mang lại cảm giác bóng tốt, phù hợp với cầu thủ chơi ở vị trí tiền vệ.','Giày Đá Bóng Firm Ground Copa Pure 3 Elite','giay-da-bong-firm-ground-copa-pure-3-elite'),(_binary '\0',1600000,17,NULL,23,50,NULL,'Thiết kế đặc biệt ở phần thân giày giúp kiểm soát bóng tốt, phù hợp với cầu thủ thiên về kỹ thuật.','Giày đá Bóng Nam adidas Predator League Firm Ground','giay-da-bong-nam-adidas-predator-league-firm-ground'),(_binary '\0',320000,17,NULL,24,50,NULL,'Thiết kế hiện đại, ôm chân, hỗ trợ di chuyển linh hoạt trên sân cỏ nhân tạo.','Giày Đá Bóng Sân Cỏ Nhân Tạo Future Z 1.1','giay-da-bong-san-co-nhan-tao-future-z-11'),(_binary '\0',230000,17,NULL,25,50,NULL,'Chất liệu da PU với bề mặt vân nổi, đế TF bám sân tốt, thiết kế phối màu trắng xanh trẻ trung.','Giày đá bóng Wika Toni Kroos','giay-da-bong-wika-toni-kroos'),(_binary '\0',2700000,16,NULL,26,50,NULL,'Được thiết kế với công nghệ Air-Sole độc quyền của Nike, kết hợp kiểu dáng hầm hố, cá tính, và phong cách retro độc đáo, Air Jordan đã tạo nên cơn sốt toàn cầu suốt nhiều thập kỷ.','Giày thể thao Nike Air Jordan','giay-the-thao-nike-air-jordan'),(_binary '\0',3500000,16,NULL,27,50,NULL,'Ultraboost là dòng giày chạy bộ cao cấp của Adidas, nổi bật với công nghệ Boost siêu nhẹ, hoàn trả năng lượng tối đa. Thiết kế ôm chân với vải dệt Primeknit linh hoạt, tạo cảm giác như đi tất.','Giày thể thao Adidas Ultraboost','giay-the-thao-adidas-ultraboost'),(_binary '\0',800000,16,NULL,28,50,NULL,'Biti’s Hunter là sản phẩm giày thể thao quốc dân của Việt Nam. Thiết kế trẻ trung, đệm EVA êm nhẹ, phần upper thoáng khí và kiểu dáng dễ phối đồ. Giá thành hợp lý, phù hợp với học sinh, sinh viên.','Giày thể thao Biti’s Hunter','giay-the-thao-bitis-hunter'),(_binary '\0',2200000,16,NULL,29,50,NULL,'MLB Bigball Chunky là dòng giày thể thao thời trang từ thương hiệu MLB (Hàn Quốc), nổi bật với thiết kế đế dày, form \'hầm hố\' cá tính. Logo đội bóng Mỹ được in nổi bật tạo điểm nhấn phong cách đường phố.','Giày thể thao MLB Bigball','giay-the-thao-mlb-bigball'),(_binary '\0',1800000,16,NULL,30,50,NULL,'Nike Court là dòng giày tennis và lifestyle đơn giản nhưng cực kỳ thanh lịch. Đế cao su bền chắc, kiểu dáng cổ điển, dễ phối với quần jeans, kaki hay đồ thể thao.','Giày thể thao Nike Court','giay-the-thao-nike-court'),(_binary '\0',150000,14,NULL,31,50,NULL,'Mũ phớt thời trang hiện đại cá tính','Mũ phớt nỉ nam','mu-phot-ni-nam'),(_binary '\0',200000,14,NULL,32,50,NULL,'Mũ phớt thời trang hiện đại cá tính','Mũ phớt nỉ nữ','mu-phot-ni-nu'),(_binary '\0',50000,14,NULL,33,50,NULL,'Mũ phớt thời trang hiện đại cá tính','Mũ phớt cói nam','mu-phot-coi-nam'),(_binary '\0',400000,14,NULL,34,50,NULL,'Mũ phớt thời trang hiện đại cá tính','Mũ phớt da bò','mu-phot-da-bo'),(_binary '\0',70000,13,NULL,35,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai Nike','mu-luoi-trai-nike'),(_binary '\0',60000,13,NULL,36,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai Teelab','mu-luoi-trai-teelab'),(_binary '\0',80000,13,NULL,37,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai Jogarbola','mu-luoi-trai-jogarbola'),(_binary '\0',100000,13,NULL,38,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai nhung','mu-luoi-trai-nhung'),(_binary '\0',300000,13,NULL,39,50,NULL,'Mũ lưỡi trai dành cho giới trẻ mẫu mới','Mũ lưỡi trai da','mu-luoi-trai-da');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -461,7 +461,7 @@ CREATE TABLE `product_favorite` (
   CONSTRAINT `FKartqjcvs73ddgj53p0g33lhvq` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT `FKomgt7x2gi4f2ov7o54sovb5fu` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`),
   CONSTRAINT `FKrcyhceyys9jlpydmqj1mclrmv` FOREIGN KEY (`favorite_id`) REFERENCES `favorite` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -470,7 +470,7 @@ CREATE TABLE `product_favorite` (
 
 LOCK TABLES `product_favorite` WRITE;
 /*!40000 ALTER TABLE `product_favorite` DISABLE KEYS */;
-INSERT INTO `product_favorite` VALUES (7,1,10,1,3,40,2,5),(8,1,1,2,1,58,7,3);
+INSERT INTO `product_favorite` VALUES (7,1,10,1,3,40,2,5),(8,1,1,2,1,58,7,3),(19,1,5,1,5,40,2,5);
 /*!40000 ALTER TABLE `product_favorite` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -501,7 +501,7 @@ CREATE TABLE `product_shoppingcart` (
   CONSTRAINT `fk_product_shoppingcart_image_id` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`),
   CONSTRAINT `fk_product_shoppingcart_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT `fk_product_shoppingcart_size_id` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -510,7 +510,7 @@ CREATE TABLE `product_shoppingcart` (
 
 LOCK TABLES `product_shoppingcart` WRITE;
 /*!40000 ALTER TABLE `product_shoppingcart` DISABLE KEYS */;
-INSERT INTO `product_shoppingcart` VALUES (46,5,1,4,6,53,4,1),(47,2,1,4,10,40,5,1),(48,5,1,5,6,53,4,1);
+INSERT INTO `product_shoppingcart` VALUES (48,5,1,5,6,53,4,1),(72,2,1,3,5,40,5,1);
 /*!40000 ALTER TABLE `product_shoppingcart` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -647,7 +647,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (0,_binary '',NULL,1,NULL,'https://ugc.production.linktr.ee/5e77e148-1b07-4429-8471-d0a13edc9fa3_boy.png','nguyenvana@gmail.com','Nguyễn Văn A','$2a$10$hJSftRyD11HMkc4QDwTYkeKlgAzWa646.qyaQRyWNY1WcX5jq4Y2.',NULL),(0,_binary '','2025-06-05 18:04:48.399110',2,'2025-06-05 18:04:48.399110',NULL,'admin@admin.com',NULL,'$2a$10$cI6DhnaJWpxkSkHk35HPyOIillmaLumiRHq2lB0LbEFa0xwVfXxSS',NULL),(0,_binary '','2025-06-06 02:53:36.740454',3,'2025-06-07 06:38:03.715377','https://lh3.googleusercontent.com/a/ACg8ocJ3OYWHsOuJFC44PkT0wsImSRwfPUTA_N_lV50IvTLLmiDD2g=s96-c','trinhduy107@gmail.com','duy trịnh',NULL,''),(0,_binary '','2025-06-06 15:16:32.799287',4,'2025-06-06 15:16:32.799813','https://lh3.googleusercontent.com/a/ACg8ocIZY5py8cMHGwzWiPzLZ0UfbzBpzougJoQh33ijGOTTJBanew=s96-c','duytrinhcong107@gmail.com','Duy Trinh',NULL,NULL),(0,_binary '','2025-06-06 15:16:45.485765',5,'2025-06-06 15:16:45.485765','https://lh3.googleusercontent.com/a/ACg8ocIiXqQjm-zKVgE37Euc-d7p2qWIQH9yD72XwwdP0ZM6Gg_wu4hT=s96-c','nhudinhchien12345@gmail.com','Chien123 Nhudinh',NULL,NULL),(0,_binary '','2025-06-06 15:21:00.536624',6,'2025-06-06 15:21:00.536624','https://lh3.googleusercontent.com/a/ACg8ocJAkuVZy2ea1Nq5CLZeMktQZHfb3eOJvjvJSXC1RUPwSDiepg=s96-c','khuongvanhiep04@gmail.com','Khương Hiệp',NULL,NULL);
+INSERT INTO `user` VALUES (0,_binary '',NULL,1,NULL,'https://ugc.production.linktr.ee/5e77e148-1b07-4429-8471-d0a13edc9fa3_boy.png','nguyenvana@gmail.com','Nguyễn Văn A','$2a$10$hJSftRyD11HMkc4QDwTYkeKlgAzWa646.qyaQRyWNY1WcX5jq4Y2.',NULL),(0,_binary '','2025-06-05 18:04:48.399110',2,'2025-06-05 18:04:48.399110',NULL,'admin@admin.com',NULL,'$2a$10$cI6DhnaJWpxkSkHk35HPyOIillmaLumiRHq2lB0LbEFa0xwVfXxSS',NULL),(0,_binary '','2025-06-06 02:53:36.740454',3,'2025-06-07 06:38:03.715377','https://lh3.googleusercontent.com/a/ACg8ocJ3OYWHsOuJFC44PkT0wsImSRwfPUTA_N_lV50IvTLLmiDD2g=s96-c','trinhduy107@gmail.com','duy trịnh',NULL,''),(0,_binary '','2025-06-06 15:16:32.799287',4,'2025-06-14 16:02:50.767718','https://lh3.googleusercontent.com/a/ACg8ocIZY5py8cMHGwzWiPzLZ0UfbzBpzougJoQh33ijGOTTJBanew=s96-c','duytrinhcong107@gmail.com','Duy Trinh','$2a$10$V8gZrgX.jMyED7yf5J9v6e/NGrMRS.uUd88IcmQ5dfYhIEcc04tTm',NULL),(0,_binary '','2025-06-06 15:16:45.485765',5,'2025-06-06 15:16:45.485765','https://lh3.googleusercontent.com/a/ACg8ocIiXqQjm-zKVgE37Euc-d7p2qWIQH9yD72XwwdP0ZM6Gg_wu4hT=s96-c','nhudinhchien12345@gmail.com','Chien123 Nhudinh',NULL,NULL),(0,_binary '','2025-06-06 15:21:00.536624',6,'2025-06-06 15:21:00.536624','https://lh3.googleusercontent.com/a/ACg8ocJAkuVZy2ea1Nq5CLZeMktQZHfb3eOJvjvJSXC1RUPwSDiepg=s96-c','khuongvanhiep04@gmail.com','Khương Hiệp',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -668,7 +668,7 @@ CREATE TABLE `user_address` (
   KEY `fk_user_address_user_id` (`user_id`),
   CONSTRAINT `fk_user_address_address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
   CONSTRAINT `fk_user_address_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -677,7 +677,7 @@ CREATE TABLE `user_address` (
 
 LOCK TABLES `user_address` WRITE;
 /*!40000 ALTER TABLE `user_address` DISABLE KEYS */;
-INSERT INTO `user_address` VALUES (_binary '',1,1,3),(_binary '',2,2,6);
+INSERT INTO `user_address` VALUES (_binary '',1,1,3),(_binary '',2,2,6),(_binary '',7,3,4),(_binary '',8,4,5),(_binary '\0',9,5,5);
 /*!40000 ALTER TABLE `user_address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -704,7 +704,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (1,2),(2,5),(2,6),(2,1),(3,3),(4,4);
+INSERT INTO `user_role` VALUES (1,2),(2,5),(2,6),(2,1),(2,4),(7,3);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -717,4 +717,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-12  8:46:44
+-- Dump completed on 2025-06-16 12:33:13

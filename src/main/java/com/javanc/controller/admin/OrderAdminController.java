@@ -22,7 +22,7 @@ public class OrderAdminController {
     final OrderAdminService orderAdminService;
 
     @GetMapping
-//    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ORDER_VIEW')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT', 'ROLE_ORDER_MANAGEMENT')")
     public ResponseEntity<?> getAllOrders() {
         List<OrderAdminResponse> orders = orderAdminService.getAllOrders();
         return ResponseEntity.ok(ApiResponseDTO.<List<OrderAdminResponse>>builder()
@@ -31,7 +31,7 @@ public class OrderAdminController {
     }
 
     @PatchMapping("/{id}/status")
-// @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ORDER_UPDATE')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ORDER_UPDATE')")
     public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
         String status = body.get("status");
         orderAdminService.updateStatus(id, status);
@@ -41,7 +41,7 @@ public class OrderAdminController {
     }
 
     @GetMapping("/{id}")
-//    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ORDER_VIEW')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_CATEGORY_MANAGEMENT', 'ROLE_PRODUCT_MANAGEMENT', 'ROLE_ACCOUNT_MANAGEMENT', 'ROLE_ROLE_MANAGEMENT', 'ROLE_ORDER_MANAGEMENT')")
     public ResponseEntity<?> getOrderById(@PathVariable Long id) {
         OrderAdminResponse order = orderAdminService.getOrderById(id);
         return ResponseEntity.ok(ApiResponseDTO.<OrderAdminResponse>builder()

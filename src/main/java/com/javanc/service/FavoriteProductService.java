@@ -1,6 +1,5 @@
-package com.javanc.service.impl;
+package com.javanc.service;
 
-import com.javanc.model.request.client.ProductCartItemRequest;
 import com.javanc.model.request.client.ProductFavoriteRequest;
 import com.javanc.model.response.client.ProductFavoriteResponse;
 import org.springframework.stereotype.Service;

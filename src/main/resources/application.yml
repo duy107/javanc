@@ -13,4 +13,3 @@ spring:
       format_sql: true
   profiles:
     active: uat
-

@@ -77,6 +77,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(POST, String.format("%s/chatbot/ask", userApiPrefix)).permitAll()
 
                                 .requestMatchers(HttpMethod.PATCH, "/auth/forgot/reset").permitAll()
+
                                 //admin/user
                                 .requestMatchers(GET, "/api/admin/user" ).permitAll()
                                 .requestMatchers(GET, "/api/admin/orders" ).permitAll()
@@ -84,6 +85,10 @@ public class WebSecurityConfig {
                                 .requestMatchers(GET, "/api/admin/recent" ).permitAll()
                                 .requestMatchers(GET, "/api/admin/total_month" ).permitAll()
                                 .requestMatchers(GET, "/api/admin/topOrder" ).permitAll()
+
+                                .requestMatchers("/api/chat-rooms").permitAll()
+                                // websocket
+                                .requestMatchers("/ws/**").permitAll()
 
                                 .anyRequest().authenticated()
                 );

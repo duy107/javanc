@@ -1,28 +1,27 @@
 package com.javanc.service.impl;
 
+import com.javanc.repository.UserRepository;
 import com.javanc.service.DashboardService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class DashboardServiceImpl implements DashboardService {
     @PersistenceContext
     private EntityManager entityManager;
+    UserRepository userRepository;
 
     @Override
     public Long findCountUser() {
-        String sql = new StringBuilder("select count(*) from User " +
-                " inner join user_role ur on ur.user_id = user.id " +
-                "inner join role r on r.id = ur.role_id " +
-                "where r.name='user'").toString();
-        Object result = entityManager
-                .createNativeQuery(sql)
-                .getSingleResult(); // Trả về Object
-
-        return ((Number) result).longValue(); // Ép về Long
+        return userRepository.countByRoles_id(2L);
     }
 
     @Override

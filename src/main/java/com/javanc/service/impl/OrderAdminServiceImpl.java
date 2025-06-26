@@ -5,6 +5,8 @@ import com.javanc.repository.OrderRepository;
 import com.javanc.repository.ProductRepository;
 import com.javanc.repository.entity.OrderEntity;
 import com.javanc.service.OrderAdminService;
+import com.javanc.service.WebSocketService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -12,22 +14,20 @@ import com.javanc.repository.entity.OrderProductEntity;
 import com.javanc.repository.entity.ProductEntity;
 import com.javanc.repository.DetailRepository;
 import com.javanc.repository.entity.DetailEntity;
-import com.javanc.repository.entity.SizeEntity;
-import com.javanc.repository.entity.ColorEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static lombok.AccessLevel.PRIVATE;
-
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderAdminServiceImpl implements OrderAdminService {
 
-    final OrderRepository orderRepository;
-    final DetailRepository detailRepository;
-    private final ProductRepository productRepository;
+    OrderRepository orderRepository;
+    DetailRepository detailRepository;
+    ProductRepository productRepository;
+    OrderWebSocketServiceImpl orderWebSocketServiceImpl;
 
     @Override
     public List<OrderAdminResponse> getAllOrders() {
@@ -45,12 +45,12 @@ public class OrderAdminServiceImpl implements OrderAdminService {
     }
 
     @Override
+    @Transactional
     public void updateStatus(Long orderId, String status) {
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng"));
-        String currentStatus = order.getStatus();
         order.setStatus(status);
-
+        orderRepository.save(order);
         // Chỉ cập nhật tồn kho nếu chuyển từ "Chờ xác nhận" hoặc "Đã hủy" sang "Đang giao" hoặc "Hoàn thành"
         if (status.equals("Hoàn thành")) {
 
@@ -66,7 +66,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
                         .orElseThrow(() -> new RuntimeException("Không tìm thấy chi tiết sản phẩm phù hợp."));
 
                 if (detail.getStock() < quantityOrdered) {
-                    throw new IllegalArgumentException("Sản phẩm không đủ tồn kho.");
+                    throw new RuntimeException("Sản phẩm không đủ tồn kho.");
                 }
 
                 // Cập nhật tồn kho và số lượng bán
@@ -80,7 +80,7 @@ public class OrderAdminServiceImpl implements OrderAdminService {
             }
         }
 
-        orderRepository.save(order);
+        orderWebSocketServiceImpl.sendForOnlyUser(order);
     }
 
 
