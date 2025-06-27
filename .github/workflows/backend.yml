@@ -27,3 +27,14 @@ jobs:
 
       - name: Push image to Docker Hub
         run: docker push duytrinh107/backend:latest
+
+      - name: SSH & deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /opt/docker
+            docker-compose down --rmi all -v
+            docker-compose up -d
